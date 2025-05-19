@@ -19,13 +19,23 @@ interface FlippingState {
 }
 
 export const CountdownTimer = ({ targetDate }: CountdownTimerProps) => {
-  const [timeLeft, setTimeLeft] = useState<TimeLeft>({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
+  const calculateTimeLeft = (): TimeLeft => {
+    const now = new Date();
+    const difference = targetDate.getTime() - now.getTime();
 
+    if (difference <= 0) {
+      return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+    }
+
+    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+    return { days, hours, minutes, seconds };
+  };
+
+  const [timeLeft, setTimeLeft] = useState<TimeLeft>(calculateTimeLeft());
   const [flipping, setFlipping] = useState<FlippingState>({
     days: false,
     hours: false,
@@ -34,6 +44,8 @@ export const CountdownTimer = ({ targetDate }: CountdownTimerProps) => {
   });
 
   useEffect(() => {
+    setTimeLeft(calculateTimeLeft()); // Initialize immediately
+
     const interval = setInterval(() => {
       const now = new Date();
       const difference = targetDate.getTime() - now.getTime();
@@ -74,7 +86,7 @@ export const CountdownTimer = ({ targetDate }: CountdownTimerProps) => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [targetDate, timeLeft]);
+  }, [targetDate]);
 
   const TimeDigit = ({ value, label, flipping }: { value: number; label: string; flipping: boolean }) => {
     const formattedValue = value.toString().padStart(2, "0");

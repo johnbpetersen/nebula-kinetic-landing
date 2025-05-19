@@ -41,8 +41,9 @@ export const VideoPlayer = () => {
         <div className="aspect-video relative">
           <video
             className="w-full h-full object-cover rounded-3xl"
-            poster="/public/assets/images/alex-kremer-poster.jpg"
+            poster="/public/assets/images/alex-kremer-masterclass-thumbnail.png"
             controls
+            aria-label="Inner Game Masterclass Video"
           >
             <source src="/public/assets/videos/vsl.mp4" type="video/mp4" />
             Your browser does not support the video tag.

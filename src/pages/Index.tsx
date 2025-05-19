@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { StickyNav } from "../components/ui/sticky-nav";
 import { Hero } from "../components/sections/hero";
 import { LogoMarquee } from "../components/sections/logo-marquee";
 import { ProblemSolution } from "../components/sections/problem-solution";
@@ -49,16 +50,16 @@ const Index = () => {
     });
   }, []);
 
-  const targetDate = new Date('2025-06-25T10:00:00-04:00');
+  const targetDate = new Date('2025-06-25T18:00:00-05:00'); // 6:00 PM CT (UTC-5)
 
   // Mock data
   const logosPaths = [
-    "/public/assets/images/logo1.svg",
-    "/public/assets/images/logo2.svg",
-    "/public/assets/images/logo3.svg",
-    "/public/assets/images/logo4.svg",
-    "/public/assets/images/logo5.svg",
-    "/public/assets/images/logo6.svg",
+    "/public/assets/images/zoom-logo.svg",
+    "/public/assets/images/aws-logo.svg",
+    "/public/assets/images/docusign-logo.svg",
+    "/public/assets/images/gong-logo.svg",
+    "/public/assets/images/microsoft-logo.svg",
+    "/public/assets/images/salesforce-logo.svg",
   ];
 
   return (
@@ -67,6 +68,8 @@ const Index = () => {
         <title>{META_TITLE}</title>
         <meta name="description" content={META_DESCRIPTION} />
       </head>
+
+      <StickyNav />
 
       <main className="overflow-hidden relative">
         <Hero />

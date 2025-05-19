@@ -13,28 +13,20 @@ export const Hero = () => {
         background: "linear-gradient(to bottom, #1A202C, #2D3748)",
       }}
     >
-      <style>
-        {`
-          .hero-background::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: url('/public/assets/images/mountain-silhouette.png') no-repeat center;
-            background-size: cover;
-            opacity: 0.2;
-            z-index: 0;
-          }
-          .hero-background > * {
-            position: relative;
-            z-index: 1;
-          }
-        `}
-      </style>
       <div className="section-container relative z-10 py-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
+            <motion.span
+              className="inline-block text-sm uppercase text-gray-400 tracking-widest bg-white/10 px-3 py-1 rounded-full mb-2"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              Masterclass
+            </motion.span>
+
             <motion.h1
-              className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6"
+              className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
@@ -43,21 +35,31 @@ export const Hero = () => {
               <span className="text-gradient">The Inner Game</span>
             </motion.h1>
 
+            <motion.h2
+              className="text-2xl md:text-3xl opacity-80 mb-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              Crush quota without the burnout
+            </motion.h2>
+
             <motion.p
-              className="text-lg md:text-xl opacity-80 mb-8"
+              className="text-lg md:text-xl opacity-80 mb-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              Crush quota without the burnout—join our free 45-minute webinar to discover the mindset shifts top 1%
-              reps use to close with confidence and lead live in.
+              Join our free 90-minute webinar to discover the mindset shifts top 1% reps use to close with confidence
+              and lead live in.
             </motion.p>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
             >
+              <p className="text-lg font-bold tracking-wide mb-4">FREE MASTERCLASS • June 25th @ 6:00pm CT</p>
               <button
                 className="btn-primary group relative overflow-hidden"
                 onMouseEnter={() => setIsHovering(true)}
