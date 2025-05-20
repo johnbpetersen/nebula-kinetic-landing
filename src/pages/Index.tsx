@@ -54,12 +54,12 @@ const Index = () => {
 
   // Mock data
   const logosPaths = [
-    "/public/assets/images/zoom-logo.svg",
-    "/public/assets/images/aws-logo.svg",
-    "/public/assets/images/docusign-logo.svg",
-    "/public/assets/images/gong-logo.svg",
-    "/public/assets/images/microsoft-logo.svg",
-    "/public/assets/images/salesforce-logo.svg",
+    "/assets/images/zoom-logo.svg",
+    "/assets/images/aws-logo.svg",
+    "/assets/images/docusign-logo.svg",
+    "/assets/images/gong-logo.svg",
+    "/assets/images/microsoft-logo.svg",
+    "/assets/images/salesforce-logo.svg",
   ];
 
   return (
