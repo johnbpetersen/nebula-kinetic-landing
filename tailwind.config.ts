@@ -1,3 +1,4 @@
+// tailwind.config.ts
 import type { Config } from "tailwindcss";
 
 export default {
@@ -112,22 +113,29 @@ export default {
         },
         marquee: {
           "0%": { transform: "translateX(0)" },
-          "100%": { transform: "translateX(-50%)" }, // Changed to -50% for seamless loop
+          "100%": { transform: "translateX(-50%)" },
         },
         flip: {
           "0%": { transform: "rotateX(0deg)" },
           "50%": { transform: "rotateX(90deg)" },
           "100%": { transform: "rotateX(0deg)" },
         },
+        // ✅ NEW — scan keyframe
+        scan: {
+          "0%,100%": { backgroundPosition: "0 0" },
+          "50%": { backgroundPosition: "0 8px" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "pulse-slow": "pulse 4s ease-in-out infinite",
+        "pulse-slow": "pulse 2.5s cubic-bezier(0.4,0,0.6,1) infinite",
         "bounce-slow": "bounce 2s ease-in-out infinite",
         "float-slow": "float 6s ease-in-out infinite",
         marquee: "marquee 27s linear infinite",
         flip: "flip 0.6s cubic-bezier(0.455, 0.03, 0.515, 0.955) forwards",
+        // ✅ NEW — scan animation
+        scan: "scan 8s linear infinite",
       },
       backgroundImage: {
         "allu-gradient": "radial-gradient(circle at 30% 30%, #6074FF 0%, #3E4797 60%, #1B1C3E 100%)",
