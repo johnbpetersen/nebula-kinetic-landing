@@ -21,11 +21,12 @@ export const LogoMarquee = ({ logos }: LogoMarqueeProps) => {
           {repeatedLogos.map((logo, index) => (
             <img
               key={index}
-              src={`/public/assets/images/${logo.split("/").pop()}`}
+              src={logo} // Use the logo path directly
               alt={`Client Logo ${index + 1}`}
               className={`w-auto grayscale opacity-90 brightness-125 hover:grayscale-0 hover:opacity-100 hover:brightness-100 transition-all ${
                 logo.includes("aws-logo") ? "h-10" : "h-8"
               }`}
+              onError={() => console.error(`Failed to load logo: ${logo}`)} // Add error logging
             />
           ))}
         </div>
