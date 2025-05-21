@@ -8,11 +8,17 @@ export const Hero = () => {
 
   return (
     <section
-      className="relative min-h-[90vh] flex items-center hero-background"
-      style={{
-        background: "linear-gradient(to bottom, #1A202C, #2D3748)",
-      }}
+      className="relative min-h-[90vh] flex items-center hero-background overflow-hidden bg-alluBlue-900"
     >
+      {/* Particle Layer */}
+-      <div className="absolute inset-0 pointer-events-none z-0">
+-        <div className="particle particle-1" />
+-        <div className="particle particle-2" />
+-        <div className="particle particle-3" />
+-        <div className="particle particle-4" />
+-        <div className="particle particle-5" />
+-      </div>
+
       <div className="section-container relative z-10 py-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
@@ -31,7 +37,7 @@ export const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <span className="block mb-2">Unlock</span>
+              <span className="block mb-2">Beyond Tactics</span>
               <span className="text-gradient">The Inner Game</span>
             </motion.h1>
 
@@ -41,7 +47,7 @@ export const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              Crush quota without the burnout
+              How The Top 1% Crush Quota Without Burning Out
             </motion.h2>
 
             <motion.p
