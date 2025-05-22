@@ -3,11 +3,10 @@ import { motion } from "framer-motion";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import { VideoPlayer } from "../ui/video-player";
 
-/* prefers‑reduced‑motion helper */
 const useReducedMotion = () =>
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-/* ── Starfield canvas – unchanged (same as previous version) ─── */
+/* ── Starfield canvas (unchanged) ─────────────────────────────── */
 interface StarfieldProps {
   speedFactor?: number;
   disabled?: boolean;
@@ -19,48 +18,49 @@ const Starfield: React.FC<StarfieldProps> = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     if (disabled) return;
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d")!;
-    const stars: { x: number; y: number; size: number; speed: number }[] = [];
+    const c = canvasRef.current;
+    if (!c) return;
+    const ctx = c.getContext("2d")!;
+    const stars: { x: number; y: number; s: number; v: number }[] = [];
 
     const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight * 1.1;
+      c.width = window.innerWidth;
+      c.height = window.innerHeight * 1.1;
     };
     window.addEventListener("resize", resize);
     resize();
 
-    const initStars = () => {
+    const init = () => {
       stars.length = 0;
-      const count = Math.floor((canvas.width * canvas.height) / 8000);
-      for (let i = 0; i < count; i++) {
+      const n = Math.floor((c.width * c.height) / 8000);
+      for (let i = 0; i < n; i++) {
         stars.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          size: Math.random() * 2,
-          speed: Math.random() * 0.3 * speedFactor,
+          x: Math.random() * c.width,
+          y: Math.random() * c.height,
+          s: Math.random() * 2,
+          v: Math.random() * 0.3 * speedFactor,
         });
       }
     };
-    initStars();
+    init();
 
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      stars.forEach((s) => {
+    const loop = () => {
+      ctx.clearRect(0, 0, c.width, c.height);
+      stars.forEach((st) => {
         ctx.fillStyle = "rgba(228,231,255,0.8)";
         ctx.beginPath();
-        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+        ctx.arc(st.x, st.y, st.s, 0, Math.PI * 2);
         ctx.fill();
-        s.y -= s.speed;
-        if (s.y < 0) {
-          s.y = canvas.height;
-          s.x = Math.random() * canvas.width;
+        st.y -= st.v;
+        if (st.y < 0) {
+          st.y = c.height;
+          st.x = Math.random() * c.width;
         }
       });
-      requestAnimationFrame(animate);
+      requestAnimationFrame(loop);
     };
-    animate();
+    loop();
+
     return () => window.removeEventListener("resize", resize);
   }, [speedFactor, disabled]);
 
@@ -72,7 +72,7 @@ const Starfield: React.FC<StarfieldProps> = ({
   );
 };
 
-/* ── Motion blob – unchanged ─────────────────────────────────── */
+/* ── blob ─────────────────────────────────────────────────────── */
 const Blob: React.FC<{ className: string; delay?: number }> = ({
   className,
   delay = 0,
@@ -90,7 +90,7 @@ const Blob: React.FC<{ className: string; delay?: number }> = ({
   />
 );
 
-/* ── Hero component ──────────────────────────────────────────── */
+/* ── Hero ─────────────────────────────────────────────────────── */
 export const Hero: React.FC = () => {
   const [hover, setHover] = useState(false);
   const [slowStars, setSlowStars] = useState(false);
@@ -114,7 +114,6 @@ export const Hero: React.FC = () => {
       <Blob className="w-[600px] h-[600px] bg-alluBlue -top-64 left-40" delay={0} />
       <Blob className="w-[300px] h-[300px] bg-neon-yellow bottom-20 -left-20" delay={4} />
 
-      {/* soft glow */}
       <div className="absolute left-1/4 top-1/4 w-[50vw] h-[50vw] bg-alluBlue-400/10 rounded-full blur-[220px] pointer-events-none" />
 
       <div className="section-container relative z-10 py-20">
@@ -131,14 +130,14 @@ export const Hero: React.FC = () => {
             </motion.span>
 
             <motion.h1
-              className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4"
+              className="leading-tight text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 max-w-2xl"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <span className="block">Beyond Tactics:</span>
-              <span className="block text-gradient">The Inner Game</span>
-              <span className="block">That Top Reps Never Talk About</span>
+              <span className="block">Beyond Tactics:</span>
+              <span className="block text-gradient">The Inner Game</span>
+              <span className="block">That Top Reps Never Talk About</span>
             </motion.h1>
 
             <motion.h2
@@ -147,7 +146,7 @@ export const Hero: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              How the Top 1% Crush Quota Without Burning Out
+              How the Top 1% Crush Quota Without Burning Out
             </motion.h2>
 
             <motion.p
@@ -157,7 +156,7 @@ export const Hero: React.FC = () => {
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               Join our free 90‑minute webinar to discover the mindset shifts elite
-              reps use to close with confidence and lighten the load.
+              reps use to close with confidence and lighten the load.
             </motion.p>
 
             <motion.p
@@ -166,7 +165,7 @@ export const Hero: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.25 }}
             >
-              FREE MASTERCLASS • June 25 @ 6:00 PM CT
+              FREE MASTERCLASS • June 25 @ 6:00 PM CT
             </motion.p>
 
             <motion.div
@@ -209,7 +208,6 @@ export const Hero: React.FC = () => {
         </div>
       </div>
 
-      {/* scroll cue */}
       <motion.div
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 0.8, y: 0 }}
