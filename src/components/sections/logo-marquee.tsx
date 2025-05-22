@@ -1,35 +1,44 @@
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 
 interface LogoMarqueeProps {
   logos: string[];
 }
 
-export const LogoMarquee = ({ logos }: LogoMarqueeProps) => {
-  const [isPaused, setIsPaused] = useState(false);
+export const LogoMarquee: React.FC<LogoMarqueeProps> = ({ logos }) => {
+  const [pause, setPause] = useState(false);
 
-  // Repeat logos 4 times to ensure the strip is wide enough for seamless scrolling
-  const repeatedLogos = logos.concat(logos).concat(logos).concat(logos);
+  /* repeat logos twice for seamless loop */
+  const strip = logos.concat(logos);
 
   return (
     <div
-      className={`w-full overflow-hidden bg-white/20 backdrop-blur-sm py-6 ${isPaused ? "pause-marquee" : ""}`}
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
+      className="w-full overflow-hidden bg-white/20 backdrop-blur-sm py-6"
+      onMouseEnter={() => setPause(true)}
+      onMouseLeave={() => setPause(false)}
     >
       <div className="section-container">
-        <div className="flex gap-12 items-center flex-nowrap animate-marquee">
-          {repeatedLogos.map((logo, index) => (
-            <img
-              key={index}
-              src={logo} // Use the logo path directly
-              alt={`Client Logo ${index + 1}`}
-              className={`w-auto grayscale opacity-90 brightness-125 hover:grayscale-0 hover:opacity-100 hover:brightness-100 transition-all ${
-                logo.includes("aws-logo") ? "h-10" : "h-8"
-              }`}
-              onError={() => console.error(`Failed to load logo: ${logo}`)} // Add error logging
+        <motion.div
+          className="flex gap-12 items-center flex-nowrap"
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{
+            duration: 35,
+            ease: "linear",
+            repeat: Infinity,
+            pause,
+          }}
+        >
+          {strip.map((logo, i) => (
+            <motion.img
+              key={i}
+              src={logo}
+              alt="Trusted company logo"
+              className="h-8 opacity-70 grayscale hover:opacity-100 hover:grayscale-0 transition-all"
+              whileInView={{ opacity: [0.3, 0.7] }}
+              viewport={{ once: true, amount: 0.2 }}
             />
           ))}
-        </div>
+        </motion.div>
       </div>
     </div>
   );

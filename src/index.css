@@ -188,3 +188,33 @@
   z-index: 10; /* This should be higher than the gradient's z-index */
   /* Your other section-container styles */
 }
+
+/* ── Edge‑lit VSL frame ───────────────────────────────────────── */
+.edge-glow {
+  position: relative;
+  border-radius: 1.5rem; /* match video corner radius */
+  overflow: visible;     /* let glow extend */
+}
+
+.edge-glow::before {
+  content: "";
+  position: absolute;
+  inset: -2px;                    /* thin border */
+  border-radius: inherit;
+  background: linear-gradient(
+    130deg,
+    #6074ff,
+    #ffe45e,
+    #6074ff,
+    #3e4797
+  );
+  background-size: 400% 400%;
+  animation: edgeGlow 6s ease-in-out infinite;
+  z-index: -1;
+}
+
+@keyframes edgeGlow {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
