@@ -1,75 +1,60 @@
+// src/components/sections/hero.tsx
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { VideoPlayer } from "../ui/video-player";
 
-const Starfield = ({ containerHeight }: { containerHeight: number }) => {
+/* ── Starfield canvas ─────────────────────────────────────────── */
+const Starfield = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    const ctx = canvas.getContext("2d")!;
+    const stars: { x: number; y: number; size: number; speed: number }[] = [];
 
-    const stars: { x: number; y: number; size: number; speed: number; opacity: number }[] = [];
-
-    // Set canvas dimensions
-    const resizeCanvas = () => {
+    const resize = () => {
       canvas.width = window.innerWidth;
-      canvas.height = containerHeight; // Match hero section height
+      canvas.height = window.innerHeight * 1.1;
     };
+    window.addEventListener("resize", resize);
+    resize();
 
-    window.addEventListener("resize", resizeCanvas);
-    resizeCanvas();
-
-    // Create stars with varied opacity and size
-    const createStars = () => {
-      const starCount = Math.floor((canvas.width * canvas.height) / 12000); // Reduced density
-      for (let i = 0; i < starCount; i++) {
+    const initStars = () => {
+      stars.length = 0;
+      const count = Math.floor((canvas.width * canvas.height) / 8000);
+      for (let i = 0; i < count; i++) {
         stars.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          size: Math.random() * 1.5 + 0.5, // Smaller stars
-          speed: Math.random() * 0.15 + 0.05, // Slower movement
-          opacity: Math.random() * 0.4 + 0.3, // Varied opacity
+          size: Math.random() * 2,
+          speed: Math.random() * 0.3,
         });
       }
     };
+    initStars();
 
-    createStars();
-
-    // Animation loop
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Draw stars
-      stars.forEach((star) => {
-        ctx.fillStyle = `rgba(228, 231, 255, ${star.opacity})`;
+      stars.forEach((s) => {
+        ctx.fillStyle = "rgba(228,231,255,0.8)";
         ctx.beginPath();
-        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
         ctx.fill();
-
-        // Move stars upward
-        star.y -= star.speed;
-
-        // Reset stars that go off screen
-        if (star.y < 0) {
-          star.y = canvas.height;
-          star.x = Math.random() * canvas.width;
+        s.y -= s.speed;
+        if (s.y < 0) {
+          s.y = canvas.height;
+          s.x = Math.random() * canvas.width;
         }
       });
-
       requestAnimationFrame(animate);
     };
-
     animate();
 
-    return () => {
-      window.removeEventListener("resize", resizeCanvas);
-    };
-  }, [containerHeight]);
+    return () => window.removeEventListener("resize", resize);
+  }, []);
 
   return (
     <canvas
@@ -79,123 +64,91 @@ const Starfield = ({ containerHeight }: { containerHeight: number }) => {
   );
 };
 
-const Blob = ({ className, delay = 0 }: { className: string; delay?: number }) => {
-  return (
-    <motion.div
-      className={`absolute rounded-full blur-3xl opacity-20 ${className}`}
-      animate={{
-        y: [0, -20, 0],
-        opacity: [0.2, 0.3, 0.2],
-      }}
-      transition={{
-        duration: 10,
-        repeat: Infinity,
-        repeatType: "reverse",
-        ease: "easeInOut",
-        delay,
-      }}
-    />
-  );
-};
+/* ── Decorative motion blobs ─────────────────────────────────── */
+const Blob = ({
+  className,
+  delay = 0,
+}: {
+  className: string;
+  delay?: number;
+}) => (
+  <motion.div
+    className={`absolute rounded-full blur-3xl opacity-20 ${className}`}
+    animate={{ y: [0, -20, 0], opacity: [0.2, 0.3, 0.2] }}
+    transition={{
+      duration: 10,
+      repeat: Infinity,
+      repeatType: "reverse",
+      ease: "easeInOut",
+      delay,
+    }}
+  />
+);
 
+/* ── Hero Section ─────────────────────────────────────────────── */
 export const Hero = () => {
-  const [isHovering, setIsHovering] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
-
-  // Get the hero section's height dynamically
-  useEffect(() => {
-    const updateHeight = () => {
-      if (sectionRef.current) {
-        const height = sectionRef.current.getBoundingClientRect().height;
-        // Trigger a re-render if needed (handled by Starfield dependency)
-      }
-    };
-
-    updateHeight();
-    window.addEventListener("resize", updateHeight);
-    return () => window.removeEventListener("resize", updateHeight);
-  }, []);
+  const [hover, setHover] = useState(false);
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative min-h-[90vh] flex items-center hero-background overflow-hidden"
-    >
-      <Starfield containerHeight={sectionRef.current?.getBoundingClientRect().height || window.innerHeight * 0.9} />
-      {/* Decorative blobs */}
-      <Blob className="w-[500px] h-[500px] bg-alluBlue-400 top-20 -right-64 z-0" delay={2} />
-      <Blob className="w-[600px] h-[600px] bg-alluBlue -top-64 left-40 z-0" delay={0} />
-      <Blob className="w-[300px] h-[300px] bg-neon-yellow bottom-20 -left-20 z-0" delay={4} />
+    <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-alluBlue-900">
+      {/* animated star background */}
+      <Starfield />
+
+      {/* floating blobs */}
+      <Blob className="w-[500px] h-[500px] bg-alluBlue-400 top-20 -right-64" delay={2} />
+      <Blob className="w-[600px] h-[600px] bg-alluBlue -top-64 left-40" delay={0} />
+      <Blob className="w-[300px] h-[300px] bg-neon-yellow bottom-20 -left-20" delay={4} />
 
       <div className="section-container relative z-10 py-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="z-10">
-            <motion.span
-              className="inline-block text-sm uppercase text-gray-400 tracking-widest bg-white/10 px-3 py-1 rounded-full mb-2"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-            >
-              Masterclass
-            </motion.span>
-
+          {/* copy block */}
+          <div>
             <motion.h1
-              className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4"
+              className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <span className="block mb-2">Beyond Tactics</span>
+              <span className="block mb-2">Master</span>
               <span className="text-gradient">The Inner Game</span>
+              <span className="block mt-2">of Sales</span>
             </motion.h1>
 
-            <motion.h2
-              className="text-2xl md:text-3xl opacity-80 mb-6"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-            >
-              How The Top 1% Crush Quota Without Burning Out
-            </motion.h2>
-
             <motion.p
-              className="text-lg md:text-xl opacity-80 mb-6"
+              className="text-lg md:text-xl opacity-80 mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              Join our free 90-minute webinar to discover the mindset shifts top 1% reps use to close with confidence
-              and lead live in.
+              Transform your sales approach with psychological techniques to
+              overcome objections, build authentic connections &amp; close more
+              deals without feeling pushy.
             </motion.p>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
             >
-              <p className="text-lg font-bold tracking-wide mb-4">FREE MASTERCLASS • June 25th @ 6:00pm CT</p>
               <button
                 className="btn-primary group relative overflow-hidden"
-                onMouseEnter={() => setIsHovering(true)}
-                onMouseLeave={() => setIsHovering(false)}
+                onMouseEnter={() => setHover(true)}
+                onMouseLeave={() => setHover(false)}
               >
-                Reserve Your Spot Now
+                Register Now – Free Webinar
                 <span className="ml-2 inline-block group-hover:translate-x-1 transition-transform">
                   <ArrowRight size={18} />
                 </span>
                 <motion.span
                   className="absolute inset-0 rounded-full bg-neon-yellow/20"
                   animate={
-                    isHovering
-                      ? {
-                          scale: [1, 1.5],
-                          opacity: [0.8, 0],
-                        }
-                      : {}
+                    hover
+                      ? { scale: [1, 1.5], opacity: [0.8, 0] }
+                      : { scale: 1, opacity: 0 }
                   }
                   transition={{
                     duration: 1,
-                    repeat: isHovering ? Infinity : 0,
+                    repeat: hover ? Infinity : 0,
                     repeatType: "loop",
                   }}
                 />
@@ -203,7 +156,8 @@ export const Hero = () => {
             </motion.div>
           </div>
 
-          <div className="relative z-10">
+          {/* video with subtle parallax tilt */}
+          <div className="relative">
             <VideoPlayer />
           </div>
         </div>
