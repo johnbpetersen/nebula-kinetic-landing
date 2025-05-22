@@ -93,7 +93,7 @@
   }
 
   .section-container {
-    @apply max-w-[90rem] px-6 mx-auto;
+    @apply max-w-[90rem] px-6 mx-auto relative z-10;
   }
 
   .section-spacing {
@@ -120,14 +120,10 @@
   background-clip: text;
 }
 
-.hero-background::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: url("/public/assets/images/mountain-silhouette.png") no-repeat center;
-  background-size: cover;
-  opacity: 0.2;
-  z-index: 0;
+.hero-background {
+  position: relative;
+  overflow: hidden;
+  background: transparent; /* Ensure no conflicting background */
 }
 
 .hero-background > * {
@@ -137,54 +133,4 @@
 
 .pause-marquee .animate-marquee {
   animation-play-state: paused;
-}
-
-/* Add this to your globals.css or equivalent stylesheet */
-
-.hero-background {
-  /* Ensure this has relative positioning as it's the parent for our absolute gradient */
-  position: relative;
-  background-color: #0b0f2a; /* Your current deep blue background */
-  overflow: hidden; /* Crucial to contain the expanding gradient */
-}
-
-/* Pseudo-element for the animated gradient */
-.hero-background::before {
-  content: "";
-  position: absolute;
-  top: -50%; /* Start higher to allow for movement */
-  left: -50%; /* Start further left to allow for movement */
-  width: 200%; /* Make it larger than the container to ensure full coverage during movement */
-  height: 200%; /* Make it larger than the container */
-  background: linear-gradient(
-    45deg,
-    #8a2be2, /* A soft purple */
-    #4b0082, /* Indigo */
-    #1e90ff, /* Dodger Blue */
-    #00bfff /* Deep Sky Blue */
-  );
-  background-size: 200% 200%; /* This is key for the animation: makes the gradient larger than its container */
-  animation: gradient-animation 20s ease infinite alternate; /* Longer duration for subtle effect */
-  z-index: 0; /* Behind the content, but above the base background color if desired */
-  opacity: 0.3; /* Adjust opacity to make it subtle and blend with the deep blue */
-  filter: blur(100px); /* Blur it heavily to create a nebulae-like, soft glow */
-}
-
-@keyframes gradient-animation {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-/* Ensure your existing section-container has a z-index higher than the pseudo-element */
-.section-container {
-  position: relative;
-  z-index: 10; /* This should be higher than the gradient's z-index */
-  /* Your other section-container styles */
 }
