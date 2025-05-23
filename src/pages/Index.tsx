@@ -3,6 +3,7 @@ import { StickyNav } from "../components/ui/sticky-nav";
 import { Hero } from "../components/sections/hero";
 import { LogoMarquee } from "../components/sections/logo-marquee";
 import { ProblemSolution } from "../components/sections/problem-solution";
+import { BigPromise } from "../components/sections/bigpromise";
 import { Pillars } from "../components/sections/pillars";
 import { Countdown } from "../components/sections/countdown";
 import { Testimonials } from "../components/sections/testimonials";
@@ -79,6 +80,7 @@ const Index = () => {
         <Hero />
         <LogoMarquee logos={logosPaths} />
         <ProblemSolution />
+        <BigPromise />
         <Pillars />
         <Countdown targetDate={targetDate} />
         <Testimonials />
