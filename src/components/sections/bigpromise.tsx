@@ -1,7 +1,7 @@
 // src/components/sections/big-promise.tsx
 import React from "react";
 import { motion, Variants } from "framer-motion";
-import { Brain, Handshake, Zap } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { MotionSection } from "../ui/motion-section";
 
 /* stagger helper */
@@ -23,10 +23,11 @@ export const BigPromise = () => (
     <div
       className="absolute inset-0 bg-cover bg-center"
       style={{
-        backgroundImage: "url('/public/assets/images/bigpromisebackground.jpg')",
+        backgroundImage:
+          "url('/public/assets/images/bigpromisebackground.jpg')",
       }}
     />
-    {/* dark overlay for legibility */}
+    {/* legibility overlay */}
     <div className="absolute inset-0 bg-alluBlue-900/70" />
 
     <div className="section-container relative z-10">
@@ -38,12 +39,12 @@ export const BigPromise = () => (
         viewport={{ once: true, amount: 0.5 }}
         className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight"
       >
-        Lead with&nbsp;Unshakable Confidence, <br />
-        <span className="text-gradient">Inspire Instant Trust,</span> <br />
-        Reclaim Your Time
+        Lead with Unshakable Confidence, <br />
+        <span className="text-gradient">Inspire Instant Trust,</span> <br />
+        Reclaim Your Time
       </motion.h2>
 
-      {/* animated accent bar */}
+      {/* accent bar */}
       <motion.div
         variants={fadeUp}
         custom={1}
@@ -62,32 +63,27 @@ export const BigPromise = () => (
         viewport={{ once: true, amount: 0.5 }}
         className="mt-8 text-lg md:text-2xl text-gray-200 max-w-2xl mx-auto"
       >
-        Discover the three Inner Game levers top 1 % reps pull to close faster,
+        Discover the Inner Game levers top 1 % reps pull to close faster,
         feel fulfilled, and leave burnout behind.
       </motion.p>
 
-      {/* icon trio */}
-      <motion.ul
+      {/* prompt + chevron */}
+      <motion.div
         variants={fadeUp}
         custom={3}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.5 }}
-        className="mt-14 flex flex-col sm:flex-row gap-10 justify-center items-center"
+        className="mt-20 flex flex-col items-center gap-4"
       >
-        <li className="flex flex-col items-center gap-3">
-          <Brain size={48} className="text-neon-yellow" />
-          <span className="font-medium">Mindset Mastery</span>
-        </li>
-        <li className="flex flex-col items-center gap-3">
-          <Handshake size={48} className="text-neon-yellow" />
-          <span className="font-medium">Authentic Presence</span>
-        </li>
-        <li className="flex flex-col items-center gap-3">
-          <Zap size={48} className="text-neon-yellow" />
-          <span className="font-medium">Momentum Unlocked</span>
-        </li>
-      </motion.ul>
+        <span className="text-xl md:text-2xl font-medium">
+          Ready to see how it works?
+        </span>
+        <ChevronDown
+          size={32}
+          className="text-neon-yellow animate-bounce-slow"
+        />
+      </motion.div>
     </div>
   </MotionSection>
 );
