@@ -24,7 +24,7 @@ export const StickyNav = () => {
       <div className="section-container flex items-center justify-between py-4">
         <div className="flex items-center">
           <img
-            src="/public/assets/images/alluviance-logo.png"
+            src="/assets/images/alluviance-logo.png"
             alt="Alluviance Logo"
             className="h-10 w-auto"
           />
