@@ -1,29 +1,29 @@
 import React from "react";
 import { motion, Variants } from "framer-motion";
-import { HeartPulse, Anchor, Zap } from "lucide-react"; // Import lucide-react icons
 import { MotionSection } from "../ui/motion-section";
 import { PillarCard } from "../ui/pillar-card";
+import { HeartPulse, Anchor, Zap } from "lucide-react";
 
 /* data */
 const PILLARS = [
   {
     title: "Self‑Connection",
     copy: "Unlock authentic confidence by tuning into your inner signals.",
-    icon: HeartPulse, // lucide-react component
+    icon: HeartPulse,
   },
   {
     title: "Essence‑Led Leadership",
     copy: "Guide conversations with grounded presence—stop pitching, start partnering.",
-    icon: Anchor, // lucide-react component
+    icon: Anchor,
   },
   {
     title: "Vision‑Driven Performance",
     copy: "Anchor to a compelling why so rejection fuels you, not drains you.",
-    icon: Zap, // lucide-react component
+    icon: Zap,
   },
 ];
 
-/* card animation */
+/* card entrance */
 const card: Variants = {
   hidden: { opacity: 0, y: 40, scale: 0.95 },
   visible: (i: number) => ({
@@ -36,7 +36,7 @@ const card: Variants = {
 
 export const Pillars = () => (
   <MotionSection id="pillars" className="relative bg-alluBlue-900 py-32">
-    {/* background glow */}
+    {/* ambient glow */}
     <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
       <div className="w-[90vw] h-[90vw] bg-alluBlue-600/15 rounded-full blur-[220px]" />
     </div>
@@ -49,27 +49,30 @@ export const Pillars = () => (
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
       >
-        The Inner Game Framework
+        The Inner Game Framework
       </motion.h2>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-        {PILLARS.map((p, i) => (
-          <motion.div
-            key={p.title}
-            custom={i}
-            variants={card}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-          >
-            <PillarCard
-              icon={<p.icon size={48} className="text-neon-yellow" aria-hidden="true" />}
-              title={p.title}
-              description={p.copy}
-              index={i}
-            />
-          </motion.div>
-        ))}
+        {PILLARS.map((pillar, i) => {
+          const Icon = pillar.icon;
+          return (
+            <motion.div
+              key={pillar.title}
+              custom={i}
+              variants={card}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+            >
+              <PillarCard
+                icon={Icon}
+                title={pillar.title}
+                description={pillar.copy}
+                index={i}
+              />
+            </motion.div>
+          );
+        })}
       </div>
     </div>
   </MotionSection>
