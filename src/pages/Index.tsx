@@ -58,8 +58,12 @@ const Index = () => {
     "/assets/images/aws-logo.svg",
     "/assets/images/docusign-logo.svg",
     "/assets/images/gong-logo.svg",
+    "/assets/images/databricks-logo.svg",
     "/assets/images/microsoft-logo.svg",
+    "/assets/images/verkada-logo.svg",
     "/assets/images/salesforce-logo.svg",
+    "/assets/images/google-logo.svg",
+    "/assets/images/datadog-logo.svg",
   ];
 
   return (
