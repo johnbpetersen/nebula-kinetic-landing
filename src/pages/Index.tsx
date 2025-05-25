@@ -5,8 +5,8 @@ import { LogoMarquee } from "../components/sections/logo-marquee";
 import { ProblemSolution } from "../components/sections/problem-solution";
 import { BigPromise } from "../components/sections/bigpromise";
 import { Pillars } from "../components/sections/pillars";
-import { Countdown } from "../components/sections/countdown";
 import { Testimonials } from "../components/sections/testimonials";
+import { Countdown } from "../components/sections/countdown";
 import { FAQ } from "../components/sections/faq";
 import { FinalCTA } from "../components/sections/final-cta";
 import { Footer } from "../components/sections/footer";
@@ -82,8 +82,8 @@ const Index = () => {
         <ProblemSolution />
         <BigPromise />
         <Pillars />
-        <Countdown targetDate={targetDate} />
         <Testimonials />
+        <Countdown targetDate={targetDate} />
         <FAQ />
         <FinalCTA />
         <Footer />
