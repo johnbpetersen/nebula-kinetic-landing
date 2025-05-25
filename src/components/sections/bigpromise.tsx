@@ -24,7 +24,7 @@ export const BigPromise = () => (
       className="absolute inset-0 bg-cover bg-center"
       style={{
         backgroundImage:
-          "url('/public/assets/images/bigpromisebackground.jpg')",
+          "url('/assets/images/bigpromisebackground.jpg')",
       }}
     />
     {/* legibility overlay */}
