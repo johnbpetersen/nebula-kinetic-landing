@@ -9,24 +9,24 @@ interface FAQItem {
 
 const faqs: FAQItem[] = [
   {
-    question: "When exactly is the webinar?",
-    answer: "The webinar is scheduled for June 25th at 10:00 AM EDT. It will run for approximately 90 minutes with time for Q&A at the end.",
+    question: "Is the masterclass really free?",
+    answer: "100% free! Learn proven mindset hacks to double your sales and crush stress, no strings attached. Spots are limited—grab yours now!",
   },
   {
-    question: "Will there be a recording available?",
-    answer: "Yes, all registered participants will receive a recording of the webinar. However, live attendees will have access to exclusive bonuses and the ability to ask questions.",
+    question: "Why do you need my info to sign up?",
+    answer: "Your info unlocks exclusive prep materials and masterclass updates, plus personalized sales tips to skyrocket your game. Opt out anytime. Sign up now to get started!",
   },
   {
-    question: "What topics will be covered?",
-    answer: "The webinar covers psychological techniques to overcome objections, build authentic connections, and close more deals without feeling pushy. We'll explore mindset shifts, practical communication strategies, and real-world examples.",
+    question: "I’m new to sales—will this help me?",
+    answer: "Absolutely! The masterclass teaches universal mindset shifts that boost confidence and close rates, whether you’re a rookie or a pro. Join free and start winning!",
   },
   {
-    question: "Is this relevant for B2B sales professionals?",
-    answer: "Absolutely! The Inner Game principles apply to both B2B and B2C contexts. We'll provide specific examples for different sales environments.",
+    question: "How long is the masterclass?",
+    answer: "Just 90 minutes to transform your sales game with actionable strategies you’ll use immediately. Don’t miss out—secure your spot today!",
   },
   {
-    question: "What if I can't attend the full session?",
-    answer: "Register anyway! You'll receive the recording and all materials, though live attendees will have access to exclusive Q&A and special offers.",
+    question: "What if I can’t make the live session?",
+    answer: "No worries! Register now to lock in your spot in case your schedule changes, and we’ll keep you posted on the next masterclass date. Sign up today!",
   },
 ];
 
