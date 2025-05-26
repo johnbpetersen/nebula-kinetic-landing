@@ -24,7 +24,7 @@ export const BigPromise = () => (
       className="absolute inset-0 bg-cover bg-center"
       style={{
         backgroundImage:
-          "url('/assets/images/bigpromisebackground.jpg')",
+          "url('https://alluviance.s3.us-east-2.amazonaws.com/images/bigpromisebackground.jpg')",
       }}
     />
     {/* legibility overlay */}
@@ -39,9 +39,9 @@ export const BigPromise = () => (
         viewport={{ once: true, amount: 0.5 }}
         className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight"
       >
-        Lead with Unshakable Confidence, <br />
-        <span className="text-gradient">Inspire Instant Trust,</span> <br />
-        Reclaim Your Time
+        Lead with Unshakable Confidence, <br />
+        <span className="text-gradient">Inspire Instant Trust,</span> <br />
+        Reclaim Your Time
       </motion.h2>
 
       {/* accent bar */}
@@ -54,7 +54,7 @@ export const BigPromise = () => (
         className="mx-auto mt-6 h-[4px] w-40 bg-gradient-to-r from-neon-yellow via-white to-neon-yellow animate-[pulse_3s_ease-in-out_infinite]"
       />
 
-      {/* sub‑headline */}
+      {/* sub-headline */}
       <motion.p
         variants={fadeUp}
         custom={2}
@@ -63,7 +63,7 @@ export const BigPromise = () => (
         viewport={{ once: true, amount: 0.5 }}
         className="mt-8 text-lg md:text-2xl text-gray-200 max-w-2xl mx-auto"
       >
-        Discover the Inner Game levers top 1 % reps pull to close faster,
+        Discover the Inner Game levers top 1 % reps pull to close faster,
         feel fulfilled, and leave burnout behind.
       </motion.p>
 

@@ -5,8 +5,8 @@ import { TestimonialCard } from "../ui/testimonial-card";
 
 const TESTIMONIALS = [
   {
-    video: "/assets/videos/kat-shuchuk.mp4",
-    image: "/assets/images/kat-shuchuk.png",
+    video: "https://alluviance.s3.us-east-2.amazonaws.com/videos/kat-shuchuk.mp4",
+    image: "https://alluviance.s3.us-east-2.amazonaws.com/images/kat-shuchuk.png",
     name: "Kat Shuchuk",
     role: "Account Executive • 6sense",
     size: "col-span-2", // This will make it wider
@@ -19,8 +19,8 @@ const TESTIMONIALS = [
     image: "/assets/images/carlos.jpg",
   },
   {
-    video: "/assets/videos/daniel-berry.mp4",
-    image: "/assets/images/daniel-berry.png",
+    video: "https://alluviance.s3.us-east-2.amazonaws.com/videos/daniel-berry.mp4",
+    image: "https://alluviance.s3.us-east-2.amazonaws.com/images/daniel-berry.png",
     name: "Daniel Berry",
     role: "Business Development Manager • Microsoft",
   },
@@ -36,8 +36,8 @@ const TESTIMONIALS = [
     role: "Account Executive • Gong",
   },
   {
-    video: "/assets/videos/retzio-gredig.mp4",
-    image: "/assets/images/retzio-gredig.png",
+    video: "https://alluviance.s3.us-east-2.amazonaws.com/videos/retzio-gredig.mp4",
+    image: "https://alluviance.s3.us-east-2.amazonaws.com/images/retzio-gredig.png",
     name: "Retzio Gredig",
     role: "Account Executive • Datadog",
     size: "col-span-2", // Make this one wider too
@@ -49,8 +49,8 @@ const TESTIMONIALS = [
     image: "/assets/images/carlos.jpg",
   },
   {
-    video: "/assets/videos/sunny-nelson.mp4",
-    image: "/assets/images/sunny-nelson.png",
+    video: "https://alluviance.s3.us-east-2.amazonaws.com/videos/sunny-nelson.mp4",
+    image: "https://alluviance.s3.us-east-2.amazonaws.com/images/sunny-nelson.png",
     name: "Sunny Nelson",
     role: "Senior Account Executive • AWS",
     size: "col-span-2", // Adding another wide video card for more visual interest

@@ -1,3 +1,4 @@
+// src/components/ui/video-player.tsx
 import React, { useRef, useState } from "react";
 import { motion } from "framer-motion";
 
@@ -23,6 +24,9 @@ export const VideoPlayer = () => {
     setRotation({ x: 0, y: 0 });
   };
 
+  // S3 base URL for assets
+  const S3 = "https://alluviance.s3.us-east-2.amazonaws.com";
+
   return (
     <div
       ref={cardRef}
@@ -41,11 +45,11 @@ export const VideoPlayer = () => {
         <div className="aspect-video relative">
           <video
             className="w-full h-full object-cover rounded-3xl"
-            poster="/assets/images/alex-kremer-masterclass-thumbnail.png"
+            poster={`${S3}/images/alex-kremer-masterclass-thumbnail.png`}
             controls
             aria-label="Inner Game Masterclass Video"
           >
-            <source src="/public/assets/videos/vsl.mp4" type="video/mp4" />
+            <source src={`${S3}/videos/daniel-berry.mp4`} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
