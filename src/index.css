@@ -218,3 +218,8 @@
   50%  { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
+
+/* target AWS by filename and override the h-8 height */
+.section-container img[src$="aws-logo.svg"] {
+  height: 4rem !important;  /* 64px tall instead of 32px */
+}
