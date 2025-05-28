@@ -19,10 +19,10 @@ const TESTIMONIALS = [
     image: "/assets/images/carlos.jpg",
   },
   {
-    video: "https://alluviance.s3.us-east-2.amazonaws.com/videos/daniel-berry.mp4",
-    image: "https://alluviance.s3.us-east-2.amazonaws.com/images/daniel-berry.png",
-    name: "Daniel Berry",
-    role: "Business Development Manager • Microsoft",
+    video: "https://alluviance.s3.us-east-2.amazonaws.com/videos/hank-wells.mp4",
+    image: "https://alluviance.s3.us-east-2.amazonaws.com/images/hank-wells.png",
+    name: "Hank Wells",
+    role: "Senior Account Executive • Saleo",
   },
   {
     content: "I came into this not knowing what to expect. This was one of, if not, the most impactful moments/weekends of my life. I received closure I never thought I would get, realized I was covering my negative emotions and when I felt them I felt as if 100 lbs was lifted off of me. Thank you, you changed my life!",

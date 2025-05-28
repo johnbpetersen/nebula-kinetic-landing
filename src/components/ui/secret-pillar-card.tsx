@@ -84,18 +84,18 @@ export const SecretPillarCard = ({ secret, index }: SecretPillarCardProps) => {
           <img
             src={secret.image}
             alt={secret.title}
-            className="w-full h-full object-cover opacity-20 group-hover:opacity-30 transition-opacity duration-500"
+            className="w-full h-full object-cover opacity-30 group-hover:opacity-40 transition-opacity duration-500" // Increased opacity from 20/30 to 30/40
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" /> {/* Lightened overlay: from-black/80 to /60, to-black/40 to /20 */}
         </div>
 
         {/* Content */}
         <div className="relative z-10 p-8 h-full flex flex-col">
           {/* Subtitle (positioned below number badge) */}
-          <div className="mt-16 mb-6"> {/* Adjusted margin to separate from number badge */}
+          <div className="mt-16 mb-6">
             <p
               className={`text-sm font-semibold tracking-wider uppercase ${
-                isRevealed ? "text-white" : `bg-gradient-to-r ${secret.gradient} bg-clip-text text-transparent`
+                isRevealed ? "text-white" : "text-gray-500"
               } transition-colors duration-300`}
             >
               {secret.subtitle}
@@ -114,7 +114,7 @@ export const SecretPillarCard = ({ secret, index }: SecretPillarCardProps) => {
               y: isRevealed ? 0 : 10,
             }}
             transition={{ duration: 0.3 }}
-            className="text-gray-300 leading-relaxed text-base mt-4 mb-8 flex-grow" // Added mt-4 for spacing from title
+            className="text-gray-300 leading-relaxed text-base mt-4 mb-8 flex-grow"
           >
             {secret.description}
           </motion.p>

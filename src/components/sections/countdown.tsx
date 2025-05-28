@@ -4,64 +4,9 @@ import { ArrowRight } from "lucide-react";
 import { MotionSection } from "../ui/motion-section";
 import { CountdownTimer } from "../ui/countdown-timer";
 
-// Simplified Starfield for background
-const Starfield = () => {
-  const canvasRef = React.useRef<HTMLCanvasElement>(null);
-
-  React.useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const stars: { x: number; y: number; size: number; opacity: number }[] = [];
-    for (let i = 0; i < 50; i++) {
-      stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: Math.random() * 1 + 0.5,
-        opacity: Math.random() * 0.3 + 0.2,
-      });
-    }
-
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      stars.forEach((star) => {
-        ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-        ctx.fill();
-      });
-    };
-
-    draw();
-    window.addEventListener("resize", () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      draw();
-    });
-
-    return () => window.removeEventListener("resize", draw);
-  }, []);
-
-  return (
-    <canvas
-      ref={canvasRef}
-      className="absolute inset-0 w-full h-full opacity-20 z-0"
-    />
-  );
-};
-
-// Animated Blob
-const Blob = ({ className, delay = 0 }: { className: string; delay?: number }) => (
-  <motion.div
-    className={`absolute rounded-full blur-3xl opacity-20 ${className}`}
-    animate={{ y: [0, -20, 0], opacity: [0.2, 0.3, 0.2] }}
-    transition={{ duration: 10, repeat: Infinity, repeatType: "reverse", delay }}
-  />
+// GradientGlow component
+const GradientGlow = () => (
+  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] max-w-[1200px] max-h-[1200px] bg-gradient-radial from-alluBlue-600/20 via-purple-600/10 to-transparent rounded-full blur-3xl opacity-30 z-0" />
 );
 
 interface CountdownProps {
@@ -70,8 +15,7 @@ interface CountdownProps {
 
 export const Countdown = ({ targetDate }: CountdownProps) => (
   <MotionSection className="relative bg-gradient-to-b from-alluBlue-800 to-alluBlue-900 min-h-screen flex items-center">
-    <Starfield />
-    <Blob className="w-[300px] h-[300px] bg-neon-yellow top-10 right-10" delay={0} />
+    <GradientGlow /> {/* Only GradientGlow, no Starfield */}
 
     <div className="section-container text-center relative z-10">
       <motion.h2
@@ -99,12 +43,11 @@ export const Countdown = ({ targetDate }: CountdownProps) => (
         animate={{ scale: [1, 1.02, 1] }}
         transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
       >
-        <div className="absolute inset-0 bg-neon-yellow/10 rounded-full blur-xl" />
-        <CountdownTimer targetDate={targetDate} />
+        <CountdownTimer targetDate={targetDate} /> {/* Removed bg-neon-yellow/10 glow */}
       </motion.div>
 
       <motion.button
-        className="btn-primary relative overflow-hidden group px-6 py-3 md:px-8 md:py-4 text-base md:text-lg"
+        className="relative overflow-hidden group px-6 py-3 md:px-8 md:py-4 text-base md:text-lg font-semibold bg-gradient-to-r from-alluBlue-600 to-alluBlue-400 rounded-full text-white"
         whileHover={{ scale: 1.05 }}
         transition={{ duration: 0.3 }}
       >

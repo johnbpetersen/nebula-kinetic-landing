@@ -1,6 +1,6 @@
 import React from "react";
 import { motion, Variants } from "framer-motion";
-import { MotionSection } from "../ui/motion-section";
+import { MotionSection } from "../ui/motion-section"; // Fixed import path
 import { SecretPillarCard } from "../ui/secret-pillar-card";
 import { Lock } from "lucide-react"; // Keep Lock for header warning badge
 
@@ -91,9 +91,9 @@ export const Pillars = () => {
 
         {/* Mysterious grid pattern */}
         <div
-          className="absolute inset-0 opacity-30"
+          className="absolute inset-0 opacity-50" // Increased opacity from 30 to 50
           style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23FFE45E' stroke-width='0.5' stroke-opacity='0.1'%3E%3Cpath d='M0 0h100v100H0z'/%3E%3Cpath d='M0 50h100M50 0v100'/%3E%3C/g%3E%3C/svg%3E")`,
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23FFE45E' stroke-width='0.5' stroke-opacity='0.3'%3E%3Cpath d='M0 0h100v100H0z'/%3E%3Cpath d='M0 50h100M50 0v100'/%3E%3C/g%3E%3C/svg%3E")`, // Increased stroke-opacity from 0.1 to 0.3
           }}
         />
       </div>
@@ -121,14 +121,14 @@ export const Pillars = () => {
             </h2>
 
             <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              <span className="text-neon-yellow font-semibold">Three classified secrets</span> that separate
+              <span className="text-neon-yellow font-semibold">Three secrets</span> that separate
               the top 1% of sales professionals from everyone else
             </p>
           </motion.div>
 
           {/* Teaser line */}
           <motion.div variants={titleVariants} className="mt-8">
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-alluBlue-700/50 to-purple-700/50 backdrop-blur-sm border border-neon-yellow/20 rounded-full px-6 py-3">
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-alluBlue-700/60 to-purple via-purple-500/60 backdrop-blur-sm border border-gray-600/30 rounded-full px-6 py-2">
               <Lock className="w-4 h-4 text-neon-yellow" />
               <span className="text-gray-200 text-sm">
                 <span className="text-neon-yellow font-semibold">WARNING:</span> This intelligence changes everything

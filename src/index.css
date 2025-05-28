@@ -113,11 +113,38 @@
   }
 }
 
-.text-gradient {
-  background: linear-gradient(to right, #6074FF, #FFE45E);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+@layer utilities {
+  .text-gradient {
+    background: linear-gradient(to right, #6074FF, #FFE45E);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-subtle {
+    background: linear-gradient(to right, rgba(96, 116, 255, 0.4), rgba(255, 228, 94, 0.4));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-glow 6s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%,
+    100% {
+      opacity: 0.1;
+    }
+    50% {
+      opacity: 0.2;
+    }
+  }
+
+  .card-bg-transparent {
+    background-color: rgba(23, 37, 84, 0.5); /* alluBlue-950 at 50% opacity */
+  }
 }
 
 .hero-background::before {
@@ -139,35 +166,31 @@
   animation-play-state: paused;
 }
 
-/* Add this to your globals.css or equivalent stylesheet */
-
 .hero-background {
-  /* Ensure this has relative positioning as it's the parent for our absolute gradient */
   position: relative;
-  background-color: #0b0f2a; /* Your current deep blue background */
-  overflow: hidden; /* Crucial to contain the expanding gradient */
+  background-color: #0b0f2a;
+  overflow: hidden;
 }
 
-/* Pseudo-element for the animated gradient */
 .hero-background::before {
   content: "";
   position: absolute;
-  top: -50%; /* Start higher to allow for movement */
-  left: -50%; /* Start further left to allow for movement */
-  width: 200%; /* Make it larger than the container to ensure full coverage during movement */
-  height: 200%; /* Make it larger than the container */
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
   background: linear-gradient(
     45deg,
-    #8a2be2, /* A soft purple */
-    #4b0082, /* Indigo */
-    #1e90ff, /* Dodger Blue */
-    #00bfff /* Deep Sky Blue */
+    #8a2be2,
+    #4b0082,
+    #1e90ff,
+    #00bfff
   );
-  background-size: 200% 200%; /* This is key for the animation: makes the gradient larger than its container */
-  animation: gradient-animation 20s ease infinite alternate; /* Longer duration for subtle effect */
-  z-index: 0; /* Behind the content, but above the base background color if desired */
-  opacity: 0.3; /* Adjust opacity to make it subtle and blend with the deep blue */
-  filter: blur(100px); /* Blur it heavily to create a nebulae-like, soft glow */
+  background-size: 200% 200%;
+  animation: gradient-animation 20s ease infinite alternate;
+  z-index: 0;
+  opacity: 0.3;
+  filter: blur(100px);
 }
 
 @keyframes gradient-animation {
@@ -182,24 +205,21 @@
   }
 }
 
-/* Ensure your existing section-container has a z-index higher than the pseudo-element */
 .section-container {
   position: relative;
-  z-index: 10; /* This should be higher than the gradient's z-index */
-  /* Your other section-container styles */
+  z-index: 10;
 }
 
-/* ── Edge‑lit VSL frame ───────────────────────────────────────── */
 .edge-glow {
   position: relative;
-  border-radius: 1.5rem; /* match video corner radius */
-  overflow: visible;     /* let glow extend */
+  border-radius: 1.5rem;
+  overflow: visible;
 }
 
 .edge-glow::before {
   content: "";
   position: absolute;
-  inset: -2px;                    /* thin border */
+  inset: -2px;
   border-radius: inherit;
   background: linear-gradient(
     130deg,
@@ -219,7 +239,6 @@
   100% { background-position: 0% 50%; }
 }
 
-/* target AWS by filename and override the h-8 height */
 .section-container img[src$="aws-logo.svg"] {
-  height: 4rem !important;  /* 64px tall instead of 32px */
+  height: 4rem !important;
 }

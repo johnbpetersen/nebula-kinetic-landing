@@ -8,6 +8,7 @@ import { Pillars } from "../components/sections/pillars";
 import { Testimonials } from "../components/sections/testimonials";
 import { Countdown } from "../components/sections/countdown";
 import { FAQ } from "../components/sections/faq";
+import { SingleTestimonial } from "../components/sections/single-testimonial";
 import { FinalCTA } from "../components/sections/final-cta";
 import { Footer } from "../components/sections/footer";
 
@@ -85,6 +86,7 @@ const Index = () => {
         <Testimonials />
         <Countdown targetDate={targetDate} />
         <FAQ />
+        <SingleTestimonial />
         <FinalCTA />
         <Footer />
       </main>
