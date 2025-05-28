@@ -98,7 +98,7 @@ export function ProblemSolution() {
             >
               <AlertTriangle className="text-red-600 w-8 h-8 animate-pulse" />
               <h2 className="text-3xl md:text-4xl font-bold text-white">
-                The Exhausting Reality
+                The Exhausting Reality of Sales
               </h2>
               <AlertTriangle className="text-red-600 w-8 h-8 animate-pulse" />
             </motion.div>
