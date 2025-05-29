@@ -1,7 +1,7 @@
 // src/components/sections/single-testimonial.tsx
 import React from "react";
 import { motion, useAnimation } from "framer-motion";
-import { MotionSection } from "../ui/motion-section"; // Verify this path; switch to motion.section if undefined
+import { MotionSection } from "../ui/motion-section.tsx";
 
 // Testimonial data
 const name = "Retzio Gredig";
@@ -20,7 +20,7 @@ const quoteParts = [
 
 // Animation variants for staggered text
 const textVariants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 100 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
@@ -28,21 +28,21 @@ const textVariants = {
   }),
 };
 
-// More impactful pulse animation for "267%"
+// Pulse animation for "267%"
 const pulseVariants = {
   hidden: { scale: 1, opacity: 1 },
   visible: {
-    scale: [1, 1.2, 1.05, 1.1, 1], // More pronounced initial pop
-    opacity: [1, 1, 1, 1, 1], // Keep opacity stable during initial pop
+    scale: [1, 1.2, 1.05, 1.1, 1],
+    opacity: [1, 1, 1, 1, 1],
     transition: {
-      duration: 1.5, // Shorter initial pop
+      duration: 1.5,
       ease: "easeOut",
-      delay: 1.5, // After initial text reveals
+      delay: 1.5,
       times: [0, 0.2, 0.4, 0.6, 1],
     },
   },
   loopPulse: {
-    scale: [1, 1.03, 1], // Gentle, continuous pulse
+    scale: [1, 1.03, 1],
     transition: {
       duration: 2.5,
       repeat: Infinity,
@@ -50,6 +50,12 @@ const pulseVariants = {
       delay: 0,
     },
   },
+};
+
+// Card background fade-in variants
+const cardVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.8, delay: 1.5, ease: "easeOut" } },
 };
 
 export const SingleTestimonial = () => {
@@ -67,7 +73,7 @@ export const SingleTestimonial = () => {
         className="absolute inset-0 w-full h-full object-cover object-center opacity-45 lg:opacity-55"
       />
 
-      {/* Vignette Overlay (lightened for less darkness) */}
+      {/* Vignette Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-black/70 z-10" />
 
       {/* Noise Texture */}
@@ -82,24 +88,28 @@ export const SingleTestimonial = () => {
       {/* Content */}
       <div className="relative z-20 max-w-5xl px-6 text-center">
         <motion.div
-          className="relative bg-alluBlue-900/50 p-8 rounded-2xl border border-white/10 shadow-lg shadow-black/20 overflow-hidden"
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="relative p-8 rounded-2xl border border-white/10 shadow-lg shadow-black/20 overflow-hidden"
         >
-          <motion.blockquote className="text-2xl md:text-3xl font-medium text-gray-100 leading-relaxed italic relative z-10">
+          <motion.div
+            className="absolute inset-0 bg-alluBlue-900/50 z-0"
+            variants={cardVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.4 }}
+          />
+          <motion.blockquote
+            className="text-2xl md:text-3xl font-medium text-gray-100 leading-relaxed italic relative z-10"
+          >
             {quoteParts.map((part, index) => (
               <motion.span
                 key={index}
                 custom={index}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true }}
+                viewport={{ once: true, amount: 0.4 }}
                 variants={textVariants}
                 className="block mb-3 last:mb-0"
               >
-                {/* Opening quote only for first part */}
                 {index === 0 && (
                   <span className="text-gray-100 text-2xl md:text-3xl leading-none inline mr-1">“</span>
                 )}
@@ -133,7 +143,6 @@ export const SingleTestimonial = () => {
                 ) : (
                   part
                 )}
-                {/* Closing quote only for last part */}
                 {index === quoteParts.length - 1 && (
                   <span className="text-gray-100 text-2xl md:text-3xl leading-none inline ml-1">”</span>
                 )}

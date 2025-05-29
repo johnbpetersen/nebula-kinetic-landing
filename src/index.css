@@ -242,3 +242,23 @@
 .section-container img[src$="aws-logo.svg"] {
   height: 4rem !important;
 }
+
+@layer utilities {
+  .cta-glow {
+    position: relative;
+    z-index: 1;
+  }
+  .cta-glow::after {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border-radius: 9999px;
+    background: radial-gradient(circle, rgba(251, 191, 36, 0.3), transparent 70%);
+    opacity: 0.5;
+    z-index: -1;
+  }
+
+  .icon-circle {
+    @apply w-12 h-12 flex items-center justify-center rounded-full bg-alluBlue-800/50 border border-neon-yellow/20 text-neon-yellow;
+  }
+}
