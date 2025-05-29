@@ -6,7 +6,7 @@ import { MotionSection } from "../ui/motion-section"; // Verify this path; switc
 // Testimonial data
 const name = "Retzio Gredig";
 const title = "Account Executive, Datadog";
-const bg = "https://alluviance.s3.us-east-2.amazonaws.com/images/retzio-immersion.jpg";
+const bg = "https://alluviance.s3.us-east-2.amazonaws.com/images/retzio-immersion-3.jpg";
 const watermark = "/assets/images/alluviance-watermark.png";
 
 // Quote parts for storytelling
@@ -67,8 +67,8 @@ export const SingleTestimonial = () => {
         className="absolute inset-0 w-full h-full object-cover object-center opacity-45 lg:opacity-55"
       />
 
-      {/* Vignette Overlay (simpler, just dark gradient) */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/90 z-10" />
+      {/* Vignette Overlay (lightened for less darkness) */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-black/70 z-10" />
 
       {/* Noise Texture */}
       <div
@@ -82,7 +82,7 @@ export const SingleTestimonial = () => {
       {/* Content */}
       <div className="relative z-20 max-w-5xl px-6 text-center">
         <motion.div
-          className="relative bg-black/50 p-8 rounded-2xl border border-white/10 shadow-lg shadow-black/20 overflow-hidden"
+          className="relative bg-alluBlue-900/50 p-8 rounded-2xl border border-white/10 shadow-lg shadow-black/20 overflow-hidden"
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, amount: 0.2 }}
