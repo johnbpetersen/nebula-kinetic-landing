@@ -192,7 +192,7 @@ export const FinalCTA = () => {
           <div className="flex items-center justify-center gap-2 text-gray-200">
             <Clock className="w-5 h-5 text-neon-yellow animate-pulse" aria-hidden />
             <span className="font-semibold">
-              Only {timeLeft.hours}h {timeLeft.minutes}m left—secure your seat now
+              Only {timeLeft.hours}h {timeLeft.minutes}m left to grab your free gift — secure your seat now
             </span>
           </div>
         </motion.div>
