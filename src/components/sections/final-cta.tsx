@@ -27,7 +27,9 @@ export const FinalCTA = () => {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[150vw] h-full bg-gradient-to-b from-neon-yellow/10 via-transparent to-transparent opacity-50" />
         
         {/* Animated grid */}
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\"80\" height=\"80\" viewBox=\"0 0 80 80\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" stroke=\"%23FFE45E\" stroke-width=\"0.5\" stroke-opacity=\"0.1\"%3E%3Cpath d=\"M0 0h80v80H0z\"/%3E%3Cpath d=\"M0 40h80M40 0v80\"/%3E%3C/g%3E%3C/svg%3E')] animate-pulse-slow" />
+        <div className="absolute inset-0 opacity-30" style={{
+          backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23FFE45E' stroke-width='0.5' stroke-opacity='0.1'%3E%3Cpath d='M0 0h80v80H0z'/%3E%3Cpath d='M0 40h80M40 0v80'/%3E%3C/g%3E%3C/svg%3E\")"
+        }} />
         
         {/* Floating energy orbs */}
         {[...Array(8)].map((_, i) => (
