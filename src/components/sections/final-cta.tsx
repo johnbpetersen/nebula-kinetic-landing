@@ -1,6 +1,8 @@
+// src/components/sections/final-cta.tsx
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { MotionSection } from "../ui/motion-section";
+import { HubSpotFormPopup } from "../ui/hubspot-form-popup";
 import {
   Clock,
   Users,
@@ -21,6 +23,7 @@ const FINAL_BENEFITS = [
 
 export const FinalCTA = () => {
   const [timeLeft, setTimeLeft] = useState({ hours: 72, minutes: 0 });
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   /* -------- live 72‑hour timer -------- */
   useEffect(() => {
@@ -48,7 +51,6 @@ export const FinalCTA = () => {
   return (
     <MotionSection className="relative bg-alluBlue-900 overflow-hidden">
       <div className="section-container relative z-10">
-
         {/* ── stats pills ─────────────────────────────────────────────── */}
         <motion.div
           initial={{ opacity: 0, y: -30 }}
@@ -100,9 +102,9 @@ export const FinalCTA = () => {
           </h2>
 
           <p className="text-xl md:text-2xl text-gray-200 leading-relaxed max-w-3xl mx-auto">
-            You’ve seen what’s possible. You’ve heard from sellers who went from&nbsp;
-            <span className="text-alluBlue-400 font-semibold">struggling at 1% of quota</span>&nbsp;
-            to&nbsp;<span className="text-neon-yellow font-semibold">crushing 267% performance</span>. 
+            You’ve seen what’s possible. You’ve heard from sellers who went from 
+            <span className="text-alluBlue-400 font-semibold">struggling at 1% of quota</span> 
+            to <span className="text-neon-yellow font-semibold">crushing 267% performance</span>. 
             Are you ready to be next?
           </p>
         </motion.div>
@@ -147,6 +149,7 @@ export const FinalCTA = () => {
                        bg-neon-yellow text-alluBlue-900 font-bold text-lg sm:text-xl
                        shadow-xl hover:shadow-neon-yellow/40 transition-all duration-300
                        focus:ring-2 focus:ring-neon-yellow/50"
+            onClick={() => setIsFormOpen(true)}
           >
             {/* moving shine */}
             <motion.span
@@ -170,15 +173,15 @@ export const FinalCTA = () => {
           className="mb-8 text-center"
         >
           <p className="text-lg text-gray-400 mb-3">
-            <span className="line-through text-gray-400">$297 Value</span>&nbsp;—
+            <span className="line-through text-gray-400">$297 Value</span> —
             <span className="text-neon-yellow font-bold text-2xl ml-2">FREE</span> for a limited time
           </p>
           <p className="text-sm text-gray-400">
-            Sign up in the next {timeLeft.hours}h&nbsp;{timeLeft.minutes}m to receive our&nbsp;
+            Sign up in the next {timeLeft.hours}h {timeLeft.minutes}m to receive our 
             <span className="text-neon-yellow">Sales Psychology Guide</span>
           </p>
           <p className="text-xs text-gray-500 mt-2">
-            No credit card required • Instant access • 100 % free training
+            No credit card required • Instant access • 100% free training
           </p>
         </motion.div>
 
@@ -200,6 +203,8 @@ export const FinalCTA = () => {
 
       {/* bottom fade */}
       <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black to-transparent" />
+      {/* HubSpot form popup */}
+      <HubSpotFormPopup isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
     </MotionSection>
   );
 };
