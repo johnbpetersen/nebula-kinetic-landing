@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { StickyNav } from "../components/ui/sticky-nav";
 import { Hero } from "../components/sections/hero";
 import { LogoMarquee } from "../components/sections/logo-marquee";
-import { ProblemSolution } from "../components/sections/problem-solution";
 import { BigPromise } from "../components/sections/bigpromise";
 import { Pillars } from "../components/sections/pillars";
+import { ProblemSolution } from "../components/sections/problem-solution";
 import { Testimonials } from "../components/sections/testimonials";
 import { Countdown } from "../components/sections/countdown";
 import { FAQ } from "../components/sections/faq";
@@ -80,9 +80,9 @@ const Index = () => {
       <main className="overflow-hidden relative">
         <Hero />
         <LogoMarquee logos={logosPaths} />
-        <ProblemSolution />
         <BigPromise />
         <Pillars />
+        <ProblemSolution />
         <Testimonials />
         <Countdown targetDate={targetDate} />
         <FAQ />

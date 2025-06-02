@@ -49,6 +49,12 @@ export const HubSpotFormPopup: React.FC<HubSpotFormPopupProps> = ({
         css: "", // Disable HubSpot default styles
         cssClass: "hs-form-popup", // Stable styling root
         onFormReady: () => {
+          // Remove inline background styles
+          const form = ref.current?.querySelector(".hs-form, .hbspt-form");
+          if (form instanceof HTMLElement) {
+            form.style.removeProperty("background-color");
+            form.style.removeProperty("background");
+          }
           // Soft fade-in
           ref.current?.classList.add("opacity-0");
           requestAnimationFrame(() =>

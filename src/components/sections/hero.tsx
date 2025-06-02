@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import { VideoPlayer } from "../ui/video-player";
+import { HubSpotFormPopup } from "../ui/hubspot-form-popup"; // Added import
 
 /* ── util ─────────────────────────────────────────── */
 const useReducedMotion = () => {
@@ -34,7 +35,7 @@ const Starfield: React.FC<StarfieldProps> = ({
     const ctx = c.getContext("2d")!;
     const stars: { x: number; y: number; s: number; v: number }[] = [];
 
-    /* Resize & regenerate density‑based stars */
+    /* Resize & regenerate density‑based stars */
     const resize = () => {
       c.width = window.innerWidth;
       c.height = window.innerHeight * 1.1;
@@ -102,6 +103,7 @@ const Blob: React.FC<{ className: string; delay?: number }> = ({
 /* ── Hero section ─────────────────────────────────── */
 export const Hero: React.FC = () => {
   const [slowStars, setSlowStars] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false); // Added state for form
   const reducedMotion = useReducedMotion();
 
   /* after 5 s, slow the drift slightly */
@@ -153,7 +155,7 @@ export const Hero: React.FC = () => {
               <span className="block">Beyond Tactics:</span>
               <span className="block text-gradient">The Inner Game</span>
               <span className="block">That Top Reps</span>
-              <span className="block">Never Talk About</span>
+              <span className="block">Never Talk About</span>
             </motion.h1>
 
             <motion.h2
@@ -162,7 +164,7 @@ export const Hero: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              How the Top 1 % Crush Quota Without Burning Out
+              How the Top 1 % Crush Quota Without Burning Out
             </motion.h2>
 
             <motion.p
@@ -179,7 +181,10 @@ export const Hero: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              <button className="btn-primary relative overflow-hidden group mb-4">
+              <button
+                className="btn-primary relative overflow-hidden group mb-4"
+                onClick={() => setIsFormOpen(true)} // Added onClick to open form
+              >
                 <span className="relative z-10 flex items-center gap-2">
                   Register Free Now
                   <ArrowRight
@@ -214,6 +219,9 @@ export const Hero: React.FC = () => {
       >
         <ChevronDown size={24} className="text-white/80" />
       </motion.div>
+
+      {/* HubSpot form popup */}
+      <HubSpotFormPopup isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} /> {/* Added form popup */}
     </section>
   );
 };

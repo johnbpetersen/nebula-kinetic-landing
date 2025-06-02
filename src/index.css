@@ -172,49 +172,40 @@
 
 /* HubSpot form (scoped to popup) */
 @layer components {
-  .hs-form-popup,
-  .hs-form,
-  .hbspt-form {
-    background-color: #FFFFFF0D !important; /* bg-white/5 */
-    border: 1px solid #FFFFFF1A !important; /* border-white/10 */
+  .hs-form-popup .hbspt-form,
+  .hs-form-popup .hs-form {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
     backdrop-filter: blur(8px) !important;
     -webkit-backdrop-filter: blur(8px) !important;
-    border-radius: 16px !important; /* rounded-2xl */
-    padding: 24px !important; /* p-6 */
+    border-radius: 16px !important;
+    padding: 24px !important;
   }
 
-  .hs-form-popup *,
-  .hs-form *,
-  .hbspt-form * {
+  .hs-form-popup .hbspt-form *,
+  .hs-form-popup .hs-form * {
     @apply font-sans !important;
   }
 
-  .hs-form-popup label,
-  .hs-form-field label {
+  .hs-form-popup .hs-form-field label {
     @apply text-sm text-gray-200 mb-1 font-semibold !important;
   }
 
-  .hs-form-popup input,
-  .hs-form-popup textarea,
-  .hs-form-popup select,
-  .hs-input {
+  .hs-form-popup .hs-input {
     @apply w-full bg-alluBlue-800/50 text-white placeholder-gray-400
            border border-white/20 rounded-lg px-4 py-2
            focus:outline-none focus:ring-2 focus:ring-neon-yellow/50 !important;
   }
 
-  .hs-form-popup .hs-error-msgs,
-  .hs-error-msgs {
+  .hs-form-popup .hs-error-msgs {
     @apply text-red-400 text-xs mt-1 !important;
   }
 
-  .hs-form-popup fieldset,
-  .hs-form fieldset {
+  .hs-form-popup .hs-form-field {
     @apply mb-4 !important;
   }
 
-  .hs-form-popup input[type="submit"],
-  .hs-button {
+  .hs-form-popup .hs-button.primary {
     @apply bg-neon-yellow text-alluBlue-900 font-semibold
            px-6 py-3 rounded-full w-full
            shadow-xl hover:shadow-neon-yellow/40
@@ -222,38 +213,33 @@
            animate-pulse-slow !important;
   }
 
-  .hs-form-popup .hs-input-error,
-  .hs-input-error {
+  .hs-form-popup .hs-input.error {
     @apply border-red-400 focus:ring-red-400/50 !important;
   }
 
-  .hs-form-popup .hs-field-desc,
-  .hs-field-desc {
+  .hs-form-popup .hs-field-desc {
     @apply text-gray-300 text-xs !important;
   }
 
-  .hs-form-popup legend,
-  .hs-form-field legend {
+  .hs-form-popup .hs-form-field legend {
     @apply text-sm text-gray-200 font-semibold !important;
   }
 
   /* Hide HubSpot footer */
-  .hs-form-popup .powered-by-hubspot,
+  .hs-form-popup .legal-consent-container,
   .hs-form-popup .hs-form-privacy {
     display: none !important;
   }
 
   /* Responsive adjustments */
   @media (max-width: 640px) {
-    .hs-form-popup,
-    .hs-form,
-    .hbspt-form {
-      padding: 16px !important; /* p-4 */
+    .hs-form-popup .hbspt-form,
+    .hs-form-popup .hs-form {
+      padding: 16px !important;
     }
-    .hs-form-popup input[type="submit"],
-    .hs-button {
-      padding: 8px 16px !important; /* px-4 py-2 */
-      font-size: 14px !important; /* text-sm */
+    .hs-form-popup .hs-button.primary {
+      padding: 8px 16px !important;
+      font-size: 14px !important;
     }
   }
 }

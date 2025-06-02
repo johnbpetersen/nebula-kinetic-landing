@@ -1,6 +1,8 @@
-import React, { useRef } from "react";
+// src/components/sections/problem-solution.tsx
+import React, { useRef, useState } from "react"; // Added useState
 import { motion, useInView, Variants } from "framer-motion";
 import { AlertTriangle, Zap, Shield, Target, Crown } from "lucide-react";
+import { HubSpotFormPopup } from "../ui/hubspot-form-popup"; // Added import
 
 /* ── Pain points ─────────────────────────────────────────────── */
 const painPoints = [
@@ -68,10 +70,11 @@ export function ProblemSolution() {
   const solutionRef = useRef(null);
   const isProblemInView = useInView(problemRef, { once: true, amount: 0.3 });
   const isSolutionInView = useInView(solutionRef, { once: true, amount: 0.2 });
+  const [isFormOpen, setIsFormOpen] = useState(false); // Added state for form
 
   return (
     <div className="relative">
-      {/* █ Part 1 – Exhausting Reality */}
+      {/* █ Part 1 – Exhausting Reality */}
       <section
         ref={problemRef}
         className="relative min-h-[80vh] bg-gradient-to-br from-alluBlue-900 to-black pt-24 pb-32 overflow-hidden"
@@ -139,7 +142,7 @@ export function ProblemSolution() {
                 className="mt-12 pt-8 border-t border-gray-700/50 text-center"
               >
                 <p className="text-gray-400 text-lg italic">
-                  Sound familiar? You’re not alone…
+                  Sound familiar? You’re not alone…
                 </p>
               </motion.div>
             </div>
@@ -147,7 +150,7 @@ export function ProblemSolution() {
         </div>
       </section>
 
-      {/* █ Part 2 – Inner‑Game Shift */}
+      {/* █ Part 2 – Inner-Game Shift */}
       <section
         ref={solutionRef}
         className="relative bg-gradient-to-br from-alluBlue-600 to-alluBlue-500 pt-28 pb-24 overflow-hidden"
@@ -159,7 +162,7 @@ export function ProblemSolution() {
             transition={{ duration: 0.8 }}
             className="text-center text-4xl md:text-5xl font-bold text-white mb-6"
           >
-            The Inner Game Shift
+            The Inner Game Shift
           </motion.h2>
 
           <motion.p
@@ -185,7 +188,7 @@ export function ProblemSolution() {
                 whileHover="hover"
                 className="glass-card bg-alluBlue-700/20 border-neon-yellow/20 p-8 backdrop-blur-xl group relative overflow-hidden shadow-lg cursor-pointer"
               >
-                {/* Image is now slightly visible by default (opacity‑60 + brightness‑75) */}
+                {/* Image is now slightly visible by default (opacity-60 + brightness-75) */}
                 <div
                   className="absolute inset-0 bg-cover bg-center opacity-60 brightness-75 group-hover:opacity-100 group-hover:brightness-100 transition-[opacity,filter] duration-500"
                   style={{ backgroundImage: `url(${card.image})` }}
@@ -215,11 +218,17 @@ export function ProblemSolution() {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="text-center"
           >
-            <button className="btn-primary bg-neon-yellow text-alluBlue-900 px-12 py-4 text-lg font-bold hover:scale-105 hover:shadow-2xl hover:shadow-neon-yellow/50 transition-all">
-              Lock In My Spot
+            <button
+              className="btn-primary bg-neon-yellow text-alluBlue-900 px-12 py-4 text-lg font-bold hover:scale-105 hover:shadow-2xl hover:shadow-neon-yellow/50 transition-all"
+              onClick={() => setIsFormOpen(true)} // Added onClick to open form
+            >
+              Lock In My Spot
             </button>
           </motion.div>
         </div>
+
+        {/* HubSpot form popup */}
+        <HubSpotFormPopup isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} /> {/* Added form popup */}
       </section>
     </div>
   );
