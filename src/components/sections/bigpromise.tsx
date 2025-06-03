@@ -19,14 +19,24 @@ export const BigPromise = () => (
     id="big-promise"
     className="relative overflow-hidden py-40 text-center"
   >
-    {/* background image */}
-    <div
-      className="absolute inset-0 bg-cover bg-center"
-      style={{
-        backgroundImage:
-          "url('https://alluviance.s3.us-east-2.amazonaws.com/images/bigpromisebackground.jpg')",
+    {/* 🌐  responsive WebP background (mobile → desktop) */}
+    <style
+      dangerouslySetInnerHTML={{
+        __html: `
+          .bg-bigpromise {
+            background-image: url('https://alluviance.s3.us-east-2.amazonaws.com/images/bigpromisebackground-mobile.webp');
+          }
+          @media (min-width: 768px) {
+            .bg-bigpromise {
+              background-image: url('https://alluviance.s3.us-east-2.amazonaws.com/images/bigpromisebackground-desktop.webp');
+            }
+          }
+        `,
       }}
     />
+
+    {/* background image */}
+    <div className="absolute inset-0 bg-cover bg-center bg-bigpromise" />
     {/* legibility overlay */}
     <div className="absolute inset-0 bg-alluBlue-900/70" />
 
@@ -54,7 +64,7 @@ export const BigPromise = () => (
         className="mx-auto mt-6 h-[4px] w-40 bg-gradient-to-r from-neon-yellow via-white to-neon-yellow animate-[pulse_3s_ease-in-out_infinite]"
       />
 
-      {/* sub-headline */}
+      {/* sub‑headline */}
       <motion.p
         variants={fadeUp}
         custom={2}
@@ -63,7 +73,7 @@ export const BigPromise = () => (
         viewport={{ once: true, amount: 0.5 }}
         className="mt-8 text-lg md:text-2xl text-gray-200 max-w-2xl mx-auto"
       >
-        Discover the Inner Game levers top 1 % reps pull to close faster,
+        Discover the Inner Game levers top&nbsp;1 % reps pull to close faster,
         feel fulfilled, and leave burnout behind.
       </motion.p>
 
@@ -79,10 +89,7 @@ export const BigPromise = () => (
         <span className="text-xl md:text-2xl font-medium">
           Ready to see how it works?
         </span>
-        <ChevronDown
-          size={32}
-          className="text-neon-yellow animate-bounce-slow"
-        />
+        <ChevronDown size={32} className="text-neon-yellow animate-bounce-slow" />
       </motion.div>
     </div>
   </MotionSection>

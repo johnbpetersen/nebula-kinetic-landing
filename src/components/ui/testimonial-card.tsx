@@ -1,37 +1,33 @@
 // src/components/ui/testimonial-card.tsx
 import React from "react";
 import { Play } from "lucide-react";
-import { GlassCard } from "./glass-card"; // Assuming GlassCard provides the base glass effect
-import { motion } from "framer-motion"; // Import motion
+import { motion } from "framer-motion";
 
 interface Base {
   name: string;
   role: string;
-  size?: string; // Add size prop for col-span/row-span
+  size?: string;
 }
 
-/* === Video tile ============================================ */
 interface VideoTile extends Base {
-  video: string; // mp4 or external link
-  image: string; // poster thumbnail
+  video: string;
+  imageDesktop: string;
+  imageMobile: string;
   content?: never;
 }
 
-/* === Quote tile ============================================ */
 interface QuoteTile extends Base {
   content: string;
-  image?: string; // optional headshot
+  imageDesktop?: string;
+  imageMobile?: string;
   video?: never;
 }
 
 type Props = VideoTile | QuoteTile;
 
-/* ——————————————————————————————————————————————— */
 export const TestimonialCard = (props: Props) => {
-  // Apply size prop directly to the card container
-  const colSpanClass = props.size || ""; // Defaults to empty string if no size is provided
+  const colSpanClass = props.size || "";
 
-  /* ANIMATION VARIANTS (for subtle entrance) */
   const cardVariants = {
     hidden: { opacity: 0, scale: 0.95, y: 20 },
     visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
@@ -49,14 +45,26 @@ export const TestimonialCard = (props: Props) => {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}
-        whileHover={{ scale: 1.02 }} // Subtle lift on hover
+        whileHover={{ scale: 1.02 }}
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
       >
-        <img
-          src={props.image}
-          alt={props.name}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-        />
+        <picture className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+          <source
+            media="(max-width: 768px)"
+            srcSet={props.imageMobile}
+            type="image/webp"
+          />
+          <source
+            srcSet={props.imageDesktop}
+            type="image/webp"
+          />
+          <img
+            src={props.imageMobile} // Fallback to mobile WebP
+            alt={props.name}
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+        </picture>
         {/* Play button overlay */}
         <a
           href={props.video}
@@ -76,7 +84,7 @@ export const TestimonialCard = (props: Props) => {
           <p className="text-lg font-bold text-white mt-4 text-center">Watch Testimonial</p>
         </a>
 
-        {/* Name and role at the bottom, with a gradient */}
+        {/* Name and role */}
         <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 to-transparent p-4 pb-6">
           <p className="text-sm md:text-base font-semibold text-white">{props.name}</p>
           <p className="text-xs md:text-sm text-white/70">{props.role}</p>
@@ -95,17 +103,29 @@ export const TestimonialCard = (props: Props) => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.3 }}
-      whileHover={{ y: -5 }} // Subtle lift on hover
+      whileHover={{ y: -5 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
     >
       <p className="italic opacity-80 mb-6 text-sm md:text-base">“{props.content}”</p>
-      <div className="flex items-center gap-3 mt-auto"> {/* mt-auto pushes content to bottom */}
-        {props.image && (
-          <img
-            src={props.image}
-            alt={props.name}
-            className="w-12 h-12 rounded-full object-cover border border-neon-yellow/30 shadow-md"
-          />
+      <div className="flex items-center gap-3 mt-auto">
+        {props.imageDesktop && props.imageMobile && (
+          <picture>
+            <source
+              media="(max-width: 768px)"
+              srcSet={props.imageMobile}
+              type="image/webp"
+            />
+            <source
+              srcSet={props.imageDesktop}
+              type="image/webp"
+            />
+            <img
+              src={props.imageMobile} // Fallback to mobile WebP
+              alt={props.name}
+              className="w-12 h-12 rounded-full object-cover border border-neon-yellow/30 shadow-md"
+              loading="lazy"
+            />
+          </picture>
         )}
         <div>
           <p className="text-sm font-semibold">{props.name}</p>

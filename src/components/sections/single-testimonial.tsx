@@ -6,7 +6,8 @@ import { MotionSection } from "../ui/motion-section.tsx";
 // Testimonial data
 const name = "Retzio Gredig";
 const title = "Account Executive, Datadog";
-const bg = "https://alluviance.s3.us-east-2.amazonaws.com/images/retzio-immersion-3.jpg";
+const imageDesktop = "https://alluviance.s3.us-east-2.amazonaws.com/images/retzio-immersion-3-desktop.webp";
+const imageMobile = "https://alluviance.s3.us-east-2.amazonaws.com/images/retzio-immersion-3-mobile.webp";
 const watermark = "/assets/images/alluviance-watermark.png";
 
 // Quote parts for storytelling
@@ -67,11 +68,23 @@ export const SingleTestimonial = () => {
       className="relative min-h-[650px] flex items-center justify-center overflow-hidden bg-alluBlue-900"
     >
       {/* Background Image */}
-      <img
-        src={bg}
-        alt="Retzio Gredig at Alluviance Immersion"
-        className="absolute inset-0 w-full h-full object-cover object-center opacity-45 lg:opacity-55"
-      />
+      <picture className="absolute inset-0 w-full h-full object-cover object-center opacity-45 lg:opacity-55">
+        <source
+          media="(max-width: 768px)"
+          srcSet={imageMobile}
+          type="image/webp"
+        />
+        <source
+          srcSet={imageDesktop}
+          type="image/webp"
+        />
+        <img
+          src={imageMobile} // Fallback to mobile WebP
+          alt="Retzio Gredig at Alluviance Immersion"
+          className="w-full h-full object-cover object-center"
+          loading="lazy"
+        />
+      </picture>
 
       {/* Vignette Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-black/70 z-10" />

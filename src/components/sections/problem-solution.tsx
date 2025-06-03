@@ -18,24 +18,24 @@ const transformationCards = [
     description:
       "Ditch the fake persona and ignite real trust. The masterclass shows you how to channel fear into magnetic presence that closes deals fast.",
     icon: Zap,
-    image:
-      "https://alluviance.s3.us-east-2.amazonaws.com/images/authenticity.jpg",
+    imageDesktop: "https://alluviance.s3.us-east-2.amazonaws.com/images/authenticity-desktop.webp",
+    imageMobile: "https://alluviance.s3.us-east-2.amazonaws.com/images/authenticity-mobile.webp",
   },
   {
     title: "Resilience",
     description:
       "Turn rejection into rocket fuel. The masterclass rewires your mindset to stay unshakable, no matter how many ‘no’s are tossed your way.",
     icon: Shield,
-    image:
-      "https://alluviance.s3.us-east-2.amazonaws.com/images/resilience.jpg",
+    imageDesktop: "https://alluviance.s3.us-east-2.amazonaws.com/images/resilience-desktop.webp",
+    imageMobile: "https://alluviance.s3.us-east-2.amazonaws.com/images/resilience-mobile.webp",
   },
   {
     title: "Leadership",
     description:
       "Lead prospects to breakthroughs, not just deals. The masterclass teaches you to sell from essence, guiding like a trusted advisor in interaction.",
     icon: Target,
-    image:
-      "https://alluviance.s3.us-east-2.amazonaws.com/images/leadership.jpg",
+    imageDesktop: "https://alluviance.s3.us-east-2.amazonaws.com/images/leadership-desktop.webp",
+    imageMobile: "https://alluviance.s3.us-east-2.amazonaws.com/images/leadership-mobile.webp",
   },
   {
     title: "Vision",
@@ -79,7 +79,7 @@ export function ProblemSolution() {
           className="absolute inset-0 opacity-40"
           style={{
             backgroundImage:
-              "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Ccircle cx='7' cy='7' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")",
+              "url('data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Ccircle cx='7' cy='7' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')",
           }}
         />
         <div className="section-container relative z-10">
@@ -175,30 +175,23 @@ export function ProblemSolution() {
                 whileHover="hover"
                 className="glass-card bg-alluBlue-700/20 border-neon-yellow/20 p-8 backdrop-blur-xl group relative overflow-hidden shadow-lg cursor-pointer"
               >
-                {card.title === "Vision" ? (
-                  <picture className="absolute inset-0 w-full h-full object-cover opacity-60 brightness-75 group-hover:opacity-100 group-hover:brightness-100 transition-[opacity,filter] duration-500">
-                    <source
-                      media="(max-width: 768px)"
-                      srcSet={card.imageMobile}
-                      type="image/webp"
-                    />
-                    <source
-                      srcSet={card.imageDesktop}
-                      type="image/webp"
-                    />
-                    <img
-                      src={card.image} // Fallback to old JPEG
-                      alt={`${card.title} background`}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
-                  </picture>
-                ) : (
-                  <div
-                    className="absolute inset-0 bg-cover bg-center opacity-60 brightness-75 group-hover:opacity-100 group-hover:brightness-100 transition-[opacity,filter] duration-500"
-                    style={{ backgroundImage: `url(${card.image})` }}
+                <picture className="absolute inset-0 w-full h-full object-cover opacity-60 brightness-75 group-hover:opacity-100 group-hover:brightness-100 transition-[opacity,filter] duration-500">
+                  <source
+                    media="(max-width: 768px)"
+                    srcSet={card.imageMobile}
+                    type="image/webp"
                   />
-                )}
+                  <source
+                    srcSet={card.imageDesktop}
+                    type="image/webp"
+                  />
+                  <img
+                    src={card.imageMobile} // Use mobile WebP as fallback
+                    alt={`${card.title} background`}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </picture>
                 <div className="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition-colors duration-500" />
                 <div className="relative z-10">
                   <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-alluBlue-600 to-alluBlue-400 p-4 mb-6 group-hover:scale-110 transition-transform">
