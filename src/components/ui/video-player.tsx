@@ -1,53 +1,57 @@
-// src/components/ui/video-player.tsx
 import React, { useRef, useState } from "react";
 import { motion } from "framer-motion";
 
-export const VideoPlayer = () => {
-  const cardRef = useRef<HTMLDivElement>(null);
+interface PlayerProps {
+  /** optional utility classes so the parent can set its own max‑w / w‑full */
+  className?: string;
+}
+
+export const VideoPlayer: React.FC<PlayerProps> = ({ className = "" }) => {
+  const cardRef  = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
+  const [isPlaying, setIsPlaying] = useState(false);
 
+  /* ── tilt effect, disabled once the user hits play ────────────── */
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
+    if (!cardRef.current || isPlaying) return;
 
-    const rect = cardRef.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
+    const { left, top, width, height } = cardRef.current.getBoundingClientRect();
+    const centerX = left + width / 2;
+    const centerY = top + height / 2;
 
-    // Calculate rotation (max 3 degrees)
-    const rotateY = ((e.clientX - centerX) / (rect.width / 2)) * 3;
-    const rotateX = ((centerY - e.clientY) / (rect.height / 2)) * 3;
-
+    const rotateY = ((e.clientX - centerX) / (width  / 2)) * 3;
+    const rotateX = ((centerY - e.clientY) / (height / 2)) * 3;
     setRotation({ x: rotateX, y: rotateY });
   };
 
-  const resetRotation = () => {
-    setRotation({ x: 0, y: 0 });
-  };
+  const resetRotation = () => setRotation({ x: 0, y: 0 });
 
-  // S3 base URL for assets
+  /* ── S3 asset prefix ──────────────────────────────────────────── */
   const S3 = "https://alluviance.s3.us-east-2.amazonaws.com";
 
   return (
     <div
       ref={cardRef}
-      className="relative w-full h-full max-w-2xl mx-auto"
+      className={`relative w-full min-w-0 ${className}`}
       onMouseMove={handleMouseMove}
       onMouseLeave={resetRotation}
     >
       <motion.div
         className="glass-card overflow-hidden"
-        animate={{
-          rotateX: rotation.x,
-          rotateY: rotation.y,
-        }}
+        animate={{ rotateX: isPlaying ? 0 : rotation.x, rotateY: isPlaying ? 0 : rotation.y }}
         transition={{ type: "spring", stiffness: 100, damping: 15 }}
       >
-        <div className="aspect-video relative">
+        {/* 👇 fixed aspect‑ratio wrapper ensures no re‑flow */}
+        <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
           <video
-            className="w-full h-full object-cover rounded-3xl"
+            ref={videoRef}
+            className="absolute inset-0 w-full h-full object-cover rounded-3xl"
             poster={`${S3}/images/alex-kremer-masterclass-thumbnail.png`}
             controls
-            aria-label="Inner Game Masterclass Video"
+            onPlay={() => setIsPlaying(true)}
+            onPause={() => setIsPlaying(false)}
           >
             <source src={`${S3}/videos/daniel-berry.mp4`} type="video/mp4" />
             Your browser does not support the video tag.

@@ -3,15 +3,13 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import { VideoPlayer } from "../ui/video-player";
-import { HubSpotFormPopup } from "../ui/hubspot-form-popup"; // Added import
+import { HubSpotFormPopup } from "../ui/hubspot-form-popup";
 
 /* ── util ─────────────────────────────────────────── */
 const useReducedMotion = () => {
   const [pref, setPref] = useState(false);
   useEffect(() => {
-    setPref(
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-    );
+    setPref(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   }, []);
   return pref;
 };
@@ -103,7 +101,7 @@ const Blob: React.FC<{ className: string; delay?: number }> = ({
 /* ── Hero section ─────────────────────────────────── */
 export const Hero: React.FC = () => {
   const [slowStars, setSlowStars] = useState(false);
-  const [isFormOpen, setIsFormOpen] = useState(false); // Added state for form
+  const [isFormOpen, setIsFormOpen] = useState(false);
   const reducedMotion = useReducedMotion();
 
   /* after 5 s, slow the drift slightly */
@@ -135,8 +133,8 @@ export const Hero: React.FC = () => {
 
       <div className="section-container relative z-10 py-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* copy */}
-          <div>
+          {/* copy column */}
+          <div className="min-w-0">
             <motion.span
               className="inline-block text-xs md:text-sm uppercase tracking-widest text-gray-400 bg-white/10 px-3 py-1 rounded-full mb-4"
               initial={{ opacity: 0, scale: 0.9 }}
@@ -153,7 +151,7 @@ export const Hero: React.FC = () => {
               transition={{ duration: 0.5 }}
             >
               <span className="block">Beyond Tactics:</span>
-              <span className="block text-gradient">The Inner Game</span>
+              <span className="block text-gradient pb-[3px]">The Inner Game</span>
               <span className="block">That Top Reps</span>
               <span className="block">Never Talk About</span>
             </motion.h1>
@@ -183,7 +181,7 @@ export const Hero: React.FC = () => {
             >
               <button
                 className="btn-primary relative overflow-hidden group mb-4"
-                onClick={() => setIsFormOpen(true)} // Added onClick to open form
+                onClick={() => setIsFormOpen(true)}
               >
                 <span className="relative z-10 flex items-center gap-2">
                   Register Free Now
@@ -197,9 +195,9 @@ export const Hero: React.FC = () => {
             </motion.div>
           </div>
 
-          {/* edge‑lit video */}
-          <div className="relative edge-glow">
-            <VideoPlayer />
+          {/* video column (edge-lit) */}
+          <div className="relative edge-glow min-w-0 flex justify-center">
+            <VideoPlayer className="max-w-[672px] w-full" />
           </div>
         </div>
       </div>
@@ -215,13 +213,13 @@ export const Hero: React.FC = () => {
           repeatType: "reverse",
           ease: "easeInOut",
         }}
-        className="absolute bottom-4 left-1/2 -translate-x-1/2"
+        className="absolute bottom-6 inset-x-1/2 -translate-x-1/2 z-20"
       >
         <ChevronDown size={24} className="text-white/80" />
       </motion.div>
 
       {/* HubSpot form popup */}
-      <HubSpotFormPopup isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} /> {/* Added form popup */}
+      <HubSpotFormPopup isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
     </section>
   );
 };
