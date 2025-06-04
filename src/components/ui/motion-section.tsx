@@ -1,27 +1,33 @@
 // src/components/ui/motion-section.tsx
-import React, { useEffect, forwardRef } from "react";
-import { motion, useInView, useAnimation, HTMLMotionProps } from "framer-motion";
+import React, { forwardRef, useRef, useEffect } from "react";
+import { motion, useAnimation, useInView, HTMLMotionProps } from "framer-motion";
 
 interface MotionSectionProps extends HTMLMotionProps<"section"> {}
 
 export const MotionSection = forwardRef<HTMLElement, MotionSectionProps>(
   ({ children, className = "", ...props }, forwardedRef) => {
-    const ref = React.useRef<HTMLElement>(null);
+    /* ----- observer ----------------------------------------------------- */
+    const localRef = useRef<HTMLElement>(null);
     const controls = useAnimation();
-    const isInView = useInView(ref, { once: true, amount: 0.2 });
 
-    // Combine forwardedRef with local ref
-    React.useImperativeHandle(forwardedRef, () => ref.current!);
+    // Combine forwardedRef + localRef
+    React.useImperativeHandle(forwardedRef, () => localRef.current!);
+
+    /** ✅ Root‑margin pushes the trigger 100 px INTO the viewport
+        ✅ Smaller amount so tiny screens still pass the threshold */
+    const inView = useInView(localRef, {
+      once: true,
+      margin: "0px 0px -100px 0px", // 100 px before it scrolls off
+      amount: 0.05,                 // 5 % is enough
+    });
 
     useEffect(() => {
-      if (isInView) {
-        controls.start("visible");
-      }
-    }, [controls, isInView]);
+      if (inView) controls.start("visible");
+    }, [inView, controls]);
 
     return (
       <motion.section
-        ref={ref}
+        ref={localRef}
         initial="hidden"
         animate={controls}
         variants={{

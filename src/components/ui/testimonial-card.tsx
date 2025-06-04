@@ -60,20 +60,18 @@ export const TestimonialCard = (props: Props) => {
                     bg-alluBlue-700 shadow-xl hover:shadow-neon-yellow/30
                     transition-shadow duration-300 ease-in-out`}
       >
-        {/* fixed‑ratio wrapper so the row never collapses */}
-        <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
-          <video
-            ref={videoRef}
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            poster={videoProps.imageMobile}
-            controls
-            onClick={handlePlay}
-            onPlay={() => setIsPlaying(true)}
-          >
-            <source src={videoProps.video} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        </div>
+        {/* video */}
+        <video
+          ref={videoRef}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          poster={videoProps.imageMobile}
+          controls
+          onClick={handlePlay}
+          onPlay={() => setIsPlaying(true)}
+        >
+          <source src={videoProps.video} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
 
         {/* play‑button overlay (disappears when playing) */}
         {!isPlaying && (
