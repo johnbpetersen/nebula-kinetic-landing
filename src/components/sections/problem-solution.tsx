@@ -1,15 +1,15 @@
 // src/components/sections/problem-solution.tsx
 import React, { useRef, useState } from "react";
 import { motion, useInView, Variants } from "framer-motion";
-import { AlertTriangle, Zap, Shield, Target, Crown } from "lucide-react";
+import { AlertTriangle, Zap, Shield, Target, Crown, CheckCircle } from "lucide-react";
 import { HubSpotFormPopup } from "../ui/hubspot-form-popup";
 
 const painPoints = [
-  "I’m crushing calls but terrified of imposter syndrome and being 'found out'.",
-  "I sound like a robot performing a script on calls, and prospects know it.",
-  "I'm on track for quota but worried about burning out before year‑end.",
-  "Rejection stings so bad it tanks my confidence for the next call.",
-  "Even when I win, quota still feels empty and meaningless.",
+  "I feel like an impostor and terrified of being found out.",
+  "I sound like a robot on calls, and prospects know it.",
+  "Some months I hit quota, others I don’t. It always feels like a grind.",
+  "One bad call shakes my confidence and spirals me down.",
+  "Even after a win, I’m chasing the next goal. When will I finally make it?",
 ];
 
 const transformationCards = [
@@ -146,14 +146,20 @@ export function ProblemSolution() {
         className="relative bg-gradient-to-br from-alluBlue-600 to-alluBlue-500 pt-28 pb-24 overflow-hidden"
       >
         <div className="section-container relative z-10">
-          <motion.h2
+          <motion.div
+            className="flex items-center justify-center gap-3 mb-6"
             initial={{ opacity: 0, y: 30 }}
             animate={isSolutionInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={{ duration: 0.8 }}
-            className="text-center text-4xl md:text-5xl font-bold text-white mb-6"
           >
-            The Inner Game Shift
-          </motion.h2>
+            <CheckCircle className="text-emerald-500 w-8 h-8 animate-pulse" />
+            <motion.h2
+              className="text-center text-4xl md:text-5xl font-bold text-white"
+            >
+              The Inner Game Shift
+            </motion.h2>
+            <CheckCircle className="text-emerald-500 w-8 h-8 animate-pulse" />
+          </motion.div>
           <motion.p
             initial={{ opacity: 0, y: 25 }}
             animate={isSolutionInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 25 }}
@@ -192,12 +198,12 @@ export function ProblemSolution() {
                     loading="lazy"
                   />
                 </picture>
-                <div className="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition-colors duration-500" />
+                <div className="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition-colors duration-500"/>
                 <div className="relative z-10">
                   <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-alluBlue-600 to-alluBlue-400 p-4 mb-6 group-hover:scale-110 transition-transform">
                     <card.icon className="w-full h-full text-white" />
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-neon-yellow transition-colors">
+                  <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-neon-yellow transition-colors">
                     {card.title}
                   </h3>
                   <p className="text-alluBlue-200 text-sm leading-relaxed">
@@ -209,7 +215,7 @@ export function ProblemSolution() {
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
-            animate={isSolutionInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            animate={{ opacity: isSolutionInView ? 1 : 0, y: isSolutionInView ? 0 : 30 }}
             transition={{ duration: 0.8, delay: 0.3 }}
             className="text-center"
           >

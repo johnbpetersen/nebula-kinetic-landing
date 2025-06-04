@@ -1,5 +1,5 @@
 // src/components/ui/testimonial-card.tsx
-import React from "react";
+import React, { useState, useRef } from "react";
 import { Play } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -18,8 +18,7 @@ interface VideoTile extends Base {
 
 interface QuoteTile extends Base {
   content: string;
-  imageDesktop?: string;
-  imageMobile?: string;
+  image?: string;
   video?: never;
 }
 
@@ -30,106 +29,127 @@ export const TestimonialCard = (props: Props) => {
 
   const cardVariants = {
     hidden: { opacity: 0, scale: 0.95, y: 20 },
-    visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
   };
 
-  /* VIDEO TILE */
+  /* ─────────────────────────────  VIDEO TILE  ───────────────────────────── */
   if ("video" in props) {
+    const videoProps = props as VideoTile;
+    const [isPlaying, setIsPlaying] = useState(false);
+    const videoRef = useRef<HTMLVideoElement>(null);
+
+    const handlePlay = () => {
+      videoRef.current?.play();
+      setIsPlaying(true);
+    };
+
     return (
       <motion.div
-        className={`relative rounded-2xl overflow-hidden cursor-pointer group ${colSpanClass}
-          bg-alluBlue-700 shadow-xl
-          hover:shadow-neon-yellow/30 transition-shadow duration-300 ease-in-out
-          `}
         variants={cardVariants}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}
         whileHover={{ scale: 1.02 }}
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        className={`relative rounded-2xl overflow-hidden cursor-pointer group ${colSpanClass}
+                    bg-alluBlue-700 shadow-xl hover:shadow-neon-yellow/30
+                    transition-shadow duration-300 ease-in-out`}
       >
-        <picture className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-          <source
-            media="(max-width: 768px)"
-            srcSet={props.imageMobile}
-            type="image/webp"
-          />
-          <source
-            srcSet={props.imageDesktop}
-            type="image/webp"
-          />
-          <img
-            src={props.imageMobile} // Fallback to mobile WebP
-            alt={props.name}
-            className="w-full h-full object-cover"
-            loading="lazy"
-          />
-        </picture>
-        {/* Play button overlay */}
-        <a
-          href={props.video}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 group-hover:bg-black/60 transition-colors duration-300"
+        {/* video */}
+        <video
+          ref={videoRef}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          poster={videoProps.imageMobile}
+          controls
+          onClick={handlePlay}
+          onPlay={() => setIsPlaying(true)}
         >
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            className="flex items-center justify-center p-4 bg-neon-yellow/20 rounded-full backdrop-blur-sm
-                       group-hover:bg-neon-yellow/40 transition-all duration-300"
-          >
-            <Play size={48} className="text-neon-yellow drop-shadow-[0_0_8px_rgba(255,228,94,0.8)]" />
-          </motion.div>
-          <p className="text-lg font-bold text-white mt-4 text-center">Watch Testimonial</p>
-        </a>
+          <source src={videoProps.video} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
 
-        {/* Name and role */}
-        <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 to-transparent p-4 pb-6">
-          <p className="text-sm md:text-base font-semibold text-white">{props.name}</p>
-          <p className="text-xs md:text-sm text-white/70">{props.role}</p>
+        {/* play‑button overlay (disappears when playing) */}
+        {!isPlaying && (
+          <div
+            onClick={handlePlay}
+            className="absolute inset-0 flex flex-col items-center justify-center
+                       transition-colors duration-300"
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="flex items-center justify-center p-4 bg-black/40
+                         group-hover:bg-black/60 rounded-full backdrop-blur-sm
+                         transition-all duration-300"
+            >
+              <Play
+                size={48}
+                className="text-neon-yellow drop-shadow-[0_0_8px_rgba(255,228,94,0.8)]"
+              />
+            </motion.div>
+            <p className="text-lg font-bold text-white mt-4 text-center">
+              Watch Testimonial
+            </p>
+          </div>
+        )}
+
+        {/* bottom gradient mask (always flush with bottom, extended higher) */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32
+                        bg-gradient-to-t from-black/95 to-transparent" />
+
+        {/* name + role (lifted up 64 px) */}
+        <div className="absolute inset-x-0 bottom-16 px-4 pb-6">
+          <p className="text-sm md:text-base font-semibold text-white">
+            {videoProps.name}
+          </p>
+          <p className="text-xs md:text-sm text-white/70">{videoProps.role}</p>
         </div>
       </motion.div>
     );
   }
 
-  /* QUOTE TILE */
+  /* ─────────────────────────────  QUOTE TILE  ───────────────────────────── */
+  const quoteProps = props as QuoteTile;
+
   return (
     <motion.div
-      className={`p-6 flex flex-col justify-between rounded-2xl cursor-pointer ${colSpanClass}
-        bg-white/5 backdrop-filter backdrop-blur-lg border border-white/10
-        hover:border-neon-yellow/50 hover:shadow-lg hover:shadow-neon-yellow/20 transition-all duration-300 ease-in-out`}
       variants={cardVariants}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.3 }}
       whileHover={{ y: -5 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      className={`p-6 flex flex-col justify-between rounded-2xl cursor-pointer
+                  ${colSpanClass}
+                  bg-white/5 backdrop-filter backdrop-blur-lg
+                  border border-white/10
+                  hover:border-neon-yellow/50 hover:shadow-lg hover:shadow-neon-yellow/20
+                  transition-all duration-300 ease-in-out`}
     >
-      <p className="italic opacity-80 mb-6 text-sm md:text-base">“{props.content}”</p>
+      <p className="italic opacity-80 mb-6 text-sm md:text-base">
+        “{quoteProps.content}”
+      </p>
+
       <div className="flex items-center gap-3 mt-auto">
-        {props.imageDesktop && props.imageMobile && (
-          <picture>
-            <source
-              media="(max-width: 768px)"
-              srcSet={props.imageMobile}
-              type="image/webp"
-            />
-            <source
-              srcSet={props.imageDesktop}
-              type="image/webp"
-            />
-            <img
-              src={props.imageMobile} // Fallback to mobile WebP
-              alt={props.name}
-              className="w-12 h-12 rounded-full object-cover border border-neon-yellow/30 shadow-md"
-              loading="lazy"
-            />
-          </picture>
+        {quoteProps.image && (
+          <img
+            src={quoteProps.image}
+            alt={quoteProps.name}
+            width={48}
+            height={48}
+            loading="lazy"
+            className="w-12 h-12 rounded-full object-cover border border-neon-yellow/30 shadow-md"
+          />
         )}
         <div>
-          <p className="text-sm font-semibold">{props.name}</p>
-          <p className="text-xs opacity-60">{props.role}</p>
+          <p className="text-sm font-semibold">{quoteProps.name}</p>
+          <p className="text-xs opacity-60">{quoteProps.role}</p>
         </div>
       </div>
     </motion.div>

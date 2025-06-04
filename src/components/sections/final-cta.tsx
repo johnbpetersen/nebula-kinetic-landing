@@ -43,9 +43,9 @@ export const FinalCTA = () => {
   }, []);
 
   const stats = [
-    { number: "347+", label: "Sellers Transformed", icon: Users },
-    { number: "127%", label: "Avg Quota Growth / 6 mo", icon: TrendingUp },
-    { number: `${timeLeft.hours}`, label: "Hours Left for Free Gift", icon: Clock },
+    { number: "300+", label: "Sellers Transformed", icon: Users },
+    { number: "9.1", label: "Alluviance NPS Score", icon: TrendingUp },
+    { number: `${timeLeft.hours}`, label: "Hours Left for a Free Gift", icon: Clock },
   ];
 
   return (
@@ -103,8 +103,8 @@ export const FinalCTA = () => {
 
           <p className="text-xl md:text-2xl text-gray-200 leading-relaxed max-w-3xl mx-auto">
             You’ve seen what’s possible. You’ve heard from sellers who went from 
-            <span className="text-alluBlue-400 font-semibold">struggling at 1% of quota</span> 
-            to <span className="text-neon-yellow font-semibold">crushing 267% performance</span>. 
+            <span className="text-alluBlue-400 font-semibold"> struggling at  1% of quota </span> 
+            to <span className="text-neon-yellow font-semibold">crushing 267% performance</span>. 
             Are you ready to be next?
           </p>
         </motion.div>
@@ -177,11 +177,11 @@ export const FinalCTA = () => {
             <span className="text-neon-yellow font-bold text-2xl ml-2">FREE</span> for a limited time
           </p>
           <p className="text-sm text-gray-400">
-            Sign up in the next {timeLeft.hours}h {timeLeft.minutes}m to receive our 
-            <span className="text-neon-yellow">Sales Psychology Guide</span>
+            Sign up in the next {timeLeft.hours}h {timeLeft.minutes}m to receive  
+            <span className="text-neon-yellow"> The Formula to Finding Your Purpose</span>
           </p>
           <p className="text-xs text-gray-500 mt-2">
-            No credit card required • Instant access • 100% free training
+            No credit card required • 100% free training
           </p>
         </motion.div>
 

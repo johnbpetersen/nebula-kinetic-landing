@@ -95,7 +95,7 @@ export const Pillars = () => {
         />
       </div>
 
-      <div className="section-container relative z-10">
+      <div className="section-container relative"> {/* Removed z-10 */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -154,12 +154,12 @@ export const Pillars = () => {
             <div className="flex items-center justify-center gap-4 text-sm text-gray-400">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-                <span>347 sales professionals trained</span>
+                <span>300+ sales professionals trained</span>
               </div>
               <div className="w-0.5 h-4 bg-gray-600" />
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
-                <span>127% average performance increase</span>
+                <span>Alluviance NPS: 9.1</span>
               </div>
             </div>
           </div>
