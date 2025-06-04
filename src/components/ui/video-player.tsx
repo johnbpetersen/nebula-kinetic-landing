@@ -1,3 +1,4 @@
+// src/components/ui/video-player.tsx
 import React, { useRef, useState } from "react";
 import { motion } from "framer-motion";
 
@@ -7,7 +8,7 @@ interface PlayerProps {
 }
 
 export const VideoPlayer: React.FC<PlayerProps> = ({ className = "" }) => {
-  const cardRef  = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
@@ -21,7 +22,7 @@ export const VideoPlayer: React.FC<PlayerProps> = ({ className = "" }) => {
     const centerX = left + width / 2;
     const centerY = top + height / 2;
 
-    const rotateY = ((e.clientX - centerX) / (width  / 2)) * 3;
+    const rotateY = ((e.clientX - centerX) / (width / 2)) * 3;
     const rotateX = ((centerY - e.clientY) / (height / 2)) * 3;
     setRotation({ x: rotateX, y: rotateY });
   };
@@ -43,19 +44,33 @@ export const VideoPlayer: React.FC<PlayerProps> = ({ className = "" }) => {
         animate={{ rotateX: isPlaying ? 0 : rotation.x, rotateY: isPlaying ? 0 : rotation.y }}
         transition={{ type: "spring", stiffness: 100, damping: 15 }}
       >
-        {/* 👇 fixed aspect‑ratio wrapper ensures no re‑flow */}
+        {/* fixed aspect-ratio wrapper ensures no re-flow */}
         <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
-          <video
-            ref={videoRef}
-            className="absolute inset-0 w-full h-full object-cover rounded-3xl"
-            poster={`${S3}/images/alex-kremer-masterclass-thumbnail.png`}
-            controls
-            onPlay={() => setIsPlaying(true)}
-            onPause={() => setIsPlaying(false)}
-          >
-            <source src={`${S3}/videos/daniel-berry.mp4`} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+          <picture>
+            <source
+              media="(max-width: 767px)"
+              srcSet={`${S3}/images/vsl-thumbnail-mobile.webp`}
+              type="image/webp"
+            />
+            <source
+              media="(min-width: 768px)"
+              srcSet={`${S3}/images/vsl-thumbnail-desktop.webp`}
+              type="image/webp"
+            />
+            <video
+              ref={videoRef}
+              className="absolute inset-0 w-full h-full object-cover rounded-3xl"
+              poster={`${S3}/images/vsl-thumbnail-mobile.webp`}
+              controls
+              onPlay={() => setIsPlaying(true)}
+              onPause={() => setIsPlaying(false)}
+              width="672"
+              height="378"
+            >
+              <source src={`${S3}/videos/Alex-Kremer-Masterclass-VSL-Optimized.mp4`} type="video/mp4" />
+              <p>Your browser does not support the video tag.</p>
+            </video>
+          </picture>
         </div>
       </motion.div>
     </div>
