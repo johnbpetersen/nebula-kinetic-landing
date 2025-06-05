@@ -58,24 +58,22 @@ export const TestimonialCard = (props: Props) => {
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
         className={`relative rounded-2xl overflow-hidden cursor-pointer group ${colSpanClass}
                     bg-alluBlue-700 shadow-xl hover:shadow-neon-yellow/30
-                    transition-shadow duration-300 ease-in-out w-full`}
+                    transition-shadow duration-300 ease-in-out`}
       >
-        {/* Aspect-ratio wrapper: 4:3 on mobile, 16:9 on desktop */}
-        <div className="relative w-full pt-[75%] sm:pt-[56.25%]">
-          <video
-            ref={videoRef}
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            poster={videoProps.imageMobile}
-            controls
-            onClick={handlePlay}
-            onPlay={() => setIsPlaying(true)}
-          >
-            <source src={videoProps.video} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        </div>
+        {/* video */}
+        <video
+          ref={videoRef}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          poster={videoProps.imageMobile}
+          controls
+          onClick={handlePlay}
+          onPlay={() => setIsPlaying(true)}
+        >
+          <source src={videoProps.video} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
 
-        {/* play-button overlay (disappears when playing) */}
+        {/* play‑button overlay (disappears when playing) */}
         {!isPlaying && (
           <div
             onClick={handlePlay}
@@ -105,7 +103,7 @@ export const TestimonialCard = (props: Props) => {
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32
                         bg-gradient-to-t from-black/95 to-transparent" />
 
-        {/* name + role (lifted up 64px) */}
+        {/* name + role (lifted up 64 px) */}
         <div className="absolute inset-x-0 bottom-16 px-4 pb-6">
           <p className="text-sm md:text-base font-semibold text-white">
             {videoProps.name}
@@ -128,7 +126,7 @@ export const TestimonialCard = (props: Props) => {
       whileHover={{ y: -5 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
       className={`p-6 flex flex-col justify-between rounded-2xl cursor-pointer
-                  ${colSpanClass} w-full min-w-full
+                  ${colSpanClass}
                   bg-white/5 backdrop-filter backdrop-blur-lg
                   border border-white/10
                   hover:border-neon-yellow/50 hover:shadow-lg hover:shadow-neon-yellow/20

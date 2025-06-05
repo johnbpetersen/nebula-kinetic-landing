@@ -1,3 +1,4 @@
+// src/pages/index.tsx
 import React, { useEffect, useState } from "react";
 import { StickyNav } from "../components/ui/sticky-nav";
 import { Hero } from "../components/sections/hero";
@@ -6,6 +7,7 @@ import { BigPromise } from "../components/sections/bigpromise";
 import { Pillars } from "../components/sections/pillars";
 import { ProblemSolution } from "../components/sections/problem-solution";
 import { Testimonials } from "../components/sections/testimonials";
+import { MobileTestimonials } from "../components/sections/mobile-testimonials";
 import { Countdown } from "../components/sections/countdown";
 import { FAQ } from "../components/sections/faq";
 import { SingleTestimonial } from "../components/sections/single-testimonial";
@@ -84,6 +86,7 @@ const Index = () => {
         <Pillars />
         <ProblemSolution />
         <Testimonials />
+        <MobileTestimonials />
         <Countdown targetDate={targetDate} />
         <FAQ />
         <SingleTestimonial />
