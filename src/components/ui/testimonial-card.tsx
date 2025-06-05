@@ -60,8 +60,8 @@ export const TestimonialCard = (props: Props) => {
                     bg-alluBlue-700 shadow-xl hover:shadow-neon-yellow/30
                     transition-shadow duration-300 ease-in-out w-full`}
       >
-        {/* Aspect-ratio wrapper: 9:16 on mobile, 16:9 on desktop */}
-        <div className="relative w-full pt-[177.78%] sm:pt-[56.25%]">
+        {/* Aspect-ratio wrapper: 4:3 on mobile, 16:9 on desktop */}
+        <div className="relative w-full pt-[75%] sm:pt-[56.25%]">
           <video
             ref={videoRef}
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -86,7 +86,7 @@ export const TestimonialCard = (props: Props) => {
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}
-              className="flex items-center justify-center P-4 bg-black/40
+              className="flex items-center justify-center p-4 bg-black/40
                          group-hover:bg-black/60 rounded-full backdrop-blur-sm
                          transition-all duration-300"
             >

@@ -97,7 +97,7 @@ export const Testimonials = () => (
       </h2>
 
       {/* Masonry-like grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 auto-rows-fr auto-flow-dense">
+      <div className="grid grid-cols-1 min-w-full sm:grid-cols-2 lg:grid-cols-4 gap-6 auto-rows-[minmax(200px,auto)] auto-flow-dense">
         {TESTIMONIALS.map((t, i) => (
           <TestimonialCard key={i} {...t} />
         ))}
