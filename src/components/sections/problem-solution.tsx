@@ -206,7 +206,7 @@ export function ProblemSolution() {
                   <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-neon-yellow transition-colors">
                     {card.title}
                   </h3>
-                  <p className="text-alluBlue-200 text-sm leading-relaxed">
+                  <p className="text-alluBlue-200 text-sm leading-relaxed group-hover:text-white transition-colors">
                     {card.description}
                   </p>
                 </div>

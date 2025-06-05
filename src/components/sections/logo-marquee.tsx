@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+// src/components/logo-marquee.tsx
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 interface LogoMarqueeProps {
@@ -7,8 +8,21 @@ interface LogoMarqueeProps {
 
 export const LogoMarquee: React.FC<LogoMarqueeProps> = ({ logos }) => {
   const [pause, setPause] = useState(false);
+  const [duration, setDuration] = useState(30); // Default duration for desktop
 
-  /* repeat logos twice for seamless loop */
+  /* Set duration based on screen size */
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 640px)"); // Tailwind's 'sm' breakpoint
+    const handleMediaChange = (e: MediaQueryListEvent | MediaQueryList) => {
+      setDuration(e.matches ? 20 : 30); // 20s for mobile, 30s for desktop
+    };
+
+    handleMediaChange(mediaQuery);
+    mediaQuery.addEventListener("change", handleMediaChange);
+    return () => mediaQuery.removeEventListener("change", handleMediaChange);
+  }, []);
+
+  /* Repeat logos twice for seamless loop */
   const strip = logos.concat(logos);
 
   return (
@@ -22,7 +36,7 @@ export const LogoMarquee: React.FC<LogoMarqueeProps> = ({ logos }) => {
           className="flex gap-12 items-center flex-nowrap"
           animate={{ x: ["0%", "-50%"] }}
           transition={{
-            duration: 35,
+            duration: duration,
             ease: "linear",
             repeat: Infinity,
             pause,

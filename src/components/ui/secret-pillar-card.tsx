@@ -50,12 +50,24 @@ const cardVariants = {
 
 export const SecretPillarCard = ({ secret, index }: SecretPillarCardProps) => {
   const [isRevealed, setIsRevealed] = useState(false);
-  const [isFormOpen, setIsFormOpen] = useState(false); // Hoisted state
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Log state for debugging hover
+  // Detect mobile screen size
   useEffect(() => {
-    console.log(`${secret.title} isRevealed:`, isRevealed);
-  }, [isRevealed, secret.title]);
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+    setIsMobile(mediaQuery.matches);
+    const handleMediaChange = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mediaQuery.addEventListener("change", handleMediaChange);
+    return () => mediaQuery.removeEventListener("change", handleMediaChange);
+  }, []);
+
+  // Handle card tap/click for mobile
+  const handleCardInteraction = () => {
+    if (isMobile && !isRevealed) {
+      setIsRevealed(true);
+    }
+  };
 
   return (
     <>
@@ -64,12 +76,12 @@ export const SecretPillarCard = ({ secret, index }: SecretPillarCardProps) => {
         variants={cardVariants}
         initial="hidden"
         whileInView="visible"
-        whileHover="hover"
+        whileHover={isMobile ? undefined : "hover"}
         viewport={{ once: true, amount: 0.3 }}
         className="relative group perspective-1000"
-        onHoverStart={() => setIsRevealed(true)}
-        onHoverEnd={() => setIsRevealed(false)}
-        onClick={() => setIsRevealed((prev) => !prev)} // Fallback for mobile/debug
+        onHoverStart={() => !isMobile && setIsRevealed(true)}
+        onHoverEnd={() => !isMobile && setIsRevealed(false)}
+        onClick={handleCardInteraction}
       >
         <div className="relative h-full min-h-[500px] bg-gradient-to-br from-gray-900/90 via-alluBlue-900/80 to-black/90 backdrop-blur-xl rounded-3xl border border-gray-700/50 overflow-hidden group-hover:border-neon-yellow/30 transition-all duration-500">
           <div
@@ -138,13 +150,17 @@ export const SecretPillarCard = ({ secret, index }: SecretPillarCardProps) => {
               className="mt-auto"
             >
               <div
-                className={`w-full py-3 px-6 bg-gradient-to-r ${secret.gradient} rounded-full text-white font-semibold text-center cursor-pointer hover:shadow-lg hover:shadow-${secret.glowColor}-500/25 transition-all duration-300`}
+                className={`w-full py-3 px-6 bg-gradient-to-r ${
+                  isRevealed
+                    ? `from-${secret.glowColor}-800 to-${secret.glowColor}-600 border-white`
+                    : `from-${secret.glowColor}-700 to-${secret.glowColor}-500 border-transparent`
+                } rounded-full text-white font-semibold text-center cursor-pointer hover:shadow-lg hover:shadow-${secret.glowColor}-500/25 transition-all duration-300`}
                 onClick={(e) => {
                   e.stopPropagation();
                   setIsFormOpen(true);
                 }}
               >
-                {isRevealed ? "Unlock This Secret" : "Hover to Reveal"}
+                {isRevealed ? "Unlock This Secret" : isMobile ? "Tap to Reveal" : "Hover to Reveal"}
               </div>
             </motion.div>
           </div>

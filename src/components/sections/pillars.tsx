@@ -95,7 +95,7 @@ export const Pillars = () => {
         />
       </div>
 
-      <div className="section-container relative"> {/* Removed z-10 */}
+      <div className="section-container relative">
         <motion.div
           variants={containerVariants}
           initial="hidden"

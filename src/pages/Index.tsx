@@ -54,7 +54,7 @@ const Index = () => {
     });
   }, []);
 
-  const targetDate = new Date('2025-06-25T18:00:00-05:00'); // 6:00 PM CT (UTC-5)
+  const targetDate = new Date('2025-06-25T15:00:00-05:00'); // 3:00 PM CT (UTC-5)
 
   // Mock data
   const logosPaths = [

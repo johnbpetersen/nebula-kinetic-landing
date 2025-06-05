@@ -1,10 +1,10 @@
 // src/components/sections/countdown.tsx
-import React, { useState } from "react"; // Added useState
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { MotionSection } from "../ui/motion-section";
 import { CountdownTimer } from "../ui/countdown-timer";
-import { HubSpotFormPopup } from "../ui/hubspot-form-popup"; // Added import
+import { HubSpotFormPopup } from "../ui/hubspot-form-popup";
 
 // GradientGlow component
 const GradientGlow = () => (
@@ -12,15 +12,15 @@ const GradientGlow = () => (
 );
 
 interface CountdownProps {
-  targetDate: Date;
+  targetDate?: Date; // Made optional with fallback
 }
 
-export const Countdown = ({ targetDate }: CountdownProps) => {
-  const [isFormOpen, setIsFormOpen] = useState(false); // Added state for form
+export const Countdown = ({ targetDate = new Date("2025-06-25T15:00:00-05:00") }: CountdownProps) => {
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   return (
     <MotionSection className="relative bg-gradient-to-b from-alluBlue-800 to-alluBlue-900 min-h-screen flex items-center">
-      <GradientGlow /> {/* Only GradientGlow, no Starfield */}
+      <GradientGlow />
 
       <div className="section-container text-center relative z-10">
         <motion.h2
@@ -40,7 +40,7 @@ export const Countdown = ({ targetDate }: CountdownProps) => {
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          Join us on June 25th at 6 PM CT for this transformative masterclass. Limited spots available.
+          Join us on June 25th at 3 PM CT for this transformative masterclass. Limited spots available.
         </motion.p>
 
         <motion.div
@@ -48,14 +48,14 @@ export const Countdown = ({ targetDate }: CountdownProps) => {
           animate={{ scale: [1, 1.02, 1] }}
           transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
         >
-          <CountdownTimer targetDate={targetDate} /> {/* Removed bg-neon-yellow/10 glow */}
+          <CountdownTimer targetDate={targetDate} />
         </motion.div>
 
         <motion.button
           className="relative overflow-hidden group px-6 py-3 md:px-8 md:py-4 text-base md:text-lg font-semibold bg-gradient-to-r from-alluBlue-600 to-alluBlue-400 rounded-full text-white"
           whileHover={{ scale: 1.05 }}
           transition={{ duration: 0.3 }}
-          onClick={() => setIsFormOpen(true)} // Added onClick to open form
+          onClick={() => setIsFormOpen(true)}
         >
           <span className="relative z-10 flex items-center gap-2">
             Register Free Now{" "}
@@ -65,8 +65,7 @@ export const Countdown = ({ targetDate }: CountdownProps) => {
         </motion.button>
       </div>
 
-      {/* HubSpot form popup */}
-      <HubSpotFormPopup isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} /> {/* Added form popup */}
+      <HubSpotFormPopup isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
     </MotionSection>
   );
 };
