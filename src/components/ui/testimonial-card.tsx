@@ -58,22 +58,24 @@ export const TestimonialCard = (props: Props) => {
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
         className={`relative rounded-2xl overflow-hidden cursor-pointer group ${colSpanClass}
                     bg-alluBlue-700 shadow-xl hover:shadow-neon-yellow/30
-                    transition-shadow duration-300 ease-in-out`}
+                    transition-shadow duration-300 ease-in-out w-full`}
       >
-        {/* video */}
-        <video
-          ref={videoRef}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-          poster={videoProps.imageMobile}
-          controls
-          onClick={handlePlay}
-          onPlay={() => setIsPlaying(true)}
-        >
-          <source src={videoProps.video} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+        {/* Aspect-ratio wrapper: 9:16 on mobile, 16:9 on desktop */}
+        <div className="relative w-full pt-[177.78%] sm:pt-[56.25%]">
+          <video
+            ref={videoRef}
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            poster={videoProps.imageMobile}
+            controls
+            onClick={handlePlay}
+            onPlay={() => setIsPlaying(true)}
+          >
+            <source src={videoProps.video} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
 
-        {/* play‑button overlay (disappears when playing) */}
+        {/* play-button overlay (disappears when playing) */}
         {!isPlaying && (
           <div
             onClick={handlePlay}
@@ -84,7 +86,7 @@ export const TestimonialCard = (props: Props) => {
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}
-              className="flex items-center justify-center p-4 bg-black/40
+              className="flex items-center justify-center P-4 bg-black/40
                          group-hover:bg-black/60 rounded-full backdrop-blur-sm
                          transition-all duration-300"
             >
@@ -103,7 +105,7 @@ export const TestimonialCard = (props: Props) => {
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32
                         bg-gradient-to-t from-black/95 to-transparent" />
 
-        {/* name + role (lifted up 64 px) */}
+        {/* name + role (lifted up 64px) */}
         <div className="absolute inset-x-0 bottom-16 px-4 pb-6">
           <p className="text-sm md:text-base font-semibold text-white">
             {videoProps.name}
@@ -126,7 +128,7 @@ export const TestimonialCard = (props: Props) => {
       whileHover={{ y: -5 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
       className={`p-6 flex flex-col justify-between rounded-2xl cursor-pointer
-                  ${colSpanClass}
+                  ${colSpanClass} w-full min-w-full
                   bg-white/5 backdrop-filter backdrop-blur-lg
                   border border-white/10
                   hover:border-neon-yellow/50 hover:shadow-lg hover:shadow-neon-yellow/20
