@@ -14,9 +14,10 @@ export const LogoMarquee: React.FC<LogoMarqueeProps> = ({ logos }) => {
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 640px)"); // Tailwind's 'sm' breakpoint
     const handleMediaChange = (e: MediaQueryListEvent | MediaQueryList) => {
-      setDuration(e.matches ? 20 : 30); // 20s for mobile, 30s for desktop
+      setDuration(e.matches ? 13 : 30); // 13s for mobile, 30s for desktop
     };
 
+    // Initial check
     handleMediaChange(mediaQuery);
     mediaQuery.addEventListener("change", handleMediaChange);
     return () => mediaQuery.removeEventListener("change", handleMediaChange);

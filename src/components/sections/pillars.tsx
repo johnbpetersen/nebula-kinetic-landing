@@ -24,7 +24,7 @@ const INNER_GAME_SECRETS = [
     gradient: "from-alluBlue-700 via-alluBlue-600 to-alluBlue-500",
     glowColor: "alluBlue",
     imageDesktop: "https://alluviance.s3.us-east-2.amazonaws.com/images/essence-led-desktop.webp",
-    imageMobile: "https://alluviance.s3.us-east-2.amazonaws.com/images/essence-led-mobile.webp",
+    imageMobile: "https://alluviance.s3.us-east-2.amazonaws.com/images/self-connection-mobile.webp",
   },
   {
     number: "03",
@@ -112,7 +112,7 @@ export const Pillars = () => {
               <div className="w-8 h-0.5 bg-gradient-to-l from-transparent to-neon-yellow" />
             </div>
             <h2 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-white via-gray-100 to-neon-yellow bg-clip-text text-transparent mb-4">
-              The Inner Game Framework
+              Inner Game Framework
             </h2>
             <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
               <span className="text-neon-yellow font-semibold">Three secrets</span> that separate

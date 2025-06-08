@@ -110,7 +110,7 @@ export const SecretPillarCard = ({ secret, index }: SecretPillarCardProps) => {
               />
               <img
                 src={secret.imageMobile}
-                alt={secret.title}
+                alt={`Sales Inner Game Masterclass - ${secret.title}`}
                 className="w-full h-full object-cover opacity-30 group-hover:opacity-35 transition-opacity duration-500"
                 loading="lazy"
               />
