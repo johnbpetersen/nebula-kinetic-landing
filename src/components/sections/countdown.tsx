@@ -40,7 +40,7 @@ export const Countdown = ({ targetDate = new Date("2025-06-25T15:00:00-05:00") }
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          Join us on June 25th at 3 PM CT for this transformative masterclass. Limited spots available.
+          Join us on July 9th at 3 PM CT for this transformative masterclass. Limited spots available.
         </motion.p>
 
         <motion.div

@@ -137,7 +137,7 @@ export const Hero:React.FC = () => {
               <motion.p className="text-lg font-bold tracking-wide mb-6"
                          initial={{opacity:0,y:20}} animate={{opacity:1,y:0}}
                          transition={{duration:0.5,delay:0.2}}>
-                FREE MASTERCLASS • June 25&nbsp;@ 3 PM CT
+                FREE MASTERCLASS • July 9&nbsp;@ 3 PM CT
               </motion.p>
 
               <motion.div initial={{opacity:0,y:20}} animate={{opacity:1,y:0}}

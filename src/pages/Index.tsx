@@ -16,9 +16,8 @@ import { FinalCTA } from "../components/sections/final-cta";
 import { Footer } from "../components/sections/footer";
 
 const Index = () => {
-  const targetDate = new Date('2025-06-25T15:00:00-05:00'); // 3:00 PM CT (UTC-5)
+  const targetDate = new Date('2025-07-09T15:00:00-05:00');
 
-  // Mock data
   const logosPaths = [
     "/assets/images/zoom-logo.svg",
     "/assets/images/aws-logo.svg",
