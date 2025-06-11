@@ -80,7 +80,6 @@ export const TestimonialCard = (props: Props) => {
               <Play size={48}
                     className="text-neon-yellow drop-shadow-[0_0_8px_rgba(255,228,94,0.8)]" />
             </motion.div>
-            {/* caption hidden on mobile */}
             <p className="mt-4 text-lg font-bold text-white hidden sm:block">
               Watch Testimonial
             </p>
@@ -91,8 +90,8 @@ export const TestimonialCard = (props: Props) => {
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24
                         bg-gradient-to-t from-black/95 to-transparent" />
 
-        {/* ── NAME & ROLE  (now flush w/ bottom) ── */}
-        <div className="absolute inset-x-0 bottom-0 px-4 pb-6">
+        {/* name & role – now click‑through so controls work */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 px-4 pb-6">
           <p className="text-sm sm:text-base font-semibold text-white">
             {videoProps.name}
           </p>
