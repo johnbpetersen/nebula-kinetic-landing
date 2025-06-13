@@ -27,7 +27,7 @@ export const Footer = () => {
               Terms of Service
             </a>
             <a
-              href="mailto:alex@alluviance.co"
+              href="mailto:connect@alluviance.co"
               className="opacity-70 hover:opacity-100 transition-opacity"
             >
               Contact
