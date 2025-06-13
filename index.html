@@ -1,27 +1,73 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+
     <title>Inner Game Webinar | Alluviance</title>
-    <meta name="description" content="Transform your sales approach with 'The Inner Game of Sales' webinar. Learn psychological techniques to overcome objections, build authentic connections & close more deals without feeling pushy. July 8th." />
+    <meta
+      name="description"
+      content="Transform your sales approach with 'The Inner Game of Sales' webinar. Learn psychological techniques to overcome objections, build authentic connections & close more deals without feeling pushy. July 8th."
+    />
     <meta name="author" content="Alluviance" />
 
+    <!-- Open Graph / Twitter — unchanged -->
     <meta property="og:title" content="Inner Game Webinar | Alluviance" />
-    <meta property="og:description" content="Transform your sales approach with 'The Inner Game of Sales' webinar. Learn psychological techniques to overcome objections, build authentic connections & close more deals without feeling pushy." />
+    <meta
+      property="og:description"
+      content="Transform your sales approach with 'The Inner Game of Sales' webinar. Learn psychological techniques to overcome objections, build authentic connections & close more deals without feeling pushy."
+    />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-
+    <meta
+      property="og:image"
+      content="https://lovable.dev/opengraph-image-p98pqg.png"
+    />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@lovable_dev" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <meta
+      name="twitter:image"
+      content="https://lovable.dev/opengraph-image-p98pqg.png"
+    />
+
+    <!-- ▸▸ Google Analytics 4 — async, first in line -->
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-N11P047SJ6"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-N11P047SJ6", {
+        anonymize_ip: true,
+        transport_type: "beacon",
+      });
+    </script>
+
+    <!-- ▸▸ HubSpot tracking — loads after GA -->
+    <script
+      type="text/javascript"
+      id="hs-script-loader"
+      async
+      defer
+      src="https://js.hs-scripts.com/46789902.js"
+    ></script>
   </head>
 
   <body>
     <div id="root"></div>
+
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+    <script
+      src="https://cdn.gpteng.co/gptengineer.js"
+      type="module"
+    ></script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
