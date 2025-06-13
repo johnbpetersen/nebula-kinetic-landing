@@ -8,7 +8,7 @@ const name = "Retzio Gredig";
 const title = "Account Executive, Datadog";
 const imageDesktop = "https://alluviance.s3.us-east-2.amazonaws.com/images/retzio-immersion-3-desktop.webp";
 const imageMobile = "https://alluviance.s3.us-east-2.amazonaws.com/images/retzio-immersion-3-mobile.webp";
-const watermark = "/assets/images/alluviance-watermark.png";
+const watermark = "https://alluviance.s3.us-east-2.amazonaws.com/images/alluviance-watermark.webp";
 
 // Quote parts for storytelling
 const quoteParts = [
@@ -91,7 +91,8 @@ export const SingleTestimonial = () => {
 
       {/* Noise Texture */}
       <div
-        className="absolute inset-0 mix-blend-overlay pointer-events-none"
+        className="absolute in
+set-0 mix-blend-overlay pointer-events-none"
         style={{
           backgroundImage:
             "url(data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg fill='none' stroke='%23fff' stroke-opacity='.04'%3E%3Cpath d='M0 0h160v160H0z'/%3E%3C/g%3E%3C/svg%3E)",
@@ -183,11 +184,19 @@ export const SingleTestimonial = () => {
         </motion.div>
 
         {/* Alluviance Watermark */}
-        <img
-          src={watermark}
-          alt="Alluviance Watermark"
-          className="absolute bottom-4 right-10 w-24 h-auto opacity-20 z-20"
-        />
+        <picture>
+          <source
+            srcSet="https://alluviance.s3.us-east-2.amazonaws.com/images/alluviance-watermark.webp"
+            type="image/webp"
+          />
+          <img
+            src="/assets/images/alluviance-watermark.png"
+            alt="Alluviance Watermark"
+            className="absolute bottom-4 right-10 w-24 h-auto opacity-20 z-20"
+            width="96"
+            height="54"
+          />
+        </picture>
       </div>
     </MotionSection>
   );

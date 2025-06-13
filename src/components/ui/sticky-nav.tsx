@@ -1,14 +1,14 @@
 // src/components/ui/sticky-nav.tsx
-import React, { useRef, useState } from "react"; // Added useState
+import React, { useRef, useState } from "react";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { HubSpotFormPopup } from "./hubspot-form-popup"; // Added import
+import { HubSpotFormPopup } from "./hubspot-form-popup";
 
 export const StickyNav = () => {
   const targetRef = useRef<HTMLDivElement>(null);
   const { scrollY } = useScroll();
   const [isVisible, setIsVisible] = React.useState(false);
-  const [isFormOpen, setIsFormOpen] = useState(false); // Added state for form
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   // Trigger visibility when scrolling past 90vh (hero section height)
   useMotionValueEvent(scrollY, "change", (latest) => {
@@ -27,16 +27,26 @@ export const StickyNav = () => {
       >
         <div className="section-container flex items-center justify-between py-4">
           <div className="flex items-center">
-            <img
-              src="/assets/images/alluviance-logo.png"
-              alt="Alluviance Logo"
-              className="h-10 w-auto"
-            />
+            <a href="https://alluviance.co" target="_blank" rel="noopener noreferrer">
+              <picture>
+                <source
+                  srcSet="https://alluviance.s3.us-east-2.amazonaws.com/images/alluviance-logo.webp"
+                  type="image/webp"
+                />
+                <img
+                  src="/assets/images/alluviance-logo.png"
+                  alt="Alluviance Logo"
+                  className="h-10 w-auto"
+                  width="72"
+                  height="40"
+                />
+              </picture>
+            </a>
           </div>
           <div>
             <button
               className="btn-primary-sm group flex items-center gap-2"
-              onClick={() => setIsFormOpen(true)} // Added onClick to open form
+              onClick={() => setIsFormOpen(true)}
             >
               Register Now
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
@@ -46,7 +56,7 @@ export const StickyNav = () => {
       </motion.nav>
 
       {/* HubSpot form popup */}
-      <HubSpotFormPopup isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} /> {/* Added form popup */}
+      <HubSpotFormPopup isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
     </>
   );
 };
