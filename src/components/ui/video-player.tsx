@@ -3,6 +3,7 @@ import React, { useRef, useState } from "react";
 import { motion } from "framer-motion";
 
 interface PlayerProps {
+  /** optional utility classes so parent can set max-w / w-full */
   className?: string;
 }
 
@@ -35,9 +36,13 @@ export const VideoPlayer: React.FC<PlayerProps> = ({ className = "" }) => {
     >
       <motion.div
         className="glass-card overflow-hidden"
-        animate={{ rotateX: isPlaying ? 0 : rotation.x, rotateY: isPlaying ? 0 : rotation.y }}
+        animate={{
+          rotateX: isPlaying ? 0 : rotation.x,
+          rotateY: isPlaying ? 0 : rotation.y,
+        }}
         transition={{ type: "spring", stiffness: 100, damping: 15 }}
       >
+        {/* 16 : 9 wrapper to prevent re-flow */}
         <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
           <picture>
             <source
@@ -57,13 +62,17 @@ export const VideoPlayer: React.FC<PlayerProps> = ({ className = "" }) => {
               controls
               width="672"
               height="378"
-              // Type assertion to bypass TypeScript error
-              {...({ loading: "lazy" } as React.VideoHTMLAttributes<HTMLVideoElement>)}
               onPlay={() => setIsPlaying(true)}
               onPause={() => setIsPlaying(false)}
             >
-              <source src={`${S3}/videos/Alex-Kremer-Masterclass-VSL-Optimized.webm`} type="video/webm" />
-              <source src={`${S3}/videos/Alex-Kremer-Masterclass-VSL-Optimized.mp4`} type="video/mp4" />
+              <source
+                src={`${S3}/videos/Alex-Kremer-Masterclass-VSL-Optimized.webm`}
+                type="video/webm"
+              />
+              <source
+                src={`${S3}/videos/Alex-Kremer-Masterclass-VSL-Optimized.mp4`}
+                type="video/mp4"
+              />
               <p>Your browser does not support the video tag.</p>
             </video>
           </picture>

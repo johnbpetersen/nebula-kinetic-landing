@@ -2,10 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Inner Game Webinar | Alluviance</title>
     <meta
@@ -14,7 +11,7 @@
     />
     <meta name="author" content="Alluviance" />
 
-    <!-- Open Graph / Twitter — unchanged -->
+    <!-- Open Graph / Twitter -->
     <meta property="og:title" content="Inner Game Webinar | Alluviance" />
     <meta
       property="og:description"
@@ -32,7 +29,23 @@
       content="https://lovable.dev/opengraph-image-p98pqg.png"
     />
 
-    <!-- ▸▸ Google Analytics 4 — async, first in line -->
+    <!-- ▸▸ **Hero-poster critical preloads (LCP)** -->
+    <link
+      rel="preload"
+      as="image"
+      href="https://alluviance.s3.us-east-2.amazonaws.com/images/vsl-thumbnail-desktop.webp"
+      media="(min-width:768px)"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href="https://alluviance.s3.us-east-2.amazonaws.com/images/vsl-thumbnail-mobile.webp"
+      media="(max-width:767px)"
+      fetchpriority="high"
+    />
+
+    <!-- ▸▸ Google Analytics 4 -->
     <link rel="preconnect" href="https://www.googletagmanager.com" />
     <script
       async
@@ -50,9 +63,8 @@
       });
     </script>
 
-    <!-- ▸▸ HubSpot tracking — loads after GA -->
+    <!-- ▸▸ HubSpot tracking -->
     <script
-      type="text/javascript"
       id="hs-script-loader"
       async
       defer
@@ -64,10 +76,7 @@
     <div id="root"></div>
 
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
-    <script
-      src="https://cdn.gpteng.co/gptengineer.js"
-      type="module"
-    ></script>
+    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
