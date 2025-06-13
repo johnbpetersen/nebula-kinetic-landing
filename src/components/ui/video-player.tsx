@@ -1,18 +1,22 @@
 // src/components/ui/video-player.tsx
 import React, { useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { Play } from "lucide-react";
 
-interface PlayerProps {
-  /** optional utility classes so parent can set max-w / w-full */
-  className?: string;
-}
+interface PlayerProps { className?: string }
+
+const S3 = "https://alluviance.s3.us-east-2.amazonaws.com";
+const isMobile = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia("(max-width: 767px)").matches;
 
 export const VideoPlayer: React.FC<PlayerProps> = ({ className = "" }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const [rotation, setRotation] = useState({ x: 0, y: 0 });
+  const [rotation, setRotation]   = useState({ x: 0, y: 0 });
   const [isPlaying, setIsPlaying] = useState(false);
+  const [showVideo, setShowVideo] = useState(!isMobile());  // desktop = true, mobile = lazy
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current || isPlaying) return;
@@ -25,7 +29,12 @@ export const VideoPlayer: React.FC<PlayerProps> = ({ className = "" }) => {
     });
   };
 
-  const S3 = "https://alluviance.s3.us-east-2.amazonaws.com";
+  /* tap on mobile swaps img ➜ video */
+  const handleStart = () => {
+    if (!showVideo) setShowVideo(true);
+    else if (videoRef.current) videoRef.current.play();
+    setIsPlaying(true);
+  };
 
   return (
     <div
@@ -36,25 +45,12 @@ export const VideoPlayer: React.FC<PlayerProps> = ({ className = "" }) => {
     >
       <motion.div
         className="glass-card overflow-hidden"
-        animate={{
-          rotateX: isPlaying ? 0 : rotation.x,
-          rotateY: isPlaying ? 0 : rotation.y,
-        }}
+        animate={{ rotateX: isPlaying ? 0 : rotation.x, rotateY: isPlaying ? 0 : rotation.y }}
         transition={{ type: "spring", stiffness: 100, damping: 15 }}
       >
-        {/* 16 : 9 wrapper to prevent re-flow */}
+        {/* 16 : 9 aspect-ratio wrapper */}
         <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
-          <picture>
-            <source
-              media="(max-width: 767px)"
-              srcSet={`${S3}/images/vsl-thumbnail-mobile.webp`}
-              type="image/webp"
-            />
-            <source
-              media="(min-width: 768px)"
-              srcSet={`${S3}/images/vsl-thumbnail-desktop.webp`}
-              type="image/webp"
-            />
+          {showVideo ? (
             <video
               ref={videoRef}
               className="absolute inset-0 w-full h-full object-cover rounded-3xl"
@@ -64,18 +60,30 @@ export const VideoPlayer: React.FC<PlayerProps> = ({ className = "" }) => {
               height="378"
               onPlay={() => setIsPlaying(true)}
               onPause={() => setIsPlaying(false)}
+              {...({ loading: "lazy" } as React.VideoHTMLAttributes<HTMLVideoElement>)}
             >
-              <source
-                src={`${S3}/videos/Alex-Kremer-Masterclass-VSL-Optimized.webm`}
-                type="video/webm"
-              />
-              <source
-                src={`${S3}/videos/Alex-Kremer-Masterclass-VSL-Optimized.mp4`}
-                type="video/mp4"
-              />
+              <source src={`${S3}/videos/Alex-Kremer-Masterclass-VSL-Optimized.webm`} type="video/webm" />
+              <source src={`${S3}/videos/Alex-Kremer-Masterclass-VSL-Optimized.mp4`} type="video/mp4" />
               <p>Your browser does not support the video tag.</p>
             </video>
-          </picture>
+          ) : (
+            <>
+              <img
+                src={`${S3}/images/vsl-thumbnail-mobile.webp`}
+                alt="Masterclass preview"
+                className="absolute inset-0 w-full h-full object-cover rounded-3xl"
+                width="672" height="378" loading="lazy"
+              />
+              {/* play button overlay */}
+              <button
+                onClick={handleStart}
+                className="absolute inset-0 flex flex-col items-center justify-center bg-black/30 backdrop-blur-sm hover:bg-black/50 transition"
+              >
+                <Play size={64} className="text-neon-yellow drop-shadow-[0_0_8px_rgba(255,228,94,0.9)]" />
+                <span className="sr-only">Play video</span>
+              </button>
+            </>
+          )}
         </div>
       </motion.div>
     </div>
