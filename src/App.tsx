@@ -9,7 +9,7 @@ import { HelmetProvider } from "react-helmet-async";
 
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import RegisterPage from "./pages/register";
+import RegisterPage from "./pages/Register";
 
 const queryClient = new QueryClient();
 
