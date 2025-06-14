@@ -1,8 +1,8 @@
 // src/pages/Register.tsx
 import React, { useEffect, useRef } from "react";
 import { Helmet } from "react-helmet-async";
-import { StickyNav } from "../components/ui/sticky-nav"; // Assuming path is correct
-import { Footer } from "../components/sections/footer";   // Assuming path is correct
+import { StickyNav } from "../components/ui/sticky-nav";
+import { Footer } from "../components/sections/footer";
 
 // Minimal TypeScript declaration for HubSpot
 interface HubSpotForms {
@@ -10,11 +10,11 @@ interface HubSpotForms {
     region: string;
     portalId: string;
     formId: string;
-    target: string; // CSS selector for the target div
+    target: string;
     css?: string;
     cssClass?: string;
     onFormReady?: () => void;
-    // Add other options as needed, e.g., onFormSubmit, onFormSubmitted
+    // Add other relevant callbacks if needed, e.g., onFormSubmitted
   }) => void;
 }
 
@@ -28,66 +28,84 @@ declare global {
 
 const RegisterPage = () => {
   const formRef = useRef<HTMLDivElement>(null);
-  const HUBSPOT_SCRIPT_ID = 'hubspot-form-script-v2';
   const FORM_CONTAINER_ID = 'hubspot-form-wrapper'; // Must match the div's ID
 
   useEffect(() => {
-    const loadAndCreateForm = () => {
+    let isMounted = true;
+    let pollInterval: NodeJS.Timeout | undefined;
+    const MAX_POLL_ATTEMPTS = 25; // Poll for 5 seconds (25 * 200ms)
+    let pollAttempts = 0;
+
+    const tryCreateForm = () => {
+      if (!isMounted) {
+        if (pollInterval) clearInterval(pollInterval);
+        return;
+      }
+
+      console.log(`[HS Debug] Attempt: ${pollAttempts + 1}. Checking for hbspt.forms...`);
+
       if (window.hbspt && window.hbspt.forms) {
-        // Ensure the target div exists and is empty before creating the form
-        // This prevents duplicate forms on fast re-renders or HMR
+        console.log("[HS Debug] hbspt.forms found!");
+        if (pollInterval) clearInterval(pollInterval);
+
         if (formRef.current && !formRef.current.hasChildNodes()) {
-          window.hbspt.forms.create({
-            region: "na1",
-            portalId: "46789902", // Your Portal ID
-            formId: "5590b20c-f797-4591-9031-29391c29f6ac", // Your Form ID
-            target: `#${FORM_CONTAINER_ID}`,
-            css: "", // Optional: Add custom CSS for the form
-            cssClass: "hs-form-standalone", // Optional: Add a class for styling
-            onFormReady: () => {
-              // Optional: Callback when the form is ready
-              const formElement = formRef.current?.querySelector(".hs-form, .hbspt-form");
-              if (formElement instanceof HTMLElement) {
-                // Example: Remove default HubSpot styling if needed
-                formElement.style.removeProperty("background-color");
-                formElement.style.removeProperty("background");
-              }
-            },
-          });
+          console.log("[HS Debug] Target div found and empty. Creating form...");
+          try {
+            window.hbspt.forms.create({
+              region: "na1",
+              portalId: "46789902", // Your Portal ID
+              formId: "5590b20c-f797-4591-9031-29391c29f6ac", // Your Form ID
+              target: `#${FORM_CONTAINER_ID}`,
+              css: "",
+              cssClass: "hs-form-standalone",
+              onFormReady: () => {
+                if (!isMounted) return;
+                console.log("[HS Debug] HubSpot form is READY!");
+                const formElement = formRef.current?.querySelector(".hs-form, .hbspt-form");
+                if (formElement instanceof HTMLElement) {
+                  formElement.style.removeProperty("background-color");
+                  formElement.style.removeProperty("background");
+                }
+              },
+            });
+            console.log("[HS Debug] window.hbspt.forms.create() called.");
+          } catch (error) {
+            console.error("[HS Debug] Error calling window.hbspt.forms.create():", error);
+          }
+        } else if (formRef.current && formRef.current.hasChildNodes()) {
+          console.log("[HS Debug] Target div found, but already has children. Form not created.");
+        } else if (!formRef.current) {
+          console.log("[HS Debug] Target div (formRef.current) not found. Form not created.");
         }
       } else {
-        // HubSpot script might be loaded but forms object not yet ready,
-        // or script not loaded at all. The script's onload will recall this.
+        pollAttempts++;
+        if (pollAttempts >= MAX_POLL_ATTEMPTS) {
+          console.error("[HS Debug] Max polling attempts reached. hbspt.forms not available.");
+          if (pollInterval) clearInterval(pollInterval);
+        } else {
+          // console.log("[HS Debug] hbspt.forms not yet available. Will poll again.");
+        }
       }
     };
 
-    // Check if the HubSpot forms V2 script is already on the page
-    if (document.getElementById(HUBSPOT_SCRIPT_ID)) {
-      // Script tag exists, hbspt.forms might be ready or script is still loading
-      loadAndCreateForm();
-    } else {
-      // Script tag doesn't exist, create and append it
-      const script = document.createElement("script");
-      script.id = HUBSPOT_SCRIPT_ID;
-      script.src = "https://js.hsforms.net/forms/embed/v2.js";
-      script.async = true;
-      script.defer = true; // Ensures script executes after HTML is parsed
+    // Start polling, assuming the script from index.html will make hbspt.forms available.
+    // Initial check:
+    tryCreateForm();
 
-      script.onload = () => {
-        loadAndCreateForm(); // Call after script is loaded
-      };
-      script.onerror = () => {
-        console.error("HubSpot form script (embed/v2.js) failed to load.");
-      };
-      document.body.appendChild(script);
+    // If not immediately available, set up the polling interval.
+    if (!(window.hbspt && window.hbspt.forms) && pollAttempts < MAX_POLL_ATTEMPTS) {
+        console.log("[HS Debug] Setting up poll interval for hbspt.forms.");
+        pollInterval = setInterval(tryCreateForm, 200); // Poll every 200ms
     }
 
-    // Cleanup function for useEffect is not strictly necessary for the script tag,
-    // as it's typically loaded once. If form needs cleanup, do it here.
-    // The SCRIPT_ID check prevents adding multiple script tags.
-    // The formRef.current.hasChildNodes() check prevents re-injecting the form.
-
-  }, []); // Empty dependency array: runs once on mount and cleanup on unmount.
+    return () => {
+      isMounted = false;
+      if (pollInterval) {
+        console.log("[HS Debug] Cleaning up poll interval on unmount.");
+        clearInterval(pollInterval);
+      }
+    };
+  }, []); // Empty dependency array: runs once on mount.
 
   return (
     <>
@@ -97,19 +115,15 @@ const RegisterPage = () => {
           name="description"
           content="Secure your spot in the Inner Game Masterclass. Learn how top reps consistently outperform without burning out."
         />
-        {/* Add any other specific meta tags for this page */}
       </Helmet>
 
       <StickyNav />
 
       <main className="min-h-screen bg-alluBlue-900 py-24 px-4 flex items-center justify-center">
-        {/* Ensure 'glass-card' and 'text-gradient' styles are globally available (see Step 4) */}
         <div className="max-w-2xl w-full glass-card p-8 rounded-3xl shadow-lg">
           <h1 className="text-3xl md:text-4xl font-display font-bold text-center text-gradient mb-6">
             Reserve Your Free Seat
           </h1>
-
-          {/* This is where the HubSpot form will be injected */}
           <div ref={formRef} id={FORM_CONTAINER_ID} className="transition-opacity duration-300" />
         </div>
       </main>
