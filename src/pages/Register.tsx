@@ -1,4 +1,4 @@
-// src/pages/register.tsx
+// src/pages/Register.tsx
 
 import React, { useEffect, useRef } from "react";
 import { Helmet } from "react-helmet-async";
