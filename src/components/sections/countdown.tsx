@@ -1,5 +1,4 @@
-// src/components/sections/countdown.tsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { MotionSection } from "../ui/motion-section";
@@ -12,14 +11,32 @@ const GradientGlow = () => (
 );
 
 interface CountdownProps {
-  targetDate?: Date; // Made optional with fallback
+  targetDate?: Date;
 }
 
-export const Countdown = ({ targetDate = new Date("2025-06-25T15:00:00-05:00") }: CountdownProps) => {
+export const Countdown = ({
+  targetDate = new Date("2025-07-09T15:00:00-05:00"),
+}: CountdownProps) => {
   const [isFormOpen, setIsFormOpen] = useState(false);
 
+  // Check hash on mount
+  useEffect(() => {
+    const hash = window.location.hash;
+    const searchParams = new URLSearchParams(window.location.search);
+    if (hash === "#register" || searchParams.get("register") === "true") {
+      setIsFormOpen(true);
+
+      // Optional: scroll to countdown section on load
+      const section = document.getElementById("countdown-section");
+      if (section) section.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, []);
+
   return (
-    <MotionSection className="relative bg-gradient-to-b from-alluBlue-800 to-alluBlue-900 min-h-screen flex items-center">
+    <MotionSection
+      id="countdown-section"
+      className="relative bg-gradient-to-b from-alluBlue-800 to-alluBlue-900 min-h-screen flex items-center"
+    >
       <GradientGlow />
 
       <div className="section-container text-center relative z-10">
@@ -40,7 +57,8 @@ export const Countdown = ({ targetDate = new Date("2025-06-25T15:00:00-05:00") }
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          Join us on July 9th at 3 PM CT for this transformative masterclass. Limited spots available.
+          Join us on July 9th at 3 PM CT for this transformative masterclass.
+          Limited spots available.
         </motion.p>
 
         <motion.div
@@ -59,7 +77,10 @@ export const Countdown = ({ targetDate = new Date("2025-06-25T15:00:00-05:00") }
         >
           <span className="relative z-10 flex items-center gap-2">
             Register Free Now{" "}
-            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            <ArrowRight
+              size={18}
+              className="group-hover:translate-x-1 transition-transform"
+            />
           </span>
           <span className="absolute inset-0 w-full transform -translate-x-full bg-gradient-to-r from-neon-yellow/0 via-neon-yellow/30 to-neon-yellow/0 group-hover:translate-x-full transition-transform duration-1000" />
         </motion.button>

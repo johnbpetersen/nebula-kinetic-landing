@@ -1,4 +1,3 @@
-// src/components/ui/hubspot-form-popup.tsx
 import React, { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -121,7 +120,10 @@ export const HubSpotFormPopup: React.FC<HubSpotFormPopupProps> = ({
             </button>
 
             {/* HubSpot form target */}
-            <div ref={ref} className="hs-form-popup transition-opacity duration-300" />
+            <div
+              ref={ref}
+              className="hs-form-popup transition-opacity duration-300"
+            />
           </motion.div>
         </motion.div>
       )}
