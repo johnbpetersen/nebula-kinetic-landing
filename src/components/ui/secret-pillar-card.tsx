@@ -1,4 +1,8 @@
 // src/components/ui/secret-pillar-card.tsx
+// Purpose: Displays an interactive pillar card for each "Inner Game" secret, revealing details and triggering the registration form.
+// Dependencies: React, framer-motion, HubSpotFormPopup
+// Last Updated: June 17, 2025
+
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { HubSpotFormPopup } from "./hubspot-form-popup";
