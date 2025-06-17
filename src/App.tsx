@@ -1,5 +1,4 @@
 // src/App.tsx
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,7 +8,6 @@ import { HelmetProvider } from "react-helmet-async";
 
 import { Tracking } from "./components/Tracking";
 import { StickyNav } from "./components/ui/sticky-nav";
-import { FinalCTA } from "./components/sections/final-cta";
 
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
@@ -33,7 +31,6 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
-        <FinalCTA />
       </TooltipProvider>
     </QueryClientProvider>
   </HelmetProvider>

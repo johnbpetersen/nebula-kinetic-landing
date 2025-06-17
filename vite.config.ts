@@ -19,6 +19,7 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  envPrefix: "VITE_", // Ensure .env variables load
   build: {
     sourcemap: false // Disable source maps in production
   }

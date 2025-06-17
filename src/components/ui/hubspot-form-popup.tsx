@@ -1,10 +1,14 @@
+/* eslint-disable @typescript-eslint/consistent-type-imports */
 // src/components/ui/hubspot-form-popup.tsx
 import React, { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// Minimal TypeScript declaration for HubSpot
+// Use the same ID as the standalone register page
+const POPUP_FORM_ID = "5590b20c-f797-4591-9031-29391c29f6ac";
+
+/* ────────────  TYPES  ──────────── */
 interface HubSpotForms {
-  create: (config: {
+  create: (cfg: {
     region: string;
     portalId: string;
     formId: string;
@@ -14,120 +18,102 @@ interface HubSpotForms {
     onFormReady?: () => void;
   }) => void;
 }
-
 declare global {
   interface Window {
-    hbspt?: {
-      forms: HubSpotForms;
-    };
+    hbspt?: { forms: HubSpotForms };
   }
 }
 
-interface HubSpotFormPopupProps {
+interface Props {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export const HubSpotFormPopup: React.FC<HubSpotFormPopupProps> = ({
-  isOpen,
-  onClose,
-}) => {
-  const ref = useRef<HTMLDivElement>(null);
+/* ══════════════════════════════════ */
+export const HubSpotFormPopup: React.FC<Props> = ({ isOpen, onClose }) => {
+  const containerRef   = useRef<HTMLDivElement>(null);
+  const scriptInjected = useRef(false);
+  const formBuilt      = useRef(false);            // ensure ONE embed only
 
-  // Load HubSpot form script
+  /* ── embed once on first open ── */
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen || formBuilt.current) return;
 
-    const loadForm = () => {
-      if (!window.hbspt?.forms || !ref.current) return;
+    const mountForm = () => {
+      if (!window.hbspt?.forms || !containerRef.current) return;
 
       window.hbspt.forms.create({
-        region: "na1",
-        portalId: import.meta.env.VITE_HUBSPOT_PORTAL_ID,
-        formId: "5590b20c-f797-4591-9031-29391c29f6ac",
-        target: ".hs-form-popup", // CSS selector, not DOM element
-        css: "", // Disable HubSpot default styles
-        cssClass: "hs-form-popup", // Stable styling root
+        region   : "na1",
+        portalId : import.meta.env.VITE_HUBSPOT_PORTAL_ID || "46789902",
+        formId   : POPUP_FORM_ID, // Corrected to use the single form ID
+        target   : ".hs-form-popup",
+        css      : "",
+        cssClass : "hs-form-popup",
         onFormReady: () => {
-          // Remove inline background styles
-          const form = ref.current?.querySelector(".hs-form, .hbspt-form");
-          if (form instanceof HTMLElement) {
-            form.style.removeProperty("background-color");
-            form.style.removeProperty("background");
-          }
-          // Soft fade-in
-          ref.current?.classList.add("opacity-0");
-          requestAnimationFrame(() =>
-            ref.current?.classList.replace("opacity-0", "opacity-100")
-          );
+          /* strip HS inline bg & fade-in */
+          containerRef.current?.querySelectorAll<HTMLElement>(".hs-form, .hbspt-form")
+            .forEach(el => { el.style.background = "transparent"; });
+          containerRef.current?.classList.remove("opacity-0");
         },
       });
+
+      formBuilt.current = true;
     };
 
-    if (!window.hbspt) {
-      const script = document.createElement("script");
-      script.src = "https://js.hsforms.net/forms/embed/v2.js"; // Correct URL
-      script.async = true;
-      script.onload = loadForm;
-      document.body.appendChild(script);
-
-      return () => {
-        document.body.removeChild(script); // Cleanup
-      };
+    /* inject HS script once */
+    if (!window.hbspt && !scriptInjected.current) {
+      const s = document.createElement("script");
+      s.src   = "https://js.hsforms.net/forms/embed/v2.js";
+      s.async = true;
+      s.onload = () => { scriptInjected.current = true; mountForm(); };
+      document.body.appendChild(s);
     } else {
-      loadForm();
+      mountForm();
     }
+
   }, [isOpen]);
 
+  /* ──────────  UI  ────────── */
   return (
     <AnimatePresence>
       {isOpen && (
         <motion.div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
           onClick={onClose}
         >
           <motion.div
             className="glass-card relative max-w-lg w-full mx-6 p-8 rounded-3xl"
             initial={{ scale: 0.85, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.85, opacity: 0 }}
+            animate={{ scale: 1,   opacity: 1 }}
+            exit={{    scale: 0.85, opacity: 0 }}
             transition={{ duration: 0.25 }}
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
           >
-            {/* Header */}
             <h3 className="text-2xl md:text-3xl font-display font-bold text-center text-gradient mb-6">
               Reserve Your Free Seat
             </h3>
 
-            {/* Close button */}
             <button
               className="absolute top-5 right-5 text-gray-400 hover:text-neon-yellow focus:outline-none"
               aria-label="Close form"
               onClick={onClose}
             >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2"
+                   strokeLinecap="round" strokeLinejoin="round">
                 <path d="M18 6 6 18M6 6l12 12" />
               </svg>
             </button>
 
-            {/* HubSpot form target */}
             <div
-              ref={ref}
-              className="hs-form-popup transition-opacity duration-300"
+              ref={containerRef}
+              className="hs-form-popup transition-opacity duration-300 opacity-0"
+              aria-live="polite"
             />
           </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
+
   );
 };

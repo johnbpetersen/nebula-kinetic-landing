@@ -1,9 +1,14 @@
 // src/components/sections/problem-solution.tsx
+// Purpose: Renders the problem-and-solution section, showcasing users' pain points and the transformative shift offered by the masterclass.
+// Dependencies: React, framer-motion (motion, useInView, Variants), lucide-react (icons), HubSpotFormPopup
+// Last Updated: June 17, 2025
+
 import React, { useRef, useState } from "react";
 import { motion, useInView, Variants } from "framer-motion";
 import { AlertTriangle, Zap, Shield, Target, Crown, CheckCircle } from "lucide-react";
 import { HubSpotFormPopup } from "../ui/hubspot-form-popup";
 
+// SUGGESTION: Consider externalizing these arrays to a config or CMS (e.g., src/config/problemSolution.ts)
 const painPoints = [
   "I feel like an impostor and terrified of being found out.",
   "I sound like a robot on calls, and prospects know it.",
@@ -47,6 +52,7 @@ const transformationCards = [
   },
 ];
 
+// Animation variants
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { staggerChildren: 0.2, delayChildren: 0.1 } },
@@ -64,6 +70,7 @@ const cardVariants: Variants = {
 export function ProblemSolution() {
   const problemRef = useRef(null);
   const solutionRef = useRef(null);
+  // SUGGESTION: unify useInView options into a single hook for consistency
   const isProblemInView = useInView(problemRef, { once: true, amount: 0.3 });
   const isSolutionInView = useInView(solutionRef, { once: true, amount: 0.2 });
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -75,11 +82,13 @@ export function ProblemSolution() {
         ref={problemRef}
         className="relative min-h-[80vh] bg-gradient-to-br from-alluBlue-900 to-black pt-24 pb-32 overflow-hidden"
       >
+        {/* Decorative grid overlay */}
         <div
           className="absolute inset-0 opacity-40"
           style={{
             backgroundImage:
               "url('data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Ccircle cx='7' cy='7' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')",
+            // SUGGESTION: replace `fill-rule` with `fillRule` if converting to JSX SVG
           }}
         />
         <div className="section-container relative z-10">
@@ -89,20 +98,14 @@ export function ProblemSolution() {
             animate={isProblemInView ? "visible" : "hidden"}
             className="max-w-4xl mx-auto text-center mb-12"
           >
-            <motion.div
-              variants={painVariants}
-              className="flex items-center justify-center gap-3 mb-6"
-            >
-              <AlertTriangle className="text-red-600 w-8 h-8 animate-pulse" />
+            <motion.div variants={painVariants} className="flex items-center justify-center gap-3 mb-6">
+              <AlertTriangle className="text-red-600 w-8 h-8 animate-pulse" aria-hidden="true" />
               <h2 className="text-3xl md:text-4xl font-bold text-white">
                 The Exhausting Reality of Sales
               </h2>
-              <AlertTriangle className="text-red-600 w-8 h-8 animate-pulse" />
+              <AlertTriangle className="text-red-600 w-8 h-8 animate-pulse" aria-hidden="true" />
             </motion.div>
-            <motion.p
-              variants={painVariants}
-              className="text-xl text-gray-300 italic mb-8"
-            >
+            <motion.p variants={painVariants} className="text-xl text-gray-300 italic mb-8">
               “If I’m being honest with myself…”
             </motion.p>
           </motion.div>
@@ -115,11 +118,7 @@ export function ProblemSolution() {
             <div className="glass-card bg-gray-900/80 border-red-900/20 p-8 md:p-12 backdrop-blur-xl">
               <div className="space-y-6">
                 {painPoints.map((pain, i) => (
-                  <motion.div
-                    key={i}
-                    variants={painVariants}
-                    className="flex gap-4 items-start group"
-                  >
+                  <motion.div key={i} variants={painVariants} className="flex gap-4 items-start group">
                     <div className="w-2 h-2 bg-red-600 rounded-full mt-3 group-hover:scale-150 transition-transform" />
                     <p className="text-gray-200 text-lg leading-relaxed group-hover:text-white transition-colors">
                       {pain}
@@ -127,10 +126,7 @@ export function ProblemSolution() {
                   </motion.div>
                 ))}
               </div>
-              <motion.div
-                variants={painVariants}
-                className="mt-12 pt-8 border-t border-gray-700/50 text-center"
-              >
+              <motion.div variants={painVariants} className="mt-12 pt-8 border-t border-gray-700/50 text-center">
                 <p className="text-gray-400 text-lg italic">
                   Sound familiar? You’re not alone…
                 </p>
@@ -152,13 +148,11 @@ export function ProblemSolution() {
             animate={isSolutionInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={{ duration: 0.8 }}
           >
-            <CheckCircle className="text-emerald-500 w-8 h-8 animate-pulse" />
-            <motion.h2
-              className="text-center text-4xl md:text-5xl font-bold text-white"
-            >
+            <CheckCircle className="text-emerald-500 w-8 h-8 animate-pulse" aria-hidden="true" />
+            <motion.h2 className="text-center text-4xl md:text-5xl font-bold text-white">
               The Inner Game Shift
             </motion.h2>
-            <CheckCircle className="text-emerald-500 w-8 h-8 animate-pulse" />
+            <CheckCircle className="text-emerald-500 w-8 h-8 animate-pulse" aria-hidden="true" />
           </motion.div>
           <motion.p
             initial={{ opacity: 0, y: 25 }}
@@ -181,27 +175,25 @@ export function ProblemSolution() {
                 whileHover="hover"
                 className="glass-card bg-alluBlue-700/20 border-neon-yellow/20 p-8 backdrop-blur-xl group relative overflow-hidden shadow-lg cursor-pointer"
               >
+                {/* Responsive image with overlay */}
                 <picture className="absolute inset-0 w-full h-full object-cover opacity-60 brightness-75 group-hover:opacity-100 group-hover:brightness-100 transition-[opacity,filter] duration-500">
                   <source
                     media="(max-width: 768px)"
                     srcSet={card.imageMobile}
                     type="image/webp"
                   />
-                  <source
-                    srcSet={card.imageDesktop}
-                    type="image/webp"
-                  />
+                  <source srcSet={card.imageDesktop} type="image/webp" />
                   <img
-                    src={card.imageMobile} // Use mobile WebP as fallback
-                    alt={`${card.title} background`}
+                    src={card.imageMobile} // fallback
+                    alt={`${card.title} background`} // SUGGESTION: Pass alt via data
                     className="w-full h-full object-cover"
                     loading="lazy"
                   />
                 </picture>
-                <div className="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition-colors duration-500"/>
+                <div className="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition-colors duration-500" />
                 <div className="relative z-10">
                   <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-alluBlue-600 to-alluBlue-400 p-4 mb-6 group-hover:scale-110 transition-transform">
-                    <card.icon className="w-full h-full text-white" />
+                    <card.icon className="w-full h-full text-white" aria-hidden="true" />
                   </div>
                   <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-neon-yellow transition-colors">
                     {card.title}
@@ -215,7 +207,7 @@ export function ProblemSolution() {
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: isSolutionInView ? 1 : 0, y: isSolutionInView ? 0 : 30 }}
+            animate={isSolutionInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={{ duration: 0.8, delay: 0.3 }}
             className="text-center"
           >

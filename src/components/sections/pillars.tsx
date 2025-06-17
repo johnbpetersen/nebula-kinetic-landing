@@ -1,43 +1,61 @@
 // src/components/sections/pillars.tsx
+// Purpose: Renders the "Pillars" section outlining the three core "Inner Game" secrets with animated background effects.
+// Dependencies: React, framer-motion (motion, Variants), MotionSection, SecretPillarCard, lucide-react (Lock)
+// Last Updated: June 17, 2025
+
 import React from "react";
 import { motion, Variants } from "framer-motion";
 import { MotionSection } from "../ui/motion-section";
 import { SecretPillarCard } from "../ui/secret-pillar-card";
 import { Lock } from "lucide-react";
 
+/**
+ * Data for each Inner Game secret pillar.
+ * SUGGESTION: Move this to a JSON or CMS-driven config for easier updates.
+ */
 const INNER_GAME_SECRETS = [
   {
     number: "01",
-    title: "Self‑Connection",
+    title: "Self-Connection",
     subtitle: "The Foundation Secret",
-    description: "You’ll learn how top performers stop faking confidence and start showing up fully grounded in who they are. And when you have feelings like fear, imposter, or anxiety come up - how do you actually USE them in a positive way to help you build real connection, real trust, and real influence.",
+    description:
+      "You’ll learn how top performers stop faking confidence and start showing up fully grounded in who they are. And when you have feelings like fear, imposter, or anxiety come up - how do you actually USE them in a positive way to help you build real connection, real trust, and real influence.",
     gradient: "from-alluBlue-700 via-alluBlue-600 to-alluBlue-500",
     glowColor: "alluBlue",
-    imageDesktop: "https://alluviance.s3.us-east-2.amazonaws.com/images/self-connection-desktop.webp",
-    imageMobile: "https://alluviance.s3.us-east-2.amazonaws.com/images/self-connection-mobile.webp",
+    imageDesktop:
+      "https://alluviance.s3.us-east-2.amazonaws.com/images/self-connection-desktop.webp",
+    imageMobile:
+      "https://alluviance.s3.us-east-2.amazonaws.com/images/self-connection-mobile.webp",
   },
   {
     number: "02",
-    title: "Essence‑Led Leadership",
+    title: "Essence-Led Leadership",
     subtitle: "The Influence Secret",
-    description: "You’ll discover why the best reps don’t push products. They guide decisions. And I’ll show you the inner mindset shift that flips you from “salesperson” to “trusted advisor” in one conversation.",
+    description:
+      "You’ll discover why the best reps don’t push products. They guide decisions. And I’ll show you the inner mindset shift that flips you from “salesperson” to “trusted advisor” in one conversation.",
     gradient: "from-alluBlue-700 via-alluBlue-600 to-alluBlue-500",
     glowColor: "alluBlue",
-    imageDesktop: "https://alluviance.s3.us-east-2.amazonaws.com/images/essence-led-desktop.webp",
-    imageMobile: "https://alluviance.s3.us-east-2.amazonaws.com/images/self-connection-mobile.webp",
+    imageDesktop:
+      "https://alluviance.s3.us-east-2.amazonaws.com/images/essence-led-desktop.webp",
+    imageMobile:
+      "https://alluviance.s3.us-east-2.amazonaws.com/images/essence-led-mobile.webp",
   },
   {
     number: "03",
-    title: "Vision‑Driven Performance",
+    title: "Vision-Driven Performance",
     subtitle: "The Resilience Secret",
-    description: "You’ll learn how to connect your day-to-day grind to a deeper purpose and how that single shift makes rejection bounce off and attracts aligned, ready-to-buy clients like a magnet.",
+    description:
+      "You’ll learn how to connect your day-to-day grind to a deeper purpose and how that single shift makes rejection bounce off and attracts aligned, ready-to-buy clients like a magnet.",
     gradient: "from-alluBlue-700 via-alluBlue-600 to-alluBlue-500",
     glowColor: "alluBlue",
-    imageDesktop: "https://alluviance.s3.us-east-2.amazonaws.com/images/vision-driven-desktop.webp",
-    imageMobile: "https://alluviance.s3.us-east-2.amazonaws.com/images/vision-driven-mobile.webp",
+    imageDesktop:
+      "https://alluviance.s3.us-east-2.amazonaws.com/images/vision-driven-desktop.webp",
+    imageMobile:
+      "https://alluviance.s3.us-east-2.amazonaws.com/images/vision-driven-mobile.webp",
   },
 ];
 
+/** Animation container to stagger child animations */
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
@@ -49,6 +67,7 @@ const containerVariants: Variants = {
   },
 };
 
+/** Animation for section titles */
 const titleVariants: Variants = {
   hidden: { opacity: 0, y: -50 },
   visible: {
@@ -58,18 +77,23 @@ const titleVariants: Variants = {
   },
 };
 
-export const Pillars = () => {
+export const Pillars: React.FC = () => {
   return (
     <MotionSection
       id="pillars"
       className="relative bg-gradient-to-br from-black via-alluBlue-900 to-alluBlue-800 py-32 overflow-hidden"
     >
-      {/* Dramatic background elements */}
+      {/* Dramatic animated background */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[120vw] bg-gradient-radial from-alluBlue-600/20 via-purple-600/10 to-transparent rounded-full blur-3xl" />
+        {/* Radial glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+                        w-[120vw] h-[120vw] bg-gradient-radial
+                        from-alluBlue-600/20 via-purple-600/10 to-transparent
+                        rounded-full blur-3xl" />
+        {/* Twinkling dots */}
         {[...Array(12)].map((_, i) => (
           <motion.div
-            key={i}
+            key={`dot-${i}`}
             className="absolute w-4 h-4 border border-neon-yellow/20 rounded-full"
             style={{
               left: `${Math.random() * 100}%`,
@@ -87,6 +111,7 @@ export const Pillars = () => {
             }}
           />
         ))}
+        {/* Grid overlay pattern */}
         <div
           className="absolute inset-0 opacity-50"
           style={{
@@ -96,6 +121,7 @@ export const Pillars = () => {
       </div>
 
       <div className="section-container relative">
+        {/* Section header */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -103,6 +129,7 @@ export const Pillars = () => {
           viewport={{ once: true }}
           className="text-center mb-20"
         >
+          {/* Title block */}
           <motion.div variants={titleVariants} className="mb-6">
             <div className="inline-flex items-center gap-3 mb-4">
               <div className="w-8 h-0.5 bg-gradient-to-r from-transparent to-neon-yellow" />
@@ -111,7 +138,8 @@ export const Pillars = () => {
               </span>
               <div className="w-8 h-0.5 bg-gradient-to-l from-transparent to-neon-yellow" />
             </div>
-            <h2 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-white via-gray-100 to-neon-yellow bg-clip-text text-transparent mb-4">
+            <h2 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent
+                           bg-gradient-to-r from-white via-gray-100 to-neon-yellow mb-4">
               Inner Game Framework
             </h2>
             <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
@@ -119,15 +147,19 @@ export const Pillars = () => {
               the top 1% of sales professionals from everyone else
             </p>
           </motion.div>
+          {/* Warning badge */}
           <motion.div variants={titleVariants} className="mt-8">
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-alluBlue-700/60 to-purple via-purple-500/60 backdrop-blur-sm border border-gray-600/30 rounded-full px-6 py-2">
-              <Lock className="w-4 h-4 text-neon-yellow" />
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-alluBlue-700/60 to-purple via-purple-500/60
+                            backdrop-blur-sm border border-gray-600/30 rounded-full px-6 py-2">
+              <Lock className="w-4 h-4 text-neon-yellow" aria-hidden="true" />
               <span className="text-gray-200 text-sm">
                 <span className="text-neon-yellow font-semibold">WARNING:</span> This intelligence changes everything
               </span>
             </div>
           </motion.div>
         </motion.div>
+
+        {/* Pillar cards */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -136,9 +168,12 @@ export const Pillars = () => {
           className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto"
         >
           {INNER_GAME_SECRETS.map((secret, index) => (
+            // SUGGESTION: Ensure SecretPillarCard handles alt text for images
             <SecretPillarCard key={secret.title} secret={secret} index={index} />
           ))}
         </motion.div>
+
+        {/* Post-pillar stats */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -153,12 +188,12 @@ export const Pillars = () => {
             </p>
             <div className="flex items-center justify-center gap-4 text-sm text-gray-400">
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+                <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" aria-hidden="true" />
                 <span>300+ sales professionals trained</span>
               </div>
               <div className="w-0.5 h-4 bg-gray-600" />
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" aria-hidden="true" />
                 <span>Alluviance NPS: 9.1</span>
               </div>
             </div>
@@ -166,5 +201,4 @@ export const Pillars = () => {
         </motion.div>
       </div>
     </MotionSection>
-  );
-};
+  )};

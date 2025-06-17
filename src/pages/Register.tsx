@@ -2,65 +2,43 @@
 import React, { useEffect, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import { StickyNav } from "../components/ui/sticky-nav";
+import { FinalCTA } from "../components/sections/final-cta";
 import { Footer } from "../components/sections/footer";
 
-// Minimal TypeScript declaration for HubSpot
-interface HubSpotForms {
-  create: (config: {
-    region: string;
-    portalId: string;
-    formId: string;
-    target: string;
-    css?: string;
-    cssClass?: string;
-    onFormReady?: () => void;
-  }) => void;
-}
+const REGISTER_FORM_ID = "5590b20c-f797-4591-9031-29391c29f6ac"; // original form
 
-declare global {
-  interface Window {
-    hbspt?: {
-      forms: HubSpotForms;
-    };
-  }
-}
+/* …types unchanged… */
 
 const RegisterPage = () => {
-  const formRef = useRef<HTMLDivElement>(null);
+  const wrapperRef     = useRef<HTMLDivElement>(null);
+  const scriptInjected = useRef(false);
 
   useEffect(() => {
-    const loadForm = () => {
-      if (!window.hbspt?.forms || !formRef.current) return;
+    const mountForm = () => {
+      if (!window.hbspt?.forms || !wrapperRef.current) return;
 
       window.hbspt.forms.create({
-        region: "na1",
-        portalId: import.meta.env.VITE_HUBSPOT_PORTAL_ID,
-        formId: "5590b20c-f797-4591-9031-29391c29f6ac",
-        target: "#hubspot-form-wrapper",
-        css: "",
-        cssClass: "hs-form-standalone",
+        region   : "na1",
+        portalId : import.meta.env.VITE_HUBSPOT_PORTAL_ID || "46789902",
+        formId   : REGISTER_FORM_ID,
+        target   : "#hubspot-form-wrapper",
+        css      : "",
+        cssClass : "hs-form-standalone",
         onFormReady: () => {
-          const form = formRef.current?.querySelector(".hs-form, .hbspt-form");
-          if (form instanceof HTMLElement) {
-            form.style.removeProperty("background-color");
-            form.style.removeProperty("background");
-          }
+          wrapperRef.current?.querySelectorAll<HTMLElement>(".hs-form, .hbspt-form")
+            .forEach(el => { el.style.background = "transparent"; });
         },
       });
     };
 
-    if (!window.hbspt) {
-      const script = document.createElement("script");
-      script.src = "https://js.hsforms.net/forms/embed/v2.js";
-      script.async = true;
-      script.onload = loadForm;
-      document.body.appendChild(script);
-
-      return () => {
-        document.body.removeChild(script);
-      };
+    if (!window.hbspt && !scriptInjected.current) {
+      const s = document.createElement("script");
+      s.src   = "https://js.hsforms.net/forms/embed/v2.js";
+      s.async = true;
+      s.onload = () => { scriptInjected.current = true; mountForm(); };
+      document.body.appendChild(s);
     } else {
-      loadForm();
+      mountForm();
     }
   }, []);
 
@@ -68,10 +46,8 @@ const RegisterPage = () => {
     <>
       <Helmet>
         <title>Register for the Inner Game Masterclass | Alluviance</title>
-        <meta
-          name="description"
-          content="Secure your spot in the Inner Game Masterclass. Learn how top reps consistently outperform without burning out."
-        />
+        <meta name="description"
+              content="Secure your spot in the Inner Game Masterclass. Learn how top reps consistently outperform without burning out." />
       </Helmet>
 
       <StickyNav />
@@ -82,10 +58,11 @@ const RegisterPage = () => {
             Reserve Your Free Seat
           </h1>
 
-          <div ref={formRef} id="hubspot-form-wrapper" className="transition-opacity duration-300" />
+          <div ref={wrapperRef} id="hubspot-form-wrapper" />
         </div>
       </main>
 
+      <FinalCTA />
       <Footer />
     </>
   );

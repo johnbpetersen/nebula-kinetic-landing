@@ -1,3 +1,8 @@
+// src/pages/index.tsx
+// Purpose: Renders the main landing page for the Inner Game Masterclass campaign, assembling all sections and metadata.
+// Dependencies: React, react-helmet-async, StickyNav, Hero, LogoMarquee, BigPromise, Pillars, ProblemSolution, Testimonials, MobileTestimonials, Countdown, FAQ, SingleTestimonial, FinalCTA, Footer
+// Last Updated: June 17, 2025
+
 import React from "react";
 import { Helmet } from "react-helmet-async";
 
@@ -15,9 +20,12 @@ import { SingleTestimonial } from "../components/sections/single-testimonial";
 import { FinalCTA } from "../components/sections/final-cta";
 import { Footer } from "../components/sections/footer";
 
-const Index = () => {
-  const targetDate = new Date("2025-07-09T15:00:00-05:00");
+const Index: React.FC = () => {
+  // SUGGESTION: Extract this constant to a config or hook (e.g., src/config/campaign.ts)
+  const targetDate = new Date("2025-07-09T15:00:00-05:00"); 
+  // NOTE: Ensure this matches the masterclass start time in all timezones
 
+  // SUGGESTION: Move this array to a shared constants file or fetch dynamically from CMS
   const logosPaths = [
     "/assets/images/zoom-logo.svg",
     "/assets/images/aws-logo.svg",
@@ -34,6 +42,7 @@ const Index = () => {
   return (
     <>
       <Helmet>
+        {/* Page metadata for SEO & social sharing */}
         <title>Inner Game Masterclass | Alluviance</title>
         <meta
           name="description"
@@ -46,7 +55,7 @@ const Index = () => {
         />
         <meta property="og:type" content="website" />
 
-        {/* preload hero poster for mobile (helps LCP) */}
+        {/* Preload hero poster images for performance (LCP optimization) */}
         <link
           rel="preload"
           as="image"
@@ -62,7 +71,7 @@ const Index = () => {
           media="(min-width: 768px)"
         />
 
-        {/* Google Fonts with swap */}
+        {/* Google Fonts: swap to reduce FOIT */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
@@ -79,8 +88,7 @@ const Index = () => {
       </Helmet>
 
       <StickyNav />
-
-      <main className="overflow-hidden relative">
+      <main className="overflow-hidden relative" role="main">
         <Hero />
         <LogoMarquee logos={logosPaths} />
         <BigPromise />

@@ -1,13 +1,17 @@
 // src/components/sections/mobile-testimonials.tsx
+// Purpose: Renders the mobile-only testimonials section as a vertical stack for small screens.
+// Dependencies: React, MotionSection, TestimonialCard
+// Last Updated: June 17, 2025
+
 import React from "react";
 import { MotionSection } from "../ui/motion-section";
 import { TestimonialCard } from "../ui/testimonial-card";
 
-// Define types for TestimonialCard props
+// Type definitions for TestimonialCard props
 interface Base {
   name: string;
   role: string;
-  size?: string;
+  size?: string; // SUGGESTION: Define a union type for allowed grid span classes
 }
 
 interface VideoTile extends Base {
@@ -25,6 +29,7 @@ interface QuoteTile extends Base {
 
 type TestimonialProps = VideoTile | QuoteTile;
 
+// SUGGESTION: Move this data array to a shared config (e.g., src/config/testimonials.ts)
 const TESTIMONIALS: TestimonialProps[] = [
   {
     video: "https://alluviance.s3.us-east-2.amazonaws.com/videos/kat-shuchuk.mp4",
@@ -50,7 +55,7 @@ const TESTIMONIALS: TestimonialProps[] = [
     content: "Last year was one of the most challenging of my life—but also a turning point. Being introduced to Alex. I’ve not only learned from incredible peers and mentors but I’ve built deep friendships, reconnected with my emotions, and regained my sense of self. On top of that, I landed a role at one of the top organizations in February—and closed out Q1 at 1084%, a lot of this is based on what I’ve learned in Alluviance.",
     name: "Matt Rangel",
     role: "Account Executive • Samsara",
-    image: undefined,
+    image: undefined, // FLAG: Prefer omitting `image` property instead of setting undefined
   },
   {
     content: "This was a life changing experience, I don’t think I would have ever given myself, or had the strength, to do it otherwise. This community makes me strong. It makes me feel safe. It is my home. These weekends keep me going deeper, closer to my truest self.",
@@ -86,20 +91,24 @@ const TESTIMONIALS: TestimonialProps[] = [
   },
 ];
 
-export const MobileTestimonials = () => (
-  <MotionSection id="social-proof-mobile" className="bg-alluBlue-800 py-16 block sm:hidden">
+export const MobileTestimonials: React.FC = () => (
+  <MotionSection
+    id="social-proof-mobile"
+    className="bg-alluBlue-800 py-16 block sm:hidden" // Renders only on mobile
+  >
     <div className="section-container">
       <h2 className="text-3xl font-bold text-center mb-12">
         What Happens When Sellers <span className="block">Master Their Inner Game</span>
       </h2>
 
-      {/* Stacked layout for mobile */}
+      {/* Vertical stack for mobile */}
+
       <div className="flex flex-col gap-6 min-w-full">
         {TESTIMONIALS.map((t, i) => (
           <TestimonialCard
-            key={i}
+            key={t.name + (t.video ?? t.content)} // SUGGESTION: Derive unique key from data instead of index
             {...t}
-            size="" // Override col-span for mobile
+            size="" // Override grid span for mobile; consider adjusting prop types to allow empty string
           />
         ))}
       </div>
