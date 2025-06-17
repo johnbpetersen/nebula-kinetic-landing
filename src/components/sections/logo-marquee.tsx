@@ -1,4 +1,3 @@
-// src/components/logo-marquee.tsx
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
@@ -8,22 +7,19 @@ interface LogoMarqueeProps {
 
 export const LogoMarquee: React.FC<LogoMarqueeProps> = ({ logos }) => {
   const [pause, setPause] = useState(false);
-  const [duration, setDuration] = useState(30); // Default duration for desktop
+  const [duration, setDuration] = useState(30); // desktop
 
-  /* Set duration based on screen size */
+  /* mobile ≈ 13 s, desktop ≈ 30 s */
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(max-width: 640px)"); // Tailwind's 'sm' breakpoint
-    const handleMediaChange = (e: MediaQueryListEvent | MediaQueryList) => {
-      setDuration(e.matches ? 13 : 30); // 13s for mobile, 30s for desktop
-    };
-
-    // Initial check
-    handleMediaChange(mediaQuery);
-    mediaQuery.addEventListener("change", handleMediaChange);
-    return () => mediaQuery.removeEventListener("change", handleMediaChange);
+    const mq = window.matchMedia("(max-width: 640px)");
+    const setDur = (m: MediaQueryList | MediaQueryListEvent) =>
+      setDuration(m.matches ? 13 : 30);
+    setDur(mq);
+    mq.addEventListener("change", setDur);
+    return () => mq.removeEventListener("change", setDur);
   }, []);
 
-  /* Repeat logos twice for seamless loop */
+  /* repeat list to create seamless strip */
   const strip = logos.concat(logos);
 
   return (
@@ -36,21 +32,17 @@ export const LogoMarquee: React.FC<LogoMarqueeProps> = ({ logos }) => {
         <motion.div
           className="flex gap-12 items-center flex-nowrap"
           animate={{ x: ["0%", "-50%"] }}
-          transition={{
-            duration: duration,
-            ease: "linear",
-            repeat: Infinity,
-            pause,
-          }}
+          transition={{ duration, ease: "linear", repeat: Infinity, pause }}
         >
-          {strip.map((logo, i) => (
+          {strip.map((src, i) => (
             <motion.img
               key={i}
-              src={logo}
+              src={src}
               alt="Trusted company logo"
-              className="h-8 opacity-70 grayscale hover:opacity-100 hover:grayscale-0 transition-all"
-              whileInView={{ opacity: [0.3, 0.7] }}
-              viewport={{ once: true, amount: 0.2 }}
+              width={128}              /*   ← explicit size stops CLS   */
+              height={32}
+              loading="lazy"           /*   ← keeps them off critical path */
+              className="h-8 w-auto opacity-70 grayscale hover:opacity-100 hover:grayscale-0 transition-all"
             />
           ))}
         </motion.div>
