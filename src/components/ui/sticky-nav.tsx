@@ -44,13 +44,20 @@ export const StickyNav = () => {
             </a>
           </div>
           <div>
-            <button
-              className="btn-primary-sm group flex items-center gap-2"
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="group relative overflow-hidden px-6 py-2 rounded-full
+                         bg-neon-yellow text-alluBlue-900 font-bold text-base
+                         shadow-xl hover:shadow-neon-yellow/40 transition-all duration-300
+                         focus:ring-2 focus:ring-neon-yellow/50"
               onClick={() => setIsFormOpen(true)}
             >
-              Register Now
-              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-            </button>
+              <span className="relative flex items-center gap-2">
+                Register Now
+                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+              </span>
+            </motion.button>
           </div>
         </div>
       </motion.nav>

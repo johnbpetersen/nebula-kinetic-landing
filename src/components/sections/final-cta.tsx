@@ -22,12 +22,12 @@ const FINAL_BENEFITS = [
 ];
 
 export const FinalCTA = () => {
-  const [timeLeft, setTimeLeft] = useState({ hours: 72, minutes: 0 });
+  const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0 });
   const [isFormOpen, setIsFormOpen] = useState(false);
 
-  /* -------- live 72‑hour timer -------- */
+  /* -------- Timer until June 19, 2025, 11:59 PM -------- */
   useEffect(() => {
-    const deadline = new Date(Date.now() + 72 * 60 * 60 * 1000);
+    const deadline = new Date("2025-06-19T23:59:00-04:00"); // EDT
     const tick = () => {
       const diff = deadline.getTime() - Date.now();
       if (diff <= 0) return setTimeLeft({ hours: 0, minutes: 0 });
@@ -149,7 +149,7 @@ export const FinalCTA = () => {
                        bg-neon-yellow text-alluBlue-900 font-bold text-lg sm:text-xl
                        shadow-xl hover:shadow-neon-yellow/40 transition-all duration-300
                        focus:ring-2 focus:ring-neon-yellow/50"
-            onClick={() => setIsFormOpen(true)}
+ onClick={() => setIsFormOpen(true)}
           >
             {/* moving shine */}
             <motion.span
@@ -175,10 +175,6 @@ export const FinalCTA = () => {
           <p className="text-lg text-gray-400 mb-3">
             <span className="line-through text-gray-400">$297 Value</span> —
             <span className="text-neon-yellow font-bold text-2xl ml-2">FREE</span> for a limited time
-          </p>
-          <p className="text-sm text-gray-400">
-            Sign up in the next {timeLeft.hours}h {timeLeft.minutes}m to receive  
-            <span className="text-neon-yellow"> The Formula to Finding Your Purpose</span>
           </p>
           <p className="text-xs text-gray-500 mt-2">
             No credit card required • 100% free training
