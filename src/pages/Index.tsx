@@ -1,5 +1,6 @@
 import React from "react";
 import { Helmet } from "react-helmet-async";
+
 import { StickyNav } from "../components/ui/sticky-nav";
 import { Hero } from "../components/sections/hero";
 import { LogoMarquee } from "../components/sections/logo-marquee";
@@ -17,7 +18,6 @@ import { Footer } from "../components/sections/footer";
 const Index = () => {
   const targetDate = new Date("2025-07-09T15:00:00-05:00");
 
-  /* logos for marquee */
   const logosPaths = [
     "/assets/images/zoom-logo.svg",
     "/assets/images/aws-logo.svg",
@@ -46,7 +46,7 @@ const Index = () => {
         />
         <meta property="og:type" content="website" />
 
-        {/* ▸▸ PRELOAD hero poster (cuts mobile LCP) */}
+        {/* preload hero poster for mobile (helps LCP) */}
         <link
           rel="preload"
           as="image"
@@ -55,7 +55,7 @@ const Index = () => {
           media="(max-width: 767px)"
         />
 
-        {/* ▸▸ Google Fonts (swap) */}
+        {/* Google Fonts with swap */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
@@ -64,21 +64,8 @@ const Index = () => {
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@700&display=swap"
         />
         <link
+          rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@700&display=swap"
-          rel="stylesheet"
-          media="print"
-          onLoad={(e) => ((e.currentTarget as HTMLLinkElement).media = "all")}
-        />
-
-        {/* ▸▸ non-critical main CSS (hashed) */}
-        <link
-          rel="preload"
-          as="style"
-          href="/assets/index-B9Ku5IZH.css"
-        />
-        <link
-          rel="stylesheet"
-          href="/assets/index-B9Ku5IZH.css"
           media="print"
           onLoad={(e) => ((e.currentTarget as HTMLLinkElement).media = "all")}
         />
