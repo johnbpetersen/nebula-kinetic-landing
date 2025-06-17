@@ -54,6 +54,13 @@ const Index = () => {
           fetchPriority="high"
           media="(max-width: 767px)"
         />
+        <link
+          rel="preload"
+          as="image"
+          href="https://alluviance.s3.us-east-2.amazonaws.com/images/vsl-thumbnail-desktop.webp"
+          fetchPriority="high"
+          media="(min-width: 768px)"
+        />
 
         {/* Google Fonts with swap */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />

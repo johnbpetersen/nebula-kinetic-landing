@@ -1,3 +1,4 @@
+// src/components/ui/hubspot-form-popup.tsx
 import React, { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -42,7 +43,7 @@ export const HubSpotFormPopup: React.FC<HubSpotFormPopupProps> = ({
 
       window.hbspt.forms.create({
         region: "na1",
-        portalId: "46789902",
+        portalId: import.meta.env.VITE_HUBSPOT_PORTAL_ID,
         formId: "5590b20c-f797-4591-9031-29391c29f6ac",
         target: ".hs-form-popup", // CSS selector, not DOM element
         css: "", // Disable HubSpot default styles

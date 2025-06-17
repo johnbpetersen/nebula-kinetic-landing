@@ -29,7 +29,7 @@
       content="https://alluviance.s3.us-east-2.amazonaws.com/images/alluviance-masterclass-social-share.png"
     />
 
-    <!-- ▸▸ **Hero-poster critical preloads (LCP)** -->
+    <!-- Hero-poster critical preloads (LCP) -->
     <link
       rel="preload"
       as="image"
@@ -45,38 +45,13 @@
       fetchpriority="high"
     />
 
-    <!-- ▸▸ Google Analytics 4 -->
+    <!-- Preconnect for external services -->
     <link rel="preconnect" href="https://www.googletagmanager.com" />
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-N11P047SJ6"
-    ></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-      gtag("config", "G-N11P047SJ6", {
-        anonymize_ip: true,
-        transport_type: "beacon",
-      });
-    </script>
-
-    <!-- ▸▸ HubSpot tracking -->
-    <script
-      id="hs-script-loader"
-      async
-      defer
-      src="https://js.hs-scripts.com/46789902.js"
-    ></script>
+    <link rel="preconnect" href="https://js.hs-scripts.com" />
   </head>
 
   <body>
     <div id="root"></div>
-
-    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

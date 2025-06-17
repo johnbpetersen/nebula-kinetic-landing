@@ -1,5 +1,4 @@
 // src/pages/Register.tsx
-
 import React, { useEffect, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import { StickyNav } from "../components/ui/sticky-nav";
@@ -35,7 +34,7 @@ const RegisterPage = () => {
 
       window.hbspt.forms.create({
         region: "na1",
-        portalId: "46789902",
+        portalId: import.meta.env.VITE_HUBSPOT_PORTAL_ID,
         formId: "5590b20c-f797-4591-9031-29391c29f6ac",
         target: "#hubspot-form-wrapper",
         css: "",
