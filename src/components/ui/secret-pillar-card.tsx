@@ -164,7 +164,7 @@ export const SecretPillarCard = ({ secret, index }: SecretPillarCardProps) => {
                   setIsFormOpen(true);
                 }}
               >
-                {isRevealed ? "Unlock This Secret" : isMobile ? "Tap to Reveal" : "Hover to Reveal"}
+                {isRevealed ? "Join Wait List" : isMobile ? "Tap to Reveal" : "Hover to Reveal"}
               </div>
             </motion.div>
           </div>

@@ -199,7 +199,7 @@ export const FinalCTA: React.FC = () => {
               aria-hidden="true"
             />
             <span className="relative flex items-center gap-3">
-              Reserve My Free Seat
+            Join Wait List
               <ArrowRight
                 className="w-6 h-6 group-hover:translate-x-1 transition-transform"
                 aria-hidden="true"

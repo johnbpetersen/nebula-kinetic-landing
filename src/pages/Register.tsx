@@ -5,7 +5,7 @@ import { StickyNav } from "../components/ui/sticky-nav";
 import { FinalCTA } from "../components/sections/final-cta";
 import { Footer } from "../components/sections/footer";
 
-const REGISTER_FORM_ID = "5590b20c-f797-4591-9031-29391c29f6ac"; // original form
+const REGISTER_FORM_ID = "4694cabd-1060-4490-9f6b-e8a80efb3668"; // original form
 
 /* …types unchanged… */
 

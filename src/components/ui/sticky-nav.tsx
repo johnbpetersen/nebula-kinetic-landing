@@ -70,7 +70,7 @@ export const StickyNav: React.FC = () => {
               onClick={() => setIsFormOpen(true)}
             >
               <span className="relative flex items-center gap-2">
-                Register Now
+              Join Wait List
                 <ArrowRight
                   size={16}
                   className="group-hover:translate-x-1 transition-transform"

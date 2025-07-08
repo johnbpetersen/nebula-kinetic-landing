@@ -104,7 +104,7 @@ export const Countdown: React.FC<CountdownProps> = ({
           aria-label="Register for the free masterclass"
         >
           <span className="relative z-10 flex items-center gap-2">
-            Register Free Now
+          Join Wait List
             <ArrowRight
               size={18}
               className="group-hover:translate-x-1 transition-transform"
