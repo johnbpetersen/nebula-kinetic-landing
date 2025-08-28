@@ -1,131 +1,80 @@
 // src/components/sections/countdown.tsx
-// Purpose: Renders the countdown section with timer and registration button/modal for the Inner Game Masterclass.
-// Dependencies: React, framer-motion (motion), lucide-react (ArrowRight), MotionSection, CountdownTimer, HubSpotFormPopup
-// Masterclass Date/Time: July 9, 2025 @ 3:00 PM CT (UTC-5)
-// Last Updated: June 17, 2025
+// Purpose: Renders the countdown section with a timer, event details, and a button to scroll to the final CTA form.
+// Dependencies: React, framer-motion (motion), MotionSection, CountdownTimer, HubSpotEmbed
+// Last Updated: August 28, 2025, 11:35 AM EDT
 
-import React, { useState, useEffect } from "react";
+"use client";
+
+import React, { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
 import { MotionSection } from "../ui/motion-section";
 import { CountdownTimer } from "../ui/countdown-timer";
-import { HubSpotFormPopup } from "../ui/hubspot-form-popup";
+import { HubSpotEmbed } from "../ui/hubspot-embed";
+import { eventMeta, hasMasterclassPassed } from "../../config/eventMeta";
+import { ArrowRight } from "lucide-react";
 
-/**
- * GradientGlow renders a subtle radial gradient background glow.
- * SUGGESTION: Move to src/components/ui/GradientGlow.tsx for reuse and easier styling.
- */
-const GradientGlow: React.FC = () => (
-  <div
-    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-               w-[80vw] h-[80vw] max-w-[1200px] max-h-[1200px]
-               bg-gradient-radial from-alluBlue-600/20 via-purple-600/10 to-transparent
-               rounded-full blur-3xl opacity-30 z-0"
-  />
-);
+const FORM1_INLINE_ID = import.meta.env.VITE_HS_FORM_ID_STEP1 || "1750eaa7-b9fb-4852-a88e-5390ebb5eb6e";
+const FORM2_INLINE_ID = import.meta.env.VITE_HS_FORM_ID_STEP2 || "88193456-5081-4c04-ab4e-9ea776e83c1c";
+const WAITLIST_FORM_ID = import.meta.env.VITE_HS_FORM_ID_WAITLIST || "4694cabd-1060-9f6b-e8a80efb3668";
 
-// Centralized masterclass target date (3:00 PM CT)
-const MASTERCLASS_DATE_CT = new Date("2025-07-09T15:00:00-05:00");
+// Helper functions (unchanged)
+function getTzAbbrev(dateISO: string, tz: string): string { try { const parts = new Intl.DateTimeFormat("en-US", { timeZone: tz, timeZoneName: "short", }).formatToParts(new Date(dateISO)); return parts.find((p) => p.type === "timeZoneName")?.value ?? "CT"; } catch { return "CT"; } }
+function formatEventDate(dateISO: string, tz: string): string { try { return new Intl.DateTimeFormat("en-US", { timeZone: tz, weekday: "long", year: "numeric", month: "long", day: "numeric", }).format(new Date(dateISO)); } catch { return ""; } }
+function formatEventTime(dateISO: string, tz: string): string { try { return new Intl.DateTimeFormat("en-US", { timeZone: tz, hour: "numeric", minute: "2-digit", hour12: true, }).format(new Date(dateISO)); } catch { return ""; } }
+const GradientGlow: React.FC = () => ( <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] max-w-[1200px] max-h-[1200px] bg-gradient-radial from-alluBlue-600/20 via-purple-600/10 to-transparent rounded-full blur-3xl opacity-30 z-0" /> );
 
-interface CountdownProps {
-  /** Target date/time for the countdown (defaults to masterclass 3 PM CT) */
-  targetDate?: Date;
-}
+export const Countdown: React.FC = () => {
+  const isEventPast = hasMasterclassPassed();
 
-export const Countdown: React.FC<CountdownProps> = ({
-  targetDate = MASTERCLASS_DATE_CT,
-}) => {
-  const [isFormOpen, setIsFormOpen] = useState(false);
+  const targetDate = useMemo<Date>(() => new Date((eventMeta as any).dateISO || (eventMeta as any).rawDate), []);
 
-  // Open registration modal if URL contains #register or ?register=true
+  const { displayDate, displayTime } = useMemo(() => {
+    const dateISO = (eventMeta as any).dateISO || (eventMeta as any).rawDate;
+    const tzVal = (eventMeta as any).tz || "America/Chicago";
+    return {
+      displayDate: formatEventDate(dateISO, tzVal),
+      displayTime: `${formatEventTime(dateISO, tzVal)} ${getTzAbbrev(dateISO, tzVal)}`,
+    };
+  }, []);
+
   useEffect(() => {
-    const hash = window.location.hash;
-    const params = new URLSearchParams(window.location.search);
-    if (hash === "#register" || params.get("register") === "true") {
-      setIsFormOpen(true);
-      const section = document.getElementById("countdown-section");
-      if (section) {
-        section.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
+    if (window.location.hash === "#register") {
+      document.getElementById("countdown-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }, []);
 
-  return (
-    <MotionSection
-      id="countdown-section"
-      className="relative bg-gradient-to-b from-alluBlue-800 to-alluBlue-900
-                 min-h-screen flex items-center"
-    >
-      {/* Decorative glow behind content */}
-      <GradientGlow />
+  const buttonText = hasMasterclassPassed() ? "Join The Waitlist" : "Register For Free";
 
+  return (
+    <MotionSection id="countdown-section" className="relative bg-gradient-to-b from-alluBlue-800 to-alluBlue-900 min-h-screen flex items-center">
+      <GradientGlow />
       <div className="section-container text-center relative z-10">
-        {/* Section headline */}
-        <motion.h2
-          className="text-2xl sm:text-3xl md:text-5xl font-bold mb-6"
-          initial={{ opacity: 0, y: -30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
+        <motion.h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-6" initial={{ opacity: 0, y: -30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}>
           Secure Your Spot
         </motion.h2>
-
-        {/* Subheadline with date/time */}
-        <motion.p
-          className="text-base sm:text-lg md:text-xl opacity-80 max-w-2xl mx-auto mb-10"
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          Join us on July 9th at 3 PM CT for this transformative masterclass.
-          Limited spots available.
+        <motion.p className="text-base sm:text-lg md:text-xl opacity-80 max-w-2xl mx-auto mb-10" initial={{ opacity: 0, y: -20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.2 }}>
+          Join us on {displayDate} at {displayTime} for this transformative masterclass.
         </motion.p>
+        {!isEventPast && (
+          <motion.div className="mb-10 relative" animate={{ scale: [1, 1.02, 1] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}>
+            <CountdownTimer targetDate={targetDate} />
+          </motion.div>
+        )}
 
-        {/* Countdown timer with gentle scaling animation */}
-        <motion.div
-          className="mb-10 relative"
-          animate={{ scale: [1, 1.02, 1] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <CountdownTimer targetDate={targetDate} />
-        </motion.div>
-
-        {/* Registration button */}
-        <motion.button
-          className="relative overflow-hidden group px-6 py-3 md:px-8 md:py-4
-                     text-base md:text-lg font-semibold
-                     bg-gradient-to-r from-alluBlue-600 to-alluBlue-400
-                     rounded-full text-white"
-          whileHover={{ scale: 1.05 }}
-          transition={{ duration: 0.3 }}
-          onClick={() => setIsFormOpen(true)}
-          aria-label="Register for the free masterclass"
-        >
-          <span className="relative z-10 flex items-center gap-2">
-          Join Wait List
-            <ArrowRight
-              size={18}
-              className="group-hover:translate-x-1 transition-transform"
-              aria-hidden="true"
-            />
-          </span>
-          {/* Animated highlight on hover */}
-          <span
-            className="absolute inset-0 w-full transform -translate-x-full
-                       bg-gradient-to-r from-neon-yellow/0 via-neon-yellow/30 to-neon-yellow/0
-                       group-hover:translate-x-full transition-transform duration-1000"
-            aria-hidden="true"
-          />
-        </motion.button>
+        <div className="mt-10 w-full max-w-lg mx-auto">
+          <motion.button
+            className="btn-primary relative overflow-hidden group"
+            onClick={() => document.getElementById("final-cta-form")?.scrollIntoView({ behavior: "smooth", block: "center" })}
+            aria-label="Scroll to registration form"
+          >
+            <span className="relative z-10 flex items-center gap-2">
+              {buttonText}
+              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            </span>
+            <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-neon-yellow/0 via-neon-yellow/30 to-neon-yellow/0 group-hover:translate-x-full transition-transform duration-1000" />
+          </motion.button>
+        </div>
       </div>
-
-      {/* HubSpot signup form modal */}
-      <HubSpotFormPopup
-        isOpen={isFormOpen}
-        onClose={() => setIsFormOpen(false)}
-      />
     </MotionSection>
   );
 };

@@ -244,3 +244,8 @@
   }
 }
 
+  /* THE WIDTH FIX (Part 2): This rule targets the iframe inside the
+     container we just named, forcing it to be 100% wide. */
+     .hubspot-form-container iframe {
+      width: 100% !important;
+    }

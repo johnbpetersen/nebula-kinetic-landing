@@ -1,19 +1,16 @@
 // src/components/sections/hero.tsx
-// Purpose: Renders the hero section with an animated starfield background, floating blobs, headline copy, video player, and registration CTA.
-// Dependencies: React, framer-motion (motion), lucide-react (ArrowRight, ChevronDown), VideoPlayer, HubSpotFormPopup
-// Last Updated: June 17, 2025
+// Purpose: Renders the hero section with an animated starfield background, floating blobs, headline copy, video player, and embedded registration form.
+// Dependencies: React, framer-motion (motion), lucide-react (ArrowRight, ChevronDown), VideoPlayer, HubSpotEmbed
+// Last Updated: August 28, 2025, 10:55 AM EDT
 
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, ChevronDown } from "lucide-react";
-
 import { VideoPlayer } from "../ui/video-player";
-import { HubSpotFormPopup } from "../ui/hubspot-form-popup";
+import { HubSpotEmbed } from "../ui/hubspot-embed";
+import { eventMeta, hasMasterclassPassed } from "../../config/eventMeta";
 
-/** 
- * Custom hook to detect reduced-motion preference.
- * SUGGESTION: Extract to src/hooks/usePrefersReducedMotion.ts and memoize the MediaQueryList listener.
- */
+/** Custom hook to detect reduced-motion preference. */
 const useReducedMotion = () => {
   const [pref, setPref] = useState(false);
   useEffect(() => {
@@ -26,14 +23,9 @@ const useReducedMotion = () => {
   return pref;
 };
 
-/** 
- * Detect mobile viewport.
- * NOTE: Runs synchronously; safe for SSR because window check is included, but can cause hydration mismatches.
- * SUGGESTION: Move to a hook (useIsMobile) and update state in useEffect.
- */
+/** Detect mobile viewport. */
 const isMobile = () =>
-  typeof window !== "undefined" &&
-  window.matchMedia("(max-width: 767px)").matches;
+  typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches;
 
 /* ── Starfield canvas ─────────────────────────────── */
 interface StarfieldProps {
@@ -41,16 +33,10 @@ interface StarfieldProps {
   disabled?: boolean;
 }
 
-const Starfield: React.FC<StarfieldProps> = ({
-  speedFactor = 1,
-  disabled = false,
-}) => {
+const Starfield: React.FC<StarfieldProps> = ({ speedFactor = 1, disabled = false }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const starsRef = useRef<{ x: number; y: number; s: number; v: number }[]>(
-    []
-  );
+  const starsRef = useRef<{ x: number; y: number; s: number; v: number }[]>([]);
 
-  // Initialize and regenerate stars on resize
   useEffect(() => {
     if (disabled) return;
     const c = canvasRef.current!;
@@ -58,7 +44,7 @@ const Starfield: React.FC<StarfieldProps> = ({
 
     const resize = () => {
       c.width = window.innerWidth;
-      c.height = window.innerHeight * 1.1;
+      c.height = window.innerHeight * 1.2;
       starsRef.current = [];
       const count = Math.floor((c.width * c.height) / 6500);
       for (let i = 0; i < count; i++) {
@@ -76,14 +62,10 @@ const Starfield: React.FC<StarfieldProps> = ({
     return () => window.removeEventListener("resize", resize);
   }, [disabled, speedFactor]);
 
-  // Update velocity when speedFactor changes
   useEffect(() => {
-    starsRef.current.forEach(
-      (st) => (st.v = (Math.random() * 0.5 + 0.1) * speedFactor)
-    );
+    starsRef.current.forEach((st) => (st.v = (Math.random() * 0.5 + 0.1) * speedFactor));
   }, [speedFactor]);
 
-  // Animation loop
   useEffect(() => {
     if (disabled) return;
     const c = canvasRef.current!;
@@ -117,10 +99,7 @@ const Starfield: React.FC<StarfieldProps> = ({
 };
 
 /* ── Floating blob ────────────────────────────────── */
-const Blob: React.FC<{ className: string; delay?: number }> = ({
-  className,
-  delay = 0,
-}) => (
+const Blob: React.FC<{ className: string; delay?: number }> = ({ className, delay = 0 }) => (
   <motion.div
     className={`absolute rounded-full blur-3xl opacity-20 ${className}`}
     animate={{ y: [0, -20, 0] }}
@@ -131,21 +110,17 @@ const Blob: React.FC<{ className: string; delay?: number }> = ({
       delay,
       ease: "easeInOut",
     }}
-    // SUGGESTION: Respect reduced-motion preference by disabling this if needed
   />
 );
 
 /** Helper to only apply motion props on desktop */
-const motionIfDesktop = <T extends object>(props: T): T | {} =>
-  isMobile() ? {} : props;
+const motionIfDesktop = <T extends object>(props: T): T | {} => (isMobile() ? {} : props);
 
 /* ── Hero section ─────────────────────────────────── */
 export const Hero: React.FC = () => {
   const [slowStars, setSlowStars] = useState(false);
-  const [isFormOpen, setIsFormOpen] = useState(false);
   const prefersReduced = useReducedMotion();
 
-  // Slow down starfield after initial load for dynamic effect
   useEffect(() => {
     const timer = setTimeout(() => setSlowStars(true), 5000);
     return () => clearTimeout(timer);
@@ -153,25 +128,16 @@ export const Hero: React.FC = () => {
 
   return (
     <section
-      className="relative min-h-[90vh] flex items-center overflow-hidden bg-alluBlue-900"
+      className="relative min-h-[120vh] flex items-center overflow-hidden bg-alluBlue-900"
       role="banner"
       aria-label="Hero section"
     >
       <Starfield speedFactor={slowStars ? 0.75 : 1} disabled={prefersReduced} />
 
       {/* Decorative floating blobs */}
-      <Blob
-        className="w-[500px] h-[500px] bg-alluBlue-400 top-20 -right-64"
-        delay={2}
-      />
-      <Blob
-        className="w-[600px] h-[600px] bg-alluBlue -top-64 left-40"
-        delay={0}
-      />
-      <Blob
-        className="w-[300px] h-[300px] bg-neon-yellow bottom-20 -left-20"
-        delay={3}
-      />
+      <Blob className="w-[500px] h-[500px] bg-alluBlue-400 top-20 -right-64" delay={2} />
+      <Blob className="w-[600px] h-[600px] bg-alluBlue -top-64 left-40" delay={0} />
+      <Blob className="w-[300px] h-[300px] bg-neon-yellow bottom-20 -left-20" delay={3} />
 
       {/* Soft glow overlay */}
       <div className="absolute left-1/4 top-1/4 w-[50vw] h-[50vw] bg-alluBlue-400/10 rounded-full blur-[220px] pointer-events-none" />
@@ -224,38 +190,23 @@ export const Hero: React.FC = () => {
                 transition: { duration: 0.5, delay: 0.2 },
               })}
             >
-              FREE&nbsp;MASTERCLASS&nbsp;•&nbsp;July&nbsp;9&nbsp;@&nbsp;3&nbsp;PM&nbsp;CT
+              FREE&nbsp;MASTERCLASS&nbsp;•&nbsp;{eventMeta.displayDate}&nbsp;@&nbsp;{eventMeta.displayTime}
             </motion.p>
-
-            <motion.div
-              {...motionIfDesktop({
-                initial: { opacity: 0, y: 20 },
-                animate: { opacity: 1, y: 0 },
-                transition: { duration: 0.5, delay: 0.3 },
-              })}
-            >
-              <button
-                className="btn-primary relative overflow-hidden group mb-4"
-                onClick={() => setIsFormOpen(true)}
-                aria-label="Register for the free masterclass"
-              >
-                <span className="relative z-10 flex items-center gap-2">
-                  Join Wait List
-                  <ArrowRight
-                    size={18}
-                    className="group-hover:translate-x-1 transition-transform"
-                    aria-hidden="true"
-                  />
-                </span>
-                <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-neon-yellow/0 via-neon-yellow/30 to-neon-yellow/0 group-hover:translate-x-full transition-transform duration-1000" />
-              </button>
-            </motion.div>
           </div>
 
           {/* Video column */}
           <div className="relative edge-glow min-w-0 flex justify-center">
             <VideoPlayer className="max-w-[672px] w-full" />
           </div>
+        </div>
+
+        {/* Embedded Form */}
+        <div className="mt-12 max-w-lg mx-auto">
+          <HubSpotEmbed
+            formId={import.meta.env.VITE_HS_FORM_ID_STEP1 || "1750eaa7-b9fb-4852-a88e-5390ebb5eb6e"}
+            className="hs-form-inline"
+            sectionId="hero"
+          />
         </div>
       </div>
 
@@ -275,9 +226,6 @@ export const Hero: React.FC = () => {
       >
         <ChevronDown size={24} className="text-white/80" />
       </motion.div>
-
-      {/* HubSpot signup form modal */}
-      <HubSpotFormPopup isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
     </section>
   );
 };

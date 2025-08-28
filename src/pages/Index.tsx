@@ -1,10 +1,11 @@
 // src/pages/index.tsx
 // Purpose: Renders the main landing page for the Inner Game Masterclass campaign, assembling all sections and metadata.
 // Dependencies: React, react-helmet-async, StickyNav, Hero, LogoMarquee, BigPromise, Pillars, ProblemSolution, Testimonials, MobileTestimonials, Countdown, FAQ, SingleTestimonial, FinalCTA, Footer
-// Last Updated: June 17, 2025
+// Last Updated: August 25, 2025
 
 import React from "react";
 import { Helmet } from "react-helmet-async";
+import { eventMeta } from "../config/eventMeta";
 
 import { StickyNav } from "../components/ui/sticky-nav";
 import { Hero } from "../components/sections/hero";
@@ -21,10 +22,6 @@ import { FinalCTA } from "../components/sections/final-cta";
 import { Footer } from "../components/sections/footer";
 
 const Index: React.FC = () => {
-  // SUGGESTION: Extract this constant to a config or hook (e.g., src/config/campaign.ts)
-  const targetDate = new Date("2025-07-09T15:00:00-05:00"); 
-  // NOTE: Ensure this matches the masterclass start time in all timezones
-
   // SUGGESTION: Move this array to a shared constants file or fetch dynamically from CMS
   const logosPaths = [
     "/assets/images/zoom-logo.svg",
@@ -96,7 +93,7 @@ const Index: React.FC = () => {
         <ProblemSolution />
         <Testimonials />
         <MobileTestimonials />
-        <Countdown targetDate={targetDate} />
+        <Countdown targetDate={new Date(eventMeta.rawDate)} />
         <FAQ />
         <SingleTestimonial />
         <FinalCTA />

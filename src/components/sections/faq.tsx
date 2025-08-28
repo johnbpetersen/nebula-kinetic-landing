@@ -1,7 +1,7 @@
 // src/components/sections/faq.tsx
 // Purpose: Renders the Frequently Asked Questions section as an accordion for the Inner Game Masterclass.
 // Dependencies: React, MotionSection, Accordion (from shadcn/ui)
-// Last Updated: June 17, 2025
+// Last Updated: August 25, 2025
 
 import React from "react";
 import {
@@ -11,6 +11,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { MotionSection } from "../ui/motion-section";
+import { eventMeta } from "../../config/eventMeta"; // Added import for eventMeta
 
 // FAQ data; consider moving to a CMS or external JSON/config for easier updates
 interface FAQItem {
@@ -42,7 +43,7 @@ const faqs: FAQItem[] = [
   {
     question: "What if I can’t make the live session?",
     answer:
-      "No worries! Register now to lock in your spot in case your schedule changes, and we’ll keep you posted on the next masterclass date. Sign up today!",
+      `No worries! Register now to lock in your spot for the ${eventMeta.displayDate} at ${eventMeta.displayTime} masterclass in case your schedule changes, and we’ll keep you posted on future sessions. Sign up today!`,
   },
 ];
 

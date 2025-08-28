@@ -1,12 +1,12 @@
 // src/components/sections/problem-solution.tsx
-// Purpose: Renders the problem-and-solution section, showcasing users' pain points and the transformative shift offered by the masterclass.
-// Dependencies: React, framer-motion (motion, useInView, Variants), lucide-react (icons), HubSpotFormPopup
-// Last Updated: June 17, 2025
+// Purpose: Renders the problem-and-solution section, showcasing users' pain points and the transformative shift offered by the masterclass, with a button to scroll to the final CTA form.
+// Dependencies: React, framer-motion (motion, useInView, Variants), lucide-react (icons)
+// Last Updated: August 28, 2025, 11:45 AM EDT
 
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { motion, useInView, Variants } from "framer-motion";
-import { AlertTriangle, Zap, Shield, Target, Crown, CheckCircle } from "lucide-react";
-import { HubSpotFormPopup } from "../ui/hubspot-form-popup";
+import { AlertTriangle, Zap, Shield, Target, Crown, CheckCircle, ArrowRight } from "lucide-react";
+import { hasMasterclassPassed } from "../../config/eventMeta";
 
 // SUGGESTION: Consider externalizing these arrays to a config or CMS (e.g., src/config/problemSolution.ts)
 const painPoints = [
@@ -70,10 +70,11 @@ const cardVariants: Variants = {
 export function ProblemSolution() {
   const problemRef = useRef(null);
   const solutionRef = useRef(null);
-  // SUGGESTION: unify useInView options into a single hook for consistency
   const isProblemInView = useInView(problemRef, { once: true, amount: 0.3 });
   const isSolutionInView = useInView(solutionRef, { once: true, amount: 0.2 });
-  const [isFormOpen, setIsFormOpen] = useState(false);
+
+  // Dynamic button text based on event status
+  const buttonText = hasMasterclassPassed() ? "Join The Waitlist" : "Register For Free";
 
   return (
     <div className="relative">
@@ -88,7 +89,6 @@ export function ProblemSolution() {
           style={{
             backgroundImage:
               "url('data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Ccircle cx='7' cy='7' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')",
-            // SUGGESTION: replace `fill-rule` with `fillRule` if converting to JSX SVG
           }}
         />
         <div className="section-container relative z-10">
@@ -211,15 +211,20 @@ export function ProblemSolution() {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="text-center"
           >
-            <button
+            <motion.button
               className="btn-primary bg-neon-yellow text-alluBlue-900 px-12 py-4 text-lg font-bold hover:scale-105 hover:shadow-2xl hover:shadow-neon-yellow/50 transition-all"
-              onClick={() => setIsFormOpen(true)}
+              onClick={() => document.getElementById("final-cta-form")?.scrollIntoView({ behavior: "smooth", block: "center" })}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              aria-label="Scroll to registration form"
             >
-              Lock In My Spot
-            </button>
+              <span className="relative z-10 flex items-center gap-2">
+                {buttonText}
+                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              </span>
+            </motion.button>
           </motion.div>
         </div>
-        <HubSpotFormPopup isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
       </section>
     </div>
   );

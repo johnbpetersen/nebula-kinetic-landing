@@ -1,11 +1,11 @@
 // src/components/sections/single-testimonial.tsx
 // Purpose: Renders a single testimonial section with animated quote reveal, user details, and branding watermark.
-// Dependencies: React, framer-motion (motion, useAnimation), MotionSection
-// Last Updated: June 17, 2025
+// Dependencies: React, framer-motion (motion), MotionSection
+// Last Updated: August 25, 2025
 
 import React from "react";
-import { motion, useAnimation } from "framer-motion";
-import { MotionSection } from "../ui/motion-section"; // SUGGESTION: Remove ".tsx" extension from import path if present
+import { motion } from "framer-motion";
+import { MotionSection } from "../ui/motion-section";
 
 // Testimonial metadata (consider externalizing to config/CMS)
 const name = "Retzio Gredig";
@@ -37,11 +37,7 @@ const pulseVariants = {
   visible: {
     scale: [1, 1.2, 1.05, 1.1, 1],
     opacity: [1, 1, 1, 1, 1],
-    transition: { duration: 1.5, ease: "easeOut", delay: 1.5, times: [0,0.2,0.4,0.6,1] },
-  },
-  loopPulse: {
-    scale: [1, 1.03, 1],
-    transition: { duration: 2.5, repeat: Infinity, ease: "easeInOut" },
+    transition: { duration: 1.5, ease: "easeOut", delay: 1.5, times: [0, 0.2, 0.4, 0.6, 1] },
   },
 };
 const cardVariants = {
@@ -50,8 +46,6 @@ const cardVariants = {
 };
 
 export const SingleTestimonial: React.FC = () => {
-  const controls = useAnimation(); // FLAG: `controls` is never passed to `animate` prop, so loopPulse never triggered
-
   return (
     <MotionSection
       id="retzio"
@@ -117,7 +111,6 @@ export const SingleTestimonial: React.FC = () => {
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true }}
-                    onAnimationComplete={(def) => def === 'visible' && controls.start('loopPulse')}
                   >267%</motion.span></>
                 ) : (
                   part
@@ -153,7 +146,7 @@ export const SingleTestimonial: React.FC = () => {
         <picture aria-hidden>
           <source srcSet={watermark} type="image/webp" />
           <img
-            src="/assets/images/alluviance-watermark.png" // SUGGESTION: Use `watermark` constant instead of hardcoded path
+            src={watermark}
             alt="Alluviance Watermark"
             className="absolute bottom-4 right-10 w-24 h-auto opacity-20 z-20"
             width={96}

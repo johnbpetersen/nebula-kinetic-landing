@@ -1,22 +1,22 @@
 // src/components/sections/final-cta.tsx
-// Purpose: Renders the final call-to-action section with stats, countdown to free gift deadline, benefits, and registration modal.
-// Dependencies: React, framer-motion (motion), MotionSection, HubSpotFormPopup, lucide-react icons (Clock, Users, TrendingUp, CheckCircle, ArrowRight, Zap)
-// Last Updated: June 17, 2025
+// Purpose: Renders the final call-to-action section with stats, benefits, and embedded inline registration form.
+// Dependencies: React, framer-motion (motion), MotionSection, HubSpotEmbed, lucide-react icons (Users, TrendingUp, CheckCircle, ArrowRight, Zap)
+// Last Updated: August 28, 2025, 12:30 PM EDT
 
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { MotionSection } from "../ui/motion-section";
-import { HubSpotFormPopup } from "../ui/hubspot-form-popup";
+import { HubSpotEmbed } from "../ui/hubspot-embed";
 import {
-  Clock,
   Users,
   TrendingUp,
   CheckCircle,
   ArrowRight,
   Zap,
 } from "lucide-react";
+import { eventMeta, hasMasterclassPassed } from "../../config/eventMeta";
 
-// SUGGESTION: Move benefits data to a config or CMS for easier updates
+// Move benefits data to config or CMS for easier updates
 const FINAL_BENEFITS = [
   "Turn rejection into rocket fuel for your confidence",
   "Speak with unshakeable authority in every conversation",
@@ -31,16 +31,13 @@ export const FinalCTA: React.FC = () => {
     hours: 0,
     minutes: 0,
   });
-  const [isFormOpen, setIsFormOpen] = useState(false);
 
-  /* -------- Timer until June 19, 2025, 11:59 PM CT -------- */
+  /* -------- Timer until event date (commented out for now) -------- */
   useEffect(() => {
-    // NOTE: Central Time (CT) in June is UTC-5; consider aligning the timezone offset accordingly
-    const deadline = new Date("2025-06-19T23:59:00-05:00");
+    const deadline = new Date(eventMeta.rawDate);
     const tick = () => {
       const diff = deadline.getTime() - Date.now();
       if (diff <= 0) {
-        // Time's up: clear interval and set zeros
         setTimeLeft({ hours: 0, minutes: 0 });
         return;
       }
@@ -58,15 +55,11 @@ export const FinalCTA: React.FC = () => {
   const stats = [
     { number: "300+", label: "Sellers Transformed", icon: Users },
     { number: "9.1", label: "Alluviance NPS Score", icon: TrendingUp },
-    {
-      number: `${timeLeft.hours}`,
-      label: "Hours Left for a Free Gift",
-      icon: Clock,
-    },
+    // Removed: { number: `${timeLeft.hours}`, label: "Hours Left for a Free Gift", icon: Clock },
   ];
 
   return (
-    <MotionSection className="relative bg-alluBlue-900 overflow-hidden">
+    <MotionSection className="relative bg-alluBlue-900 overflow-hidden pb-20" style={{ minHeight: "120vh" }}>
       <div className="section-container relative z-10">
         {/* ── Stats Pills ─────────────────────────────────────────────── */}
         <motion.div
@@ -78,24 +71,20 @@ export const FinalCTA: React.FC = () => {
         >
           {stats.map(({ number, label, icon: Icon }, i) => (
             <motion.div
-              key={label} // SUGGESTION: Use a slugified label or unique ID instead of raw label
-              className="flex items-center gap-3 bg-white/5 backdrop-blur-sm
-                         border border-white/10 rounded-full px-4 py-2 sm:px-6 sm:py-3"
+              key={label}
+              className="flex items-center gap-3 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full px-4 py-2 sm:px-6 sm:py-3"
               initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: i * 0.08 }}
             >
               <span
-                className="w-10 h-10 rounded-full bg-gradient-to-br
-                           from-neon-yellow to-alluBlue-400 flex items-center justify-center"
+                className="w-10 h-10 rounded-full bg-gradient-to-br from-neon-yellow to-alluBlue-400 flex items-center justify-center"
               >
                 <Icon className="w-5 h-5 text-alluBlue-900" aria-hidden="true" />
               </span>
               <div>
-                <p className="text-xl sm:text-2xl font-bold text-white">
-                  {number}
-                </p>
+                <p className="text-xl sm:text-2xl font-bold text-white">{number}</p>
                 <p className="text-xs sm:text-sm text-gray-300">{label}</p>
               </div>
             </motion.div>
@@ -111,10 +100,7 @@ export const FinalCTA: React.FC = () => {
           transition={{ duration: 0.8 }}
         >
           <div
-            className="inline-flex items-center gap-2 bg-gradient-to-r
-                       from-alluBlue-500/20 to-neon-yellow/20
-                       backdrop-blur-sm border border-neon-yellow/30
-                       rounded-full px-4 py-2 mb-7"
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-alluBlue-500/20 to-neon-yellow/20 backdrop-blur-sm border border-neon-yellow/30 rounded-full px-4 py-2 mb-7"
           >
             <Zap
               className="w-4 h-4 text-neon-yellow animate-pulse"
@@ -135,7 +121,7 @@ export const FinalCTA: React.FC = () => {
           <p className="text-xl md:text-2xl text-gray-200 leading-relaxed max-w-3xl mx-auto">
             You’ve seen what’s possible. You’ve heard from sellers who went from{" "}
             <span className="text-alluBlue-400 font-semibold">
-              struggling at  1% of quota{" "}
+              struggling at 1% of quota{" "}
             </span>
             to{" "}
             <span className="text-neon-yellow font-semibold">
@@ -156,7 +142,7 @@ export const FinalCTA: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto px-4">
             {FINAL_BENEFITS.map((b, i) => (
               <motion.div
-                key={b} // SUGGESTION: Use a shorter unique key or index if benefit text changes frequently
+                key={b}
                 className="flex items-start gap-3 text-left"
                 initial={{ opacity: 0, x: i % 2 ? 20 : -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -173,44 +159,9 @@ export const FinalCTA: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* ── CTA Button ─────────────────────────────────────────────── */}
-        <motion.div
-          className="mb-12 flex justify-center"
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-        >
-          <motion.button
-            className="group relative overflow-hidden px-10 py-5 rounded-full
-                       bg-neon-yellow text-alluBlue-900 font-bold text-lg sm:text-xl
-                       shadow-xl hover:shadow-neon-yellow/40 transition-all duration-300
-                       focus:ring-2 focus:ring-neon-yellow/50"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setIsFormOpen(true)}
-            aria-label="Reserve my free seat"
-          >
-            {/* Animated shine */}
-            <motion.span
-              className="pointer-events-none absolute inset-0 bg-white/40 skew-x-12"
-              animate={{ x: ["-150%", "150%"] }}
-              transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-              aria-hidden="true"
-            />
-            <span className="relative flex items-center gap-3">
-            Join Wait List
-              <ArrowRight
-                className="w-6 h-6 group-hover:translate-x-1 transition-transform"
-                aria-hidden="true"
-              />
-            </span>
-          </motion.button>
-        </motion.div>
-
         {/* ── Price Anchor & Countdown Text ─────────────────────────── */}
         <motion.div
-          className="mb-8 text-center"
+          className="mb-12 text-center"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -228,34 +179,20 @@ export const FinalCTA: React.FC = () => {
           </p>
         </motion.div>
 
-        <motion.div
-          className="border-t border-white/10 pt-6"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-        >
-          <div className="flex items-center justify-center gap-2 text-gray-200">
-            <Clock
-              className="w-5 h-5 text-neon-yellow animate-pulse"
-              aria-hidden="true"
-            />
-            <span className="font-semibold">
-              Only {timeLeft.hours}h {timeLeft.minutes}m left to grab your free
-              gift — secure your seat now
-            </span>
-          </div>
-        </motion.div>
+        {/* Removed countdown text block */}
+
+        {/* ── Embedded Inline Form ───────────────────────────────────── */}
+        <div id="final-cta-form" className="mt-12 max-w-lg mx-auto">
+          <HubSpotEmbed
+            formId={import.meta.env.VITE_HS_FORM_ID_STEP1 || "1750eaa7-b9fb-4852-a88e-5390ebb5eb6e"}
+            className="hs-form-inline"
+            sectionId="final-cta"
+          />
+        </div>
       </div>
 
       {/* Bottom fade for visual transition */}
       <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black to-transparent" />
-
-      {/* HubSpot signup form modal */}
-      <HubSpotFormPopup
-        isOpen={isFormOpen}
-        onClose={() => setIsFormOpen(false)}
-      />
     </MotionSection>
   );
 };
