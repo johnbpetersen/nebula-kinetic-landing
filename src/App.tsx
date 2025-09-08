@@ -12,6 +12,8 @@ import { StickyNav } from "./components/ui/sticky-nav";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import RegisterPage from "./pages/Register";
+import VipOffer from "./pages/VipOffer";
+import VipConfirmed from "./pages/VipConfirmed";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +29,8 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/vip-offer" element={<VipOffer />} />
+            <Route path="/vip-confirmed" element={<VipConfirmed />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
