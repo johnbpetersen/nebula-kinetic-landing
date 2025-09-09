@@ -22,10 +22,11 @@ const App = () => (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Tracking />
-        <StickyNav />
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          {/* StickyNav should be inside BrowserRouter if it uses Link/useLocation */}
+          <StickyNav />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/register" element={<RegisterPage />} />
