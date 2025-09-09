@@ -1,11 +1,19 @@
 // src/pages/VipOffer.tsx
-// VIP Offer page with a cleaner, celebratory hero (ticket icon), keeping the rest of the layout intact.
+// Final: removed the teaser bubble at the start of the offer section (hero teaser remains).
 
 import * as React from "react";
 import { Helmet } from "react-helmet-async";
 import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ScrollText, HelpCircle, PlayCircle, Users, ArrowRight, Ticket } from "lucide-react";
+import {
+  ScrollText,
+  HelpCircle,
+  PlayCircle,
+  Users,
+  ArrowRight,
+  ChevronDown, // for FAQ summaries
+} from "lucide-react";
+import HeroScrollExpansion from "@/components/hero/HeroScrollExpansion";
 
 const PERKS = [
   {
@@ -54,7 +62,6 @@ function getCheckoutUrl(): string {
 
 export default function VipOffer() {
   const [sp] = useSearchParams();
-  const name = sp.get("name") || "";
   const email = sp.get("email") || "";
   const eventTitle = sp.get("event") || DEFAULT_EVENT;
 
@@ -85,102 +92,78 @@ export default function VipOffer() {
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
-      <main className="section-container py-12 md:py-20">
+      {/* ==== Scroll-Expansion Hero (video) ==== */}
+      <HeroScrollExpansion
+        videoSrc="https://alluviance.s3.us-east-2.amazonaws.com/videos/alluviance+website+trim.mp4"
+        headline={<>You’re registered!</>}
+        subhead={
+          <>
+            We’ve sent your confirmation and calendar invite
+            {email ? (
+              <>
+                {" "}
+                to <strong className="text-white">{email}</strong>
+              </>
+            ) : (
+              " to your email"
+            )}
+            {" "}for <strong>{eventTitle}</strong>. Keep the momentum going below.
+          </>
+        }
+        anchorId="vip-pitch"
+      />
+
+      <main className="section-container py-16 md:py-24">
         <div className="mx-auto max-w-4xl space-y-12 md:space-y-16">
-          {/* 1) CELEBRATION HERO — simplified, bold, and clear */}
-          <motion.section
-            className="relative edge-glow glass-card px-6 py-10 md:px-10 md:py-14 text-center overflow-hidden"
-            initial={{ opacity: 0, y: -16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            aria-labelledby="reg-hero-title"
-          >
-            {/* subtle decorative sheen */}
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-0 opacity-15"
-              style={{
-                background:
-                  "radial-gradient(60% 60% at 20% 10%, rgba(255,228,94,0.22) 0%, rgba(255,228,94,0) 60%)",
-              }}
-            />
-            <div className="relative z-10 flex flex-col items-center">
-              <div className="w-16 h-16 rounded-2xl border border-neon-yellow/40 bg-neon-yellow/15 shadow-[0_0_40px_rgba(255,228,94,0.25)] flex items-center justify-center">
-                <Ticket className="w-8 h-8 text-neon-yellow" strokeWidth={2} />
-              </div>
-
-              <h1
-                id="reg-hero-title"
-                className="mt-5 text-4xl md:text-5xl font-display font-bold tracking-tight"
-              >
-                You’re Registered<span className="text-gradient">!</span>
-              </h1>
-
-              <p className="mt-3 text-base md:text-lg text-white/80">
-                We’ve sent your confirmation and calendar invite
-                {email ? (
-                  <>
-                    {" "}
-                    to <strong className="text-white">{email}</strong>
-                  </>
-                ) : (
-                  " to your email"
-                )}
-                {" "}for <strong>{eventTitle}</strong>.
-              </p>
-
-              <p className="mt-2 text-sm text-white/60">
-                You’re all set. Keep the momentum going below.
-              </p>
-            </div>
-          </motion.section>
-
           {/* 2) Core VIP Pitch */}
-          <section className="text-center" aria-labelledby="vip-offer-title">
+          <section id="vip-pitch" className="text-center" aria-labelledby="vip-offer-title">
             <motion.h2
               id="vip-offer-title"
               className="text-4xl md:text-5xl font-display text-gradient mb-4"
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.5 }}
             >
               Want to Go Deeper?
             </motion.h2>
             <motion.p
               className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
             >
               Upgrade to our VIP package for just $29 and stay after the masterclass for a{" "}
               <strong>30-minute immersive inner game experience</strong> with Alex to jumpstart your
               journey.
             </motion.p>
-          </section>
 
-          {/* Primary CTA */}
-          <motion.div
-            className="text-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-          >
-            <button
-              onClick={handleBuy}
-              className="btn-primary relative overflow-hidden group text-lg px-8 py-4"
-              aria-label="Upgrade to the full VIP experience for just $29"
+            {/* Primary CTA */}
+            <motion.div
+              className="text-center mt-6"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <span className="relative z-10 flex items-center gap-2">
-                Full VIP Upgrade — $29
-                <ArrowRight
-                  size={20}
-                  className="group-hover:translate-x-1 transition-transform"
-                  aria-hidden="true"
-                />
-              </span>
-              <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-neon-yellow/0 via-neon-yellow/30 to-neon-yellow/0 group-hover:translate-x-full transition-transform duration-1000" />
-            </button>
-          </motion.div>
+              <button
+                onClick={handleBuy}
+                className="btn-primary relative overflow-hidden group text-lg px-8 py-4"
+                aria-label="Upgrade to the full VIP experience for just $29"
+              >
+                <span className="relative z-10 flex items-center gap-2">
+                  Full VIP Upgrade — $29
+                  <ArrowRight
+                    size={20}
+                    className="group-hover:translate-x-1 transition-transform"
+                    aria-hidden="true"
+                  />
+                </span>
+                <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-neon-yellow/0 via-neon-yellow/30 to-neon-yellow/0 group-hover:translate-x-full transition-transform duration-1000" />
+              </button>
+            </motion.div>
+          </section>
 
           {/* 3) The Perks */}
           <section aria-labelledby="perks-title">
@@ -189,9 +172,10 @@ export default function VipOffer() {
                 <motion.div
                   key={perk.title}
                   className="relative flex items-center justify-center h-[300px] text-center p-6 rounded-2xl overflow-hidden"
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: 0.5 + i * 0.1 }}
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.5, delay: i * 0.08 }}
                 >
                   <img
                     src={perk.bgImage}
@@ -276,20 +260,3 @@ export default function VipOffer() {
     </div>
   );
 }
-
-const ChevronDown: React.FC<{ className?: string }> = ({ className }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className={className}
-  >
-    <path d="m6 9 6 6 6-6" />
-  </svg>
-);
