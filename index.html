@@ -1,3 +1,4 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -95,6 +96,19 @@
           y.parentNode.insertBefore(t, y);
         })(window, document, "clarity", "script", "sxsawjocgg");
       }
+    </script>
+
+    <!-- Runtime fallback injection for VIP checkout URL.
+         IMPORTANT: Set this env var in Vercel → Project Settings → Environment Variables.
+         Vite replaces %VITE_HUBSPOT_PAYMENT_LINK_URL% at build time. -->
+    <script>
+      (function () {
+        var injected = "%VITE_HUBSPOT_PAYMENT_LINK_URL%";
+        // Guard against unreplaced placeholder in case the env var isn't set in CI
+        if (injected && !/^%VITE_.+%$/.test(injected)) {
+          window.__VIP_PAYMENT_URL = injected;
+        }
+      })();
     </script>
   </head>
 

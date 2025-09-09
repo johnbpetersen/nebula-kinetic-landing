@@ -1,15 +1,12 @@
 // src/pages/VipOffer.tsx
-// Upgraded with branded perk images + robust HubSpot Payments env handling.
+// Robust env resolution (Vercel + local) with design as previously provided.
 
 import * as React from "react";
 import { Helmet } from "react-helmet-async";
 import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
-
-// Icons for the perks section
 import { ScrollText, HelpCircle, PlayCircle, Users, ArrowRight } from "lucide-react";
 
-// --- PERKS DATA (with new images) ---
 const PERKS = [
   {
     icon: ScrollText,
@@ -42,22 +39,17 @@ const PERKS = [
 ];
 
 const DEFAULT_EVENT = "Inner Game of Sales Masterclass";
-const DEFAULT_DATETIME = "Thursday at 2:00 PM CT";
 
-/**
- * Resolve checkout URL from env.
- * - Works with either VITE_STRIPE_PAYMENT_LINK_URL or VITE_HUBSPOT_PAYMENT_LINK_URL
- * - Falls back to window.__VIP_PAYMENT_URL if you ever inject via index.html
- */
 function getCheckoutUrl(): string {
-  // Vite injects env at build-time; dev server must be restarted after editing .env
   const env = (import.meta as any).env || {};
-  return (
-    env.VITE_HUBSPOT_PAYMENT_LINK_URL ||
-    env.VITE_STRIPE_PAYMENT_LINK_URL ||
-    (window as any).__VIP_PAYMENT_URL ||
-    ""
-  );
+  const fromEnv =
+    env.VITE_HUBSPOT_PAYMENT_LINK_URL || env.VITE_STRIPE_PAYMENT_LINK_URL || "";
+
+  const fromWindow = (window as any).__VIP_PAYMENT_URL;
+  const cleanedWindow =
+    typeof fromWindow === "string" && !/^%VITE_.+%$/.test(fromWindow) ? fromWindow : "";
+
+  return fromEnv || cleanedWindow || "";
 }
 
 export default function VipOffer() {
@@ -76,11 +68,12 @@ export default function VipOffer() {
   const handleBuy = () => {
     (window as any).dataLayer?.push({ event: "click_vip_buy" });
     if (!checkoutUrl) {
-      // Helpful debug for local + prod if env isn't picked up
+      // Helpful debug: will print the build-time env snapshot in console
+      // so you can confirm if Vercel injected the var.
       // eslint-disable-next-line no-console
-      console.error("VIP checkout URL missing. import.meta.env snapshot:", (import.meta as any).env);
+      console.error("VIP checkout URL missing. import.meta.env:", (import.meta as any).env);
       alert(
-        "VIP checkout isn’t configured yet. Set VITE_HUBSPOT_PAYMENT_LINK_URL (or VITE_STRIPE_PAYMENT_LINK_URL) in your .env and restart the dev server."
+        "VIP checkout isn’t configured yet. Set VITE_HUBSPOT_PAYMENT_LINK_URL in your Vercel Environment Variables (and in your local .env), then redeploy/restart."
       );
       return;
     }
@@ -177,7 +170,7 @@ export default function VipOffer() {
                     alt=""
                     className="absolute inset-0 w-full h-full object-cover brightness-50"
                   />
-                  <div className="absolute inset-0 bg-black/60" />
+                  <div className="absolute inset-0 bg-black/60"></div>
                   <div className="relative z-10">
                     <perk.icon className="w-12 h-12 mx-auto text-neon-yellow" strokeWidth={1.5} />
                     <h3 className="mt-4 text-2xl font-display">{perk.title}</h3>
@@ -240,7 +233,6 @@ export default function VipOffer() {
   );
 }
 
-// A helper component for the Q&A accordion icon
 const ChevronDown: React.FC<{ className?: string }> = ({ className }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
