@@ -1,22 +1,32 @@
 // src/components/ui/sticky-nav.tsx
-// Purpose: Renders a sticky navigation bar that appears after scrolling past the hero section and provides a quick registration CTA that scrolls to the final form.
-// Dependencies: React, framer-motion (motion, useScroll, useMotionValueEvent), lucide-react (ArrowRight)
-// Last Updated: August 28, 2025, 11:52 AM EDT
+// Purpose: Renders a sticky navigation bar on marketing pages, hidden on VIP checkout/confirmation.
+// Hides itself on /vip-offer and /vip-confirmed so we don’t distract from the upsell or post-purchase state.
+// Last Updated: September 9, 2025
 
-import React, { useRef, useState } from "react"; // Added useState to import
+import React, { useRef, useState } from "react";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { hasMasterclassPassed } from "../../config/eventMeta";
+import { useLocation } from "react-router-dom";
 
 export const StickyNav: React.FC = () => {
-  const targetRef = useRef<HTMLDivElement>(null); // UNUSED: Consider removing if not needed
+  // Hide on these paths (exact matches)
+  const HIDDEN_PATHS = ["/vip-offer", "/vip-confirmed"];
+
+  const { pathname } = useLocation();
+  if (HIDDEN_PATHS.includes(pathname)) {
+    // Don’t render anything on VIP pages
+    return null;
+  }
+
+  const targetRef = useRef<HTMLDivElement>(null); // (Currently unused; kept for potential future anchor logic)
   const { scrollY } = useScroll();
   const [isVisible, setIsVisible] = useState(false);
 
   // Dynamic button text based on event status
   const buttonText = hasMasterclassPassed() ? "Join Wait List" : "Register For Free";
 
-  // Section: Show nav when scrolled beyond 90% of viewport height (hero section)
+  // Show nav when scrolled beyond ~90% of viewport height (hero section)
   useMotionValueEvent(scrollY, "change", (latest) => {
     const vh = window.innerHeight;
     const threshold = vh * 0.9; // 90vh
@@ -51,7 +61,7 @@ export const StickyNav: React.FC = () => {
                 className="h-10 w-auto"
                 width={72}
                 height={40}
-                loading="eager" // small image
+                loading="eager"
               />
             </picture>
           </a>
@@ -60,11 +70,16 @@ export const StickyNav: React.FC = () => {
         {/* CTA Button to scroll to registration form */}
         <div>
           <motion.button
-            type="button" // Prevent implicit form submission
+            type="button"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="group relative overflow-hidden px-6 py-2 rounded-full bg-neon-yellow text-alluBlue-900 font-bold text-base shadow-xl hover:shadow-neon-yellow/40 transition-all duration-300 focus:ring-2 focus:ring-neon-yellow/50 focus:outline-none"
-            onClick={() => document.getElementById("final-cta-form")?.scrollIntoView({ behavior: "smooth", block: "center" })}
+            onClick={() =>
+              document.getElementById("final-cta-form")?.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+              })
+            }
             aria-label="Scroll to registration form"
           >
             <span className="relative flex items-center gap-2">

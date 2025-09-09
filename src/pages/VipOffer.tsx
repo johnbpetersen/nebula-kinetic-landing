@@ -1,11 +1,11 @@
 // src/pages/VipOffer.tsx
-// Robust env resolution (Vercel + local) with design as previously provided.
+// VIP Offer page with a cleaner, celebratory hero (ticket icon), keeping the rest of the layout intact.
 
 import * as React from "react";
 import { Helmet } from "react-helmet-async";
 import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ScrollText, HelpCircle, PlayCircle, Users, ArrowRight } from "lucide-react";
+import { ScrollText, HelpCircle, PlayCircle, Users, ArrowRight, Ticket } from "lucide-react";
 
 const PERKS = [
   {
@@ -68,8 +68,6 @@ export default function VipOffer() {
   const handleBuy = () => {
     (window as any).dataLayer?.push({ event: "click_vip_buy" });
     if (!checkoutUrl) {
-      // Helpful debug: will print the build-time env snapshot in console
-      // so you can confirm if Vercel injected the var.
       // eslint-disable-next-line no-console
       console.error("VIP checkout URL missing. import.meta.env:", (import.meta as any).env);
       alert(
@@ -86,23 +84,53 @@ export default function VipOffer() {
         <title>VIP Upgrade | Alluviance Masterclass</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
+
       <main className="section-container py-12 md:py-20">
         <div className="mx-auto max-w-4xl space-y-12 md:space-y-16">
-          {/* 1) Confirmation Banner */}
+          {/* 1) CELEBRATION HERO — simplified, bold, and clear */}
           <motion.section
-            className="glass-card p-6"
-            initial={{ opacity: 0, y: -20 }}
+            className="relative edge-glow glass-card px-6 py-10 md:px-10 md:py-14 text-center overflow-hidden"
+            initial={{ opacity: 0, y: -16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
+            aria-labelledby="reg-hero-title"
           >
-            <div>
-              <h1 className="text-2xl md:text-3xl font-display font-bold leading-tight text-center">
-                Smart move{name ? `, ${name}` : ""}! We’ve locked in your seat for the {eventTitle}.
+            {/* subtle decorative sheen */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 opacity-15"
+              style={{
+                background:
+                  "radial-gradient(60% 60% at 20% 10%, rgba(255,228,94,0.22) 0%, rgba(255,228,94,0) 60%)",
+              }}
+            />
+            <div className="relative z-10 flex flex-col items-center">
+              <div className="w-16 h-16 rounded-2xl border border-neon-yellow/40 bg-neon-yellow/15 shadow-[0_0_40px_rgba(255,228,94,0.25)] flex items-center justify-center">
+                <Ticket className="w-8 h-8 text-neon-yellow" strokeWidth={2} />
+              </div>
+
+              <h1
+                id="reg-hero-title"
+                className="mt-5 text-4xl md:text-5xl font-display font-bold tracking-tight"
+              >
+                You’re Registered<span className="text-gradient">!</span>
               </h1>
-              <p className="mt-4 text-base text-gray-300">
-                We’ve sent a confirmation and calendar invite to
-                {email ? <strong className="text-white"> {email}</strong> : " your email"}.
-                <span className="mt-1 block">You’re all set. But... there’s one more thing!</span>
+
+              <p className="mt-3 text-base md:text-lg text-white/80">
+                We’ve sent your confirmation and calendar invite
+                {email ? (
+                  <>
+                    {" "}
+                    to <strong className="text-white">{email}</strong>
+                  </>
+                ) : (
+                  " to your email"
+                )}
+                {" "}for <strong>{eventTitle}</strong>.
+              </p>
+
+              <p className="mt-2 text-sm text-white/60">
+                You’re all set. Keep the momentum going below.
               </p>
             </div>
           </motion.section>
@@ -189,22 +217,38 @@ export default function VipOffer() {
             <div className="space-y-4 max-w-2xl mx-auto">
               <details className="glass-card p-5 cursor-pointer group">
                 <summary className="text-lg font-semibold flex justify-between items-center">
-                  Do I need to attend live?
+                  Who is the VIP experience for and what do I get with it that's not included in the Masterclass?
                   <ChevronDown className="w-5 h-5 transition-transform duration-300 transform group-open:rotate-180" />
                 </summary>
                 <p className="mt-3 text-gray-300">
-                  No—VIP includes the full replay so you won’t miss a thing. You can watch it
-                  anytime, anywhere.
+                  The VIP package is for those who don't like to sit back and wait. You will have the opportunity to meet other sales professionals who also are on their own journey to improve their inner game. And you'll get to apply what you've learned in a very real and hands-on way.
                 </p>
               </details>
               <details className="glass-card p-5 cursor-pointer group">
                 <summary className="text-lg font-semibold flex justify-between items-center">
-                  What if I’m not selected for a hot-seat?
+                  Do I need to attend live?
                   <ChevronDown className="w-5 h-5 transition-transform duration-300 transform group-open:rotate-180" />
                 </summary>
                 <p className="mt-3 text-gray-300">
-                  You’ll still get massive value from hearing the live coaching of your peers and
-                  can submit your own questions via the priority Q&amp;A.
+                  No. The VIP package includes the full replay so it's not required to attend live, but we highly recommend it as there will be live exercises, coaching, and Q&amp;A.
+                </p>
+              </details>
+              <details className="glass-card p-5 cursor-pointer group">
+                <summary className="text-lg font-semibold flex justify-between items-center">
+                  I'm signed up for the masterclass. Do I still need to purchase a VIP ticket to attend the Masterclass?
+                  <ChevronDown className="w-5 h-5 transition-transform duration-300 transform group-open:rotate-180" />
+                </summary>
+                <p className="mt-3 text-gray-300">
+                  Absolutely not! You're all set for the Masterclass. The VIP package is for those ready to jump right in and starting applying the concepts from the masterclass immediately.
+                </p>
+              </details>
+              <details className="glass-card p-5 cursor-pointer group">
+                <summary className="text-lg font-semibold flex justify-between items-center">
+                  Can I purchase a ticket to the VIP experience later?
+                  <ChevronDown className="w-5 h-5 transition-transform duration-300 transform group-open:rotate-180" />
+                </summary>
+                <p className="mt-3 text-gray-300">
+                  We are intentionally keeping this setting small and intimate. There are no guarantees that you will be able to purchase a ticket later.
                 </p>
               </details>
             </div>
