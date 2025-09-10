@@ -1,5 +1,5 @@
 // src/pages/VipOffer.tsx
-// Final: removed the teaser bubble at the start of the offer section (hero teaser remains).
+// Uses the updated HeroScrollExpansion. No structural changes needed here; keeping your latest copy & assets.
 
 import * as React from "react";
 import { Helmet } from "react-helmet-async";

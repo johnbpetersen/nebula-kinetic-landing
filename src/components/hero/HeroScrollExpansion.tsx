@@ -1,9 +1,15 @@
 // src/components/hero/HeroScrollExpansion.tsx
 // Card→full-bleed scroll expansion with REAL “fly-off” text + bottom teaser bar.
-// Updates:
-// - Teaser bar is now VISIBLE ON LOAD (no scroll needed).
-// - Teaser bar is perfectly centered using a full-width flex container.
-// - All other behavior unchanged.
+// New in this version:
+// 1) In-video cue line under the subhead: “Scroll down for even more greatness” + bouncing chevron.
+//    • It sits INSIDE the video box and also flies off with the text.
+//    • Clicking it scrolls to the VIP section.
+// 2) Mobile sizing fixes:
+//    • Wider starting card on small screens (smarter clip-path insets).
+//    • Smaller, responsive typography to prevent overflow/bleed.
+//    • Tighter max-widths for text on mobile.
+//
+// Usage stays the same.
 
 import * as React from "react";
 import {
@@ -13,6 +19,7 @@ import {
   useReducedMotion,
   useMotionValueEvent,
 } from "framer-motion";
+import { ChevronDown } from "lucide-react";
 
 type Props = {
   videoSrc: string;
@@ -34,11 +41,24 @@ export default function HeroScrollExpansion({
 
   // Responsive off-screen distance for the fly-away animation
   const [offX, setOffX] = React.useState<number>(800);
+  // Responsive starting inset for the “card” (wider on mobile so it doesn’t look half-width)
+  const [startInset, setStartInset] = React.useState<string>("inset(22% 22% 22% 22% round 28px)");
+
   React.useEffect(() => {
-    const set = () => setOffX(Math.round(window.innerWidth * 0.7));
-    set();
-    window.addEventListener("resize", set);
-    return () => window.removeEventListener("resize", set);
+    const recompute = () => {
+      const w = window.innerWidth;
+      // On small screens, make the card WIDER to avoid the "half-width" feel.
+      // Slightly less top/bottom inset, much less left/right inset.
+      if (w < 640) {
+        setStartInset("inset(18% 12% 18% 12% round 20px)");
+      } else {
+        setStartInset("inset(22% 22% 22% 22% round 28px)");
+      }
+      setOffX(Math.round(w * 0.7));
+    };
+    recompute();
+    window.addEventListener("resize", recompute);
+    return () => window.removeEventListener("resize", recompute);
   }, []);
 
   const { scrollYProgress } = useScroll({
@@ -46,31 +66,32 @@ export default function HeroScrollExpansion({
     offset: ["start start", "end start"],
   });
 
-  // Thinner starting card -> expand to full-bleed
+  // Thinner starting card -> expand to full-bleed (mobile gets the wider version via state)
   const clipPath = useTransform(
     scrollYProgress,
     [0, 0.72, 1],
-    [
-      "inset(22% 22% 22% 22% round 28px)",
-      "inset(0% 0% 0% 0% round 0px)",
-      "inset(0% 0% 0% 0% round 0px)",
-    ]
+    [startInset, "inset(0% 0% 0% 0% round 0px)", "inset(0% 0% 0% 0% round 0px)"]
   );
 
-  // Text fly-off: headline LEFT, subhead RIGHT
+  // Text fly-off: headline LEFT, subhead RIGHT, hint RIGHT (PowerPoint-style)
   const titleX = useTransform(scrollYProgress, [0.12, 0.42], [0, -offX]);
   const subX   = useTransform(scrollYProgress, [0.12, 0.42], [0,  offX]);
+  const hintX  = useTransform(scrollYProgress, [0.12, 0.42], [0,  offX]);
+
   const titleOpacity = useTransform(scrollYProgress, [0.08, 0.35, 0.42], [1, 0.85, 0]);
   const subOpacity   = useTransform(scrollYProgress, [0.08, 0.35, 0.42], [1, 0.9,  0]);
+  const hintOpacity  = useTransform(scrollYProgress, [0.10, 0.35, 0.42], [1, 0.9,  0]);
+
+  // Keep a subtle global overlay scale so text feels like it’s part of the expansion.
   const overlayScale = useTransform(scrollYProgress, [0, 0.35, 1], [1, 1.03, 1.03]);
 
   // Media motion
   const mediaScale = useTransform(scrollYProgress, [0, 0.72, 1], [0.995, 1, 1]);
   const mediaOpacity = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
 
-  // Bottom teaser bar — now visible immediately; fades out as hero releases.
+  // Bottom teaser bar — visible immediately; fades out as hero releases.
   const teaserOpacity = useTransform(scrollYProgress, [0, 0.85, 0.95], [1, 1, 0]);
-  const teaserY = useTransform(scrollYProgress, [0, 0.06], [0, 0]); // no slide-in; present from start
+  const teaserY = useTransform(scrollYProgress, [0, 0.06], [0, 0]); // present from start
 
   // Reduced motion: show full-bleed, static overlay, teaser always visible
   const maskedStyle = prefersReducedMotion
@@ -80,17 +101,9 @@ export default function HeroScrollExpansion({
       }
     : { clipPath: clipPath as any, WebkitClipPath: clipPath as any };
 
-  const overlayStyle = prefersReducedMotion
-    ? { opacity: 1 }
-    : { scale: overlayScale };
-
-  const mediaStyle = prefersReducedMotion
-    ? { transform: "scale(1)", opacity: 1 }
-    : { scale: mediaScale, opacity: mediaOpacity };
-
-  const teaserStyle = prefersReducedMotion
-    ? { opacity: 1, y: 0 }
-    : { opacity: teaserOpacity, y: teaserY };
+  const overlayStyle = prefersReducedMotion ? { opacity: 1 } : { scale: overlayScale };
+  const mediaStyle = prefersReducedMotion ? { transform: "scale(1)", opacity: 1 } : { scale: mediaScale, opacity: mediaOpacity };
+  const teaserStyle = prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: teaserOpacity, y: teaserY };
 
   // Clamp subhead to avoid spill during scale
   const clamp4: React.CSSProperties & Record<string, any> = {
@@ -126,19 +139,12 @@ export default function HeroScrollExpansion({
   };
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative min-h-[220vh]"
-      aria-label="Registration confirmed"
-    >
+    <section ref={sectionRef} className="relative min-h-[220vh]" aria-label="Registration confirmed">
       <div className="sticky top-0 h-screen overflow-hidden">
         <div className="absolute inset-0 bg-alluBlue-900" />
 
         {/* Expanding masked layer (card -> full) */}
-        <motion.div
-          className="absolute inset-0 will-change-[clip-path,transform,opacity]"
-          style={maskedStyle}
-        >
+        <motion.div className="absolute inset-0 will-change-[clip-path,transform,opacity]" style={maskedStyle}>
           {/* Video */}
           <motion.div className="absolute inset-0" style={mediaStyle}>
             <video
@@ -162,45 +168,43 @@ export default function HeroScrollExpansion({
           </motion.div>
 
           {/* Overlay content — centered vertically */}
-          <motion.div
-            className="relative z-10 flex h-full items-center justify-center px-6"
-            style={overlayStyle}
-          >
-            <div className="text-center mx-auto w-full max-w-3xl">
-              {/* Headline: flies LEFT */}
+          <motion.div className="relative z-10 flex h-full items-center justify-center px-4 sm:px-6" style={overlayStyle}>
+            <div className="text-center mx-auto w-full max-w-[30ch] sm:max-w-[42ch] md:max-w-3xl">
+              {/* Headline: responsive sizing; flies LEFT */}
               <motion.h1
-                className="text-4xl md:text-5xl font-display font-bold tracking-tight"
-                style={
-                  prefersReducedMotion
-                    ? undefined
-                    : { x: titleX, opacity: titleOpacity }
-                }
+                className="text-3xl sm:text-4xl md:text-5xl font-display font-bold tracking-tight leading-tight"
+                style={prefersReducedMotion ? undefined : { x: titleX, opacity: titleOpacity }}
               >
                 {headline}
               </motion.h1>
 
-              {/* Subhead: flies RIGHT, clamped to 4 lines */}
+              {/* Subhead: responsive sizing; flies RIGHT, clamped */}
               {subhead ? (
                 <motion.p
-                  className="mt-3 text-base md:text-lg text-white/85 mx-auto max-w-[52ch] leading-snug"
-                  style={
-                    prefersReducedMotion
-                      ? (clamp4 as any)
-                      : ({ x: subX, opacity: subOpacity, ...clamp4 } as any)
-                  }
+                  className="mt-3 text-sm sm:text-base md:text-lg text-white/85 mx-auto max-w-[28ch] sm:max-w-[40ch] md:max-w-[52ch] leading-snug"
+                  style={prefersReducedMotion ? (clamp4 as any) : ({ x: subX, opacity: subOpacity, ...clamp4 } as any)}
                 >
                   {subhead}
                 </motion.p>
               ) : null}
+
+              {/* In-video cue line — inside the video box, flies off with the text */}
+              <motion.button
+                type="button"
+                onClick={scrollToAnchor}
+                className="mt-5 inline-flex items-center gap-2 text-xs sm:text-sm md:text-base font-semibold text-[#FFE45E] hover:text-white transition"
+                style={prefersReducedMotion ? undefined : { x: hintX, opacity: hintOpacity }}
+                aria-label="Scroll to VIP details"
+              >
+                <span className="whitespace-nowrap">Scroll down for even more greatness</span>
+                <ChevronDown className="w-4 h-4 sm:w-5 sm:h-5 animate-bounce-slow" aria-hidden />
+              </motion.button>
             </div>
           </motion.div>
         </motion.div>
 
         {/* Bottom teaser bar — centered full-width container */}
-        <motion.div
-          className="absolute inset-x-0 bottom-6 z-20 flex justify-center px-6"
-          style={teaserStyle}
-        >
+        <motion.div className="absolute inset-x-0 bottom-6 z-20 flex justify-center px-6" style={teaserStyle}>
           <button
             type="button"
             onClick={scrollToAnchor}
