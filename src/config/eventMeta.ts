@@ -1,8 +1,8 @@
 // src/config/eventMeta.ts
 export const eventMeta = {
     // ISO 8601 format for September 25, 2025, 2:00 PM CDT (UTC-5)
-    rawDate: '2025-09-25T14:00:00-05:00',
-    displayDate: 'September 25th, 2025',
+    rawDate: '2025-10-02T14:00:00-05:00',
+    displayDate: 'October 2nd, 2025',
     displayTime: '2:00 PM CT',
   };
   
