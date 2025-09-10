@@ -223,7 +223,7 @@ export default function HeroScrollExpansion({
               <span className="font-semibold">Click to see offer</span>
             </span>
             <span className="ml-2 rounded-full bg-[#FFE45E] text-alluBlue-900 font-bold px-3 py-1">
-              $29
+              $19
             </span>
           </button>
         </motion.div>

@@ -133,7 +133,7 @@ export default function VipOffer() {
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              Upgrade to our VIP package for just $29 and stay after the masterclass for a{" "}
+              Upgrade to our VIP package for just $19 and stay after the masterclass for a{" "}
               <strong>30-minute immersive inner game experience</strong> with Alex to jumpstart your
               journey.
             </motion.p>
@@ -149,10 +149,10 @@ export default function VipOffer() {
               <button
                 onClick={handleBuy}
                 className="btn-primary relative overflow-hidden group text-lg px-8 py-4"
-                aria-label="Upgrade to the full VIP experience for just $29"
+                aria-label="Upgrade to the full VIP experience for just $19"
               >
                 <span className="relative z-10 flex items-center gap-2">
-                  Full VIP Upgrade — $29
+                  Full VIP Upgrade — $19
                   <ArrowRight
                     size={20}
                     className="group-hover:translate-x-1 transition-transform"
@@ -288,9 +288,9 @@ export default function VipOffer() {
               <button
                 onClick={handleBuy}
                 className="bg-neon-yellow text-alluBlue-900 font-bold text-lg rounded-full px-10 py-4 shadow-lg hover:shadow-neon-yellow/40 transition-all duration-300 hover:scale-105 active:scale-95"
-                aria-label="Buy VIP access for $29"
+                aria-label="Buy VIP access for $19"
               >
-                Upgrade to VIP — $29
+                Upgrade to VIP — $19
               </button>
               <p className="mt-3 text-sm text-gray-400">One-time payment • Full replay included</p>
             </div>
