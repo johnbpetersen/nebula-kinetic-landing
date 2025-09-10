@@ -198,42 +198,83 @@ export default function VipOffer() {
             <h2 id="faq-title" className="text-3xl font-display text-center mb-8">
               Frequently Asked Questions
             </h2>
+
             <div className="space-y-4 max-w-2xl mx-auto">
-              <details className="glass-card p-5 cursor-pointer group">
-                <summary className="text-lg font-semibold flex justify-between items-center">
-                  Who is the VIP experience for and what do I get with it that's not included in the Masterclass?
-                  <ChevronDown className="w-5 h-5 transition-transform duration-300 transform group-open:rotate-180" />
+              {/* FAQ Item */}
+              <details className="group glass-card rounded-2xl">
+                <summary className="flex items-start gap-3 p-5 cursor-pointer">
+                  <span className="flex-1 text-lg font-semibold leading-snug text-left">
+                    Who is the VIP experience for and what do I get with it that's not included in the Masterclass?
+                  </span>
+                  <ChevronDown
+                    className="w-5 h-5 shrink-0 text-white/70 transition-transform duration-300 group-open:rotate-180"
+                    aria-hidden="true"
+                  />
                 </summary>
-                <p className="mt-3 text-gray-300">
-                  The VIP package is for those who don't like to sit back and wait. You will have the opportunity to meet other sales professionals who also are on their own journey to improve their inner game. And you'll get to apply what you've learned in a very real and hands-on way.
-                </p>
+                <div className="px-5 pb-5 -mt-2">
+                  <p className="text-gray-300">
+                    The VIP package is for those who don't like to sit back and wait. You will have the
+                    opportunity to meet other sales professionals who also are on their own journey to improve their
+                    inner game. And you'll get to apply what you've learned in a very real and hands-on way.
+                  </p>
+                </div>
               </details>
-              <details className="glass-card p-5 cursor-pointer group">
-                <summary className="text-lg font-semibold flex justify-between items-center">
-                  Do I need to attend live?
-                  <ChevronDown className="w-5 h-5 transition-transform duration-300 transform group-open:rotate-180" />
+
+              {/* FAQ Item */}
+              <details className="group glass-card rounded-2xl">
+                <summary className="flex items-start gap-3 p-5 cursor-pointer">
+                  <span className="flex-1 text-lg font-semibold leading-snug text-left">
+                    Do I need to attend live?
+                  </span>
+                  <ChevronDown
+                    className="w-5 h-5 shrink-0 text-white/70 transition-transform duration-300 group-open:rotate-180"
+                    aria-hidden="true"
+                  />
                 </summary>
-                <p className="mt-3 text-gray-300">
-                  No. The VIP package includes the full replay so it's not required to attend live, but we highly recommend it as there will be live exercises, coaching, and Q&amp;A.
-                </p>
+                <div className="px-5 pb-5 -mt-2">
+                  <p className="text-gray-300">
+                    No. The VIP package includes the full replay so it's not required to attend live, but we highly
+                    recommend it as there will be live exercises, coaching, and Q&amp;A.
+                  </p>
+                </div>
               </details>
-              <details className="glass-card p-5 cursor-pointer group">
-                <summary className="text-lg font-semibold flex justify-between items-center">
-                  I'm signed up for the masterclass. Do I still need to purchase a VIP ticket to attend the Masterclass?
-                  <ChevronDown className="w-5 h-5 transition-transform duration-300 transform group-open:rotate-180" />
+
+              {/* FAQ Item */}
+              <details className="group glass-card rounded-2xl">
+                <summary className="flex items-start gap-3 p-5 cursor-pointer">
+                  <span className="flex-1 text-lg font-semibold leading-snug text-left">
+                    I'm signed up for the masterclass. Do I still need to purchase a VIP ticket to attend the Masterclass?
+                  </span>
+                  <ChevronDown
+                    className="w-5 h-5 shrink-0 text-white/70 transition-transform duration-300 group-open:rotate-180"
+                    aria-hidden="true"
+                  />
                 </summary>
-                <p className="mt-3 text-gray-300">
-                  Absolutely not! You're all set for the Masterclass. The VIP package is for those ready to jump right in and starting applying the concepts from the masterclass immediately.
-                </p>
+                <div className="px-5 pb-5 -mt-2">
+                  <p className="text-gray-300">
+                    Absolutely not! You're all set for the Masterclass. The VIP package is for those ready to jump
+                    right in and start applying the concepts from the masterclass immediately.
+                  </p>
+                </div>
               </details>
-              <details className="glass-card p-5 cursor-pointer group">
-                <summary className="text-lg font-semibold flex justify-between items-center">
-                  Can I purchase a ticket to the VIP experience later?
-                  <ChevronDown className="w-5 h-5 transition-transform duration-300 transform group-open:rotate-180" />
+
+              {/* FAQ Item */}
+              <details className="group glass-card rounded-2xl">
+                <summary className="flex items-start gap-3 p-5 cursor-pointer">
+                  <span className="flex-1 text-lg font-semibold leading-snug text-left">
+                    Can I purchase a ticket to the VIP experience later?
+                  </span>
+                  <ChevronDown
+                    className="w-5 h-5 shrink-0 text-white/70 transition-transform duration-300 group-open:rotate-180"
+                    aria-hidden="true"
+                  />
                 </summary>
-                <p className="mt-3 text-gray-300">
-                  We are intentionally keeping this setting small and intimate. There are no guarantees that you will be able to purchase a ticket later.
-                </p>
+                <div className="px-5 pb-5 -mt-2">
+                  <p className="text-gray-300">
+                    We are intentionally keeping this setting small and intimate. There are no guarantees that you
+                    will be able to purchase a ticket later.
+                  </p>
+                </div>
               </details>
             </div>
           </section>

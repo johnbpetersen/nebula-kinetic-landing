@@ -220,7 +220,7 @@ export default function HeroScrollExpansion({
                 VIP below
               </span>
               <span className="h-1 w-1 rounded-full bg-[#FFE45E]/80" />
-              <span className="font-semibold">Scroll to see details</span>
+              <span className="font-semibold">Click to see offer</span>
             </span>
             <span className="ml-2 rounded-full bg-[#FFE45E] text-alluBlue-900 font-bold px-3 py-1">
               $29

@@ -249,3 +249,11 @@
      .hubspot-form-container iframe {
       width: 100% !important;
     }
+
+  /* Remove native summary marker so only our chevron shows */
+  details > summary {
+    list-style: none;
+  }
+  details > summary::-webkit-details-marker {
+    display: none;
+  }
