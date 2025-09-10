@@ -1,5 +1,4 @@
 // src/pages/VipConfirmed.tsx
-// Designed by Gemini, inspired by Alluviance.
 
 import * as React from "react";
 import { Helmet } from "react-helmet-async";
@@ -70,7 +69,7 @@ export default function VipConfirmed() {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-alluBlue-900 text-white flex items-center justify-center overflow-hidden font-sans p-6">
+    <div className="relative min-h-screen bg-alluBlue-900 text-white flex flex-col items-center justify-center overflow-hidden font-sans p-6">
       <Helmet>
         <title>VIP Confirmed | Alluviance Masterclass</title>
         <meta name="robots" content="noindex, nofollow" />
@@ -93,29 +92,39 @@ export default function VipConfirmed() {
         </h1>
 
         <p className="mt-4 text-lg text-gray-300 max-w-lg mx-auto">
-          You're all set for the 30-minute interactive VIP session with Alex. Get ready to go deeper.
+          You're all set for the 30-minute interactive VIP session with Alex immediately after the Inner Game Masterclass. Get ready to go deeper.
         </p>
 
         <div className="my-8 h-[1px] w-24 bg-gradient-to-r from-neon-yellow/0 via-white/50 to-neon-yellow/0 mx-auto" />
 
         <div className="text-left space-y-4">
-            <div className="flex items-start gap-3">
-                <CheckCircle className="w-6 h-6 text-neon-yellow flex-shrink-0 mt-1" />
-                <div>
-                    <h2 className="font-semibold text-lg">Check Your Email</h2>
-                    <p className="text-gray-400">We've just sent a separate email with your exclusive VIP details, including calendar links and replay information.</p>
-                </div>
+          <div className="flex items-start gap-3">
+            <CheckCircle className="w-6 h-6 text-neon-yellow flex-shrink-0 mt-1" />
+            <div>
+              <h2 className="font-semibold text-lg">Check Your Email</h2>
+              <p className="text-gray-400">We've just sent a separate email with your exclusive VIP confirmation details.</p>
             </div>
-            <div className="flex items-start gap-3">
-                <CheckCircle className="w-6 h-6 text-neon-yellow flex-shrink-0 mt-1" />
-                <div>
-                    <h2 className="font-semibold text-lg">Prepare Your Questions</h2>
-                    <p className="text-gray-400">This is your chance for priority Q&A. Think about the one challenge you'd love to get coaching on.</p>
-                </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <CheckCircle className="w-6 h-6 text-neon-yellow flex-shrink-0 mt-1" />
+            <div>
+              <h2 className="font-semibold text-lg">Prepare Your Questions</h2>
+              <p className="text-gray-400">This is your chance for priority Q&amp;A. Think about the one challenge you'd love to get some guidance on.</p>
             </div>
+          </div>
         </div>
-
       </motion.main>
+
+      {/* Footer link */}
+      <div className="relative z-10 mt-8 text-sm text-gray-400">
+        Take me back to the{" "}
+        <a 
+          href="https://masterclass.alluviance.co" 
+          className="text-neon-yellow hover:underline"
+        >
+          Masterclass site
+        </a>.
+      </div>
     </div>
   );
 }

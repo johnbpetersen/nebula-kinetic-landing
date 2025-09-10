@@ -1,5 +1,4 @@
 // src/pages/VipOffer.tsx
-// Uses the updated HeroScrollExpansion. No structural changes needed here; keeping your latest copy & assets.
 
 import * as React from "react";
 import { Helmet } from "react-helmet-async";
@@ -11,7 +10,7 @@ import {
   PlayCircle,
   Users,
   ArrowRight,
-  ChevronDown, // for FAQ summaries
+  ChevronDown,
 } from "lucide-react";
 import HeroScrollExpansion from "@/components/hero/HeroScrollExpansion";
 
