@@ -1,7 +1,5 @@
 // src/components/sections/hero.tsx
-// Purpose: Renders the hero section with an animated starfield background, floating blobs, headline copy, video player, and embedded registration form.
-// Dependencies: React, framer-motion (motion), lucide-react (ArrowRight, ChevronDown), VideoPlayer, HubSpotEmbed
-// Last Updated: August 28, 2025, 10:55 AM EDT
+// Final version with the date/time moved above the form.
 
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
@@ -134,12 +132,10 @@ export const Hero: React.FC = () => {
     >
       <Starfield speedFactor={slowStars ? 0.75 : 1} disabled={prefersReduced} />
 
-      {/* Decorative floating blobs */}
       <Blob className="w-[500px] h-[500px] bg-alluBlue-400 top-20 -right-64" delay={2} />
       <Blob className="w-[600px] h-[600px] bg-alluBlue -top-64 left-40" delay={0} />
       <Blob className="w-[300px] h-[300px] bg-neon-yellow bottom-20 -left-20" delay={3} />
 
-      {/* Soft glow overlay */}
       <div className="absolute left-1/4 top-1/4 w-[50vw] h-[50vw] bg-alluBlue-400/10 rounded-full blur-[220px] pointer-events-none" />
 
       <div className="section-container relative z-10 py-20">
@@ -182,16 +178,7 @@ export const Hero: React.FC = () => {
               How the Top&nbsp;1&nbsp;% Crush Quota&nbsp;Without&nbsp;Burning&nbsp;Out
             </motion.h2>
 
-            <motion.p
-              className="text-lg font-bold tracking-wide mb-6"
-              {...motionIfDesktop({
-                initial: { opacity: 0, y: 20 },
-                animate: { opacity: 1, y: 0 },
-                transition: { duration: 0.5, delay: 0.2 },
-              })}
-            >
-              FREE&nbsp;MASTERCLASS&nbsp;•&nbsp;{eventMeta.displayDate}&nbsp;@&nbsp;{eventMeta.displayTime}
-            </motion.p>
+            {/* --- THIS <p> BLOCK WAS REMOVED FROM HERE --- */}
           </div>
 
           {/* Video column */}
@@ -200,17 +187,29 @@ export const Hero: React.FC = () => {
           </div>
         </div>
 
-        {/* Embedded Form */}
-        <div className="mt-12 max-w-lg mx-auto">
-          <HubSpotEmbed
-            formId={import.meta.env.VITE_HS_FORM_ID_STEP1 || "1750eaa7-b9fb-4852-a88e-5390ebb5eb6e"}
-            className="hs-form-inline"
-            sectionId="hero"
-          />
+        {/* Embedded Form Section */}
+        <div className="mt-16 text-center">
+          {/* --- AND MOVED HERE, WITH NEW STYLING --- */}
+          <motion.div
+            className="mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <h3 className="text-xl font-bold tracking-wide uppercase">Free Masterclass</h3>
+            <p className="text-lg text-neon-yellow">{eventMeta.displayDate} @ {eventMeta.displayTime}</p>
+          </motion.div>
+
+          <div className="max-w-lg mx-auto">
+            <HubSpotEmbed
+              formId={import.meta.env.VITE_HS_FORM_ID_STEP1 || "1750eaa7-b9fb-4852-a88e-5390ebb5eb6e"}
+              className="hs-form-inline"
+              sectionId="hero"
+            />
+          </div>
         </div>
       </div>
 
-      {/* Scroll cue (decorative) */}
       <motion.div
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 0.8, y: 0 }}

@@ -1,7 +1,5 @@
 // src/components/sections/final-cta.tsx
-// Purpose: Renders the final call-to-action section with stats, benefits, and embedded inline registration form.
-// Dependencies: React, framer-motion (motion), MotionSection, HubSpotEmbed, lucide-react icons (Users, TrendingUp, CheckCircle, ArrowRight, Zap)
-// Last Updated: August 28, 2025, 12:30 PM EDT
+// Final version with the date/time moved to be a header for the form.
 
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
@@ -16,7 +14,6 @@ import {
 } from "lucide-react";
 import { eventMeta, hasMasterclassPassed } from "../../config/eventMeta";
 
-// Move benefits data to config or CMS for easier updates
 const FINAL_BENEFITS = [
   "Turn rejection into rocket fuel for your confidence",
   "Speak with unshakeable authority in every conversation",
@@ -32,7 +29,6 @@ export const FinalCTA: React.FC = () => {
     minutes: 0,
   });
 
-  /* -------- Timer until event date (commented out for now) -------- */
   useEffect(() => {
     const deadline = new Date(eventMeta.rawDate);
     const tick = () => {
@@ -51,17 +47,14 @@ export const FinalCTA: React.FC = () => {
     return () => clearInterval(id);
   }, []);
 
-  // Stats displayed above the CTA
   const stats = [
     { number: "300+", label: "Sellers Transformed", icon: Users },
     { number: "9.1", label: "Alluviance NPS Score", icon: TrendingUp },
-    // Removed: { number: `${timeLeft.hours}`, label: "Hours Left for a Free Gift", icon: Clock },
   ];
 
   return (
     <MotionSection className="relative bg-alluBlue-900 overflow-hidden pb-20" style={{ minHeight: "120vh" }}>
       <div className="section-container relative z-10">
-        {/* ── Stats Pills ─────────────────────────────────────────────── */}
         <motion.div
           className="flex flex-wrap justify-center gap-4 sm:gap-6 mb-16"
           initial={{ opacity: 0, y: -30 }}
@@ -91,7 +84,6 @@ export const FinalCTA: React.FC = () => {
           ))}
         </motion.div>
 
-        {/* ── Headline & Copy ─────────────────────────────────────────── */}
         <motion.div
           className="max-w-4xl mx-auto text-center mb-14"
           initial={{ opacity: 0, y: 30 }}
@@ -131,7 +123,6 @@ export const FinalCTA: React.FC = () => {
           </p>
         </motion.div>
 
-        {/* ── Benefit Bullets ─────────────────────────────────────────── */}
         <motion.div
           className="mb-14"
           initial={{ opacity: 0, y: 30 }}
@@ -159,39 +150,35 @@ export const FinalCTA: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* ── Price Anchor & Countdown Text ─────────────────────────── */}
-        <motion.div
-          className="mb-12 text-center"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-        >
-          <p className="text-lg text-gray-400 mb-3">
-            <span className="line-through text-gray-400">$297 Value</span> —
-            <span className="text-neon-yellow font-bold text-2xl ml-2">
-              FREE
-            </span>{" "}
-            for a limited time
-          </p>
-          <p className="text-xs text-gray-500 mt-2">
+        {/* --- Embedded Form Section --- */}
+        <div id="final-cta-form" className="mt-12 text-center">
+          {/* --- NEW Form Header --- */}
+          <motion.div
+            className="mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <h3 className="text-xl font-bold tracking-wide uppercase">
+              <span className="line-through text-gray-400/80">$297 Value</span> — Free Masterclass
+            </h3>
+            <p className="text-lg text-neon-yellow">{eventMeta.displayDate} @ {eventMeta.displayTime}</p>
+          </motion.div>
+
+          <div className="max-w-lg mx-auto">
+            <HubSpotEmbed
+              formId={import.meta.env.VITE_HS_FORM_ID_STEP1 || "1750eaa7-b9fb-4852-a88e-5390ebb5eb6e"}
+              className="hs-form-inline"
+              sectionId="final-cta"
+            />
+          </div>
+           <p className="text-xs text-gray-500 mt-3">
             No credit card required • 100% free training
           </p>
-        </motion.div>
-
-        {/* Removed countdown text block */}
-
-        {/* ── Embedded Inline Form ───────────────────────────────────── */}
-        <div id="final-cta-form" className="mt-12 max-w-lg mx-auto">
-          <HubSpotEmbed
-            formId={import.meta.env.VITE_HS_FORM_ID_STEP1 || "1750eaa7-b9fb-4852-a88e-5390ebb5eb6e"}
-            className="hs-form-inline"
-            sectionId="final-cta"
-          />
         </div>
       </div>
 
-      {/* Bottom fade for visual transition */}
       <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black to-transparent" />
     </MotionSection>
   );
