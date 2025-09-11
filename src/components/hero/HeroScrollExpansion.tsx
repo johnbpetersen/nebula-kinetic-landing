@@ -1,15 +1,8 @@
 // src/components/hero/HeroScrollExpansion.tsx
 // Card→full-bleed scroll expansion with REAL “fly-off” text + bottom teaser bar.
-// New in this version:
-// 1) In-video cue line under the subhead: “Scroll down for even more greatness” + bouncing chevron.
-//    • It sits INSIDE the video box and also flies off with the text.
-//    • Clicking it scrolls to the VIP section.
-// 2) Mobile sizing fixes:
-//    • Wider starting card on small screens (smarter clip-path insets).
-//    • Smaller, responsive typography to prevent overflow/bleed.
-//    • Tighter max-widths for text on mobile.
-//
-// Usage stays the same.
+// New: a subtle black wash overlay ABOVE the video (and vignette) so the hero text pops.
+// - The wash sits between the media and the text, participates in the masked expansion,
+//   and gently reduces from 22% → 12% opacity as you scroll.
 
 import * as React from "react";
 import {
@@ -47,8 +40,6 @@ export default function HeroScrollExpansion({
   React.useEffect(() => {
     const recompute = () => {
       const w = window.innerWidth;
-      // On small screens, make the card WIDER to avoid the "half-width" feel.
-      // Slightly less top/bottom inset, much less left/right inset.
       if (w < 640) {
         setStartInset("inset(18% 12% 18% 12% round 20px)");
       } else {
@@ -66,14 +57,14 @@ export default function HeroScrollExpansion({
     offset: ["start start", "end start"],
   });
 
-  // Thinner starting card -> expand to full-bleed (mobile gets the wider version via state)
+  // Thinner starting card -> expand to full-bleed
   const clipPath = useTransform(
     scrollYProgress,
     [0, 0.72, 1],
     [startInset, "inset(0% 0% 0% 0% round 0px)", "inset(0% 0% 0% 0% round 0px)"]
   );
 
-  // Text fly-off: headline LEFT, subhead RIGHT, hint RIGHT (PowerPoint-style)
+  // Text fly-off: headline LEFT, subhead RIGHT, hint RIGHT
   const titleX = useTransform(scrollYProgress, [0.12, 0.42], [0, -offX]);
   const subX   = useTransform(scrollYProgress, [0.12, 0.42], [0,  offX]);
   const hintX  = useTransform(scrollYProgress, [0.12, 0.42], [0,  offX]);
@@ -89,11 +80,14 @@ export default function HeroScrollExpansion({
   const mediaScale = useTransform(scrollYProgress, [0, 0.72, 1], [0.995, 1, 1]);
   const mediaOpacity = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
 
+  // NEW: Gentle black wash above video to boost text contrast (22% → 12%)
+  const washOpacity = useTransform(scrollYProgress, [0, 1], [0.22, 0.12]);
+
   // Bottom teaser bar — visible immediately; fades out as hero releases.
   const teaserOpacity = useTransform(scrollYProgress, [0, 0.85, 0.95], [1, 1, 0]);
-  const teaserY = useTransform(scrollYProgress, [0, 0.06], [0, 0]); // present from start
+  const teaserY = useTransform(scrollYProgress, [0, 0.06], [0, 0]);
 
-  // Reduced motion: show full-bleed, static overlay, teaser always visible
+  // Reduced motion variants
   const maskedStyle = prefersReducedMotion
     ? {
         clipPath: "inset(0% 0% 0% 0% round 0px)" as any,
@@ -157,6 +151,7 @@ export default function HeroScrollExpansion({
               playsInline
               preload="metadata"
             />
+            {/* Existing vignette */}
             <div
               aria-hidden
               className="pointer-events-none absolute inset-0"
@@ -164,6 +159,12 @@ export default function HeroScrollExpansion({
                 background:
                   "radial-gradient(80% 80% at 50% 35%, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.45) 60%, rgba(0,0,0,0.65) 100%)",
               }}
+            />
+            {/* NEW: subtle black wash above the video/vignette */}
+            <motion.div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 bg-black"
+              style={{ opacity: prefersReducedMotion ? 0.18 : washOpacity }}
             />
           </motion.div>
 
