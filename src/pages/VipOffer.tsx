@@ -336,9 +336,9 @@ export default function VipOffer() {
                     }}
                   />
 
-                  {/* Alex headshot */}
-                  <div className="relative flex md:block justify-center">
-                    <div className="relative w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36">
+                  {/* Alex headshot — centered on mobile, stacked vertically; left-aligned on md+ */}
+                  <div className="relative justify-self-center md:justify-self-start flex flex-col items-center md:block">
+                    <div className="relative w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 mx-auto md:mx-0 shrink-0">
                       <img
                         src="https://alluviance.s3.us-east-2.amazonaws.com/images/alex-headshot.jpeg"
                         alt="Alex Kremer"
@@ -349,10 +349,12 @@ export default function VipOffer() {
                       <span className="absolute -inset-1 rounded-3xl border border-[#FFE45E]/25 blur-[1px] pointer-events-none" />
                     </div>
 
-                    {/* Name + role (mobile under image; on md we’ll keep it near image) */}
-                    <div className="mt-4 text-center md:text-left">
+                    {/* Name + role (stacked, with controlled line-break on mobile) */}
+                    <div className="mt-3 sm:mt-4 text-center md:text-left">
                       <p className="text-white font-semibold leading-tight">Alex Kremer</p>
-                      <p className="text-white/70 text-sm">Host, Inner Game Masterclass</p>
+                      <p className="text-white/70 text-xs sm:text-sm leading-snug">
+                        Host, Inner <span className="block sm:inline">Game Masterclass</span>
+                      </p>
                     </div>
                   </div>
 
