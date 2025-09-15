@@ -27,28 +27,28 @@ const PERKS = [
     title: "Inner Game Practice",
     description:
       "Alex will lead the group through an immersive and interactive inner game experience to anchor the masterclass concepts.",
-    bgImage: "https://alluviance.s3.us-east-2.amazonaws.com/images/practicing.jpg",
+    bgImage: "https://alluviance.s3.us-east-2.amazonaws.com/images/practicing.webp",
   },
   {
     icon: HelpCircle,
     title: "Priority Q&A",
     description:
       "VIP questions jump the line so you leave with clarity and next steps you can implement immediately.",
-    bgImage: "https://alluviance.s3.us-east-2.amazonaws.com/images/hands-up.jpg",
+    bgImage: "https://alluviance.s3.us-east-2.amazonaws.com/images/hands-up.webp",
   },
   {
     icon: PlayCircle,
     title: "Full Masterclass Replay",
     description:
       "Can’t attend live? You’ll receive the full session recording right in your inbox to watch anytime.",
-    bgImage: "https://alluviance.s3.us-east-2.amazonaws.com/images/replay.jpg",
+    bgImage: "https://alluviance.s3.us-east-2.amazonaws.com/images/replay.webp",
   },
   {
     icon: Users,
     title: "Community Building",
     description:
       "Kept intentionally tight so you can get to know other sales professionals also committed to improving their inner game.",
-    bgImage: "https://alluviance.s3.us-east-2.amazonaws.com/images/community.jpg",
+    bgImage: "https://alluviance.s3.us-east-2.amazonaws.com/images/community.webp",
   },
 ];
 
