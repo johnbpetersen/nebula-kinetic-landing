@@ -1,6 +1,6 @@
 // src/pages/index.tsx
 // Purpose: Renders the main landing page, assembling all sections and metadata.
-// Last Updated: The Final Fix
+// Last Updated: Pixel removed from Helmet (we’ll manage it in index.html only).
 
 import React from "react";
 import { Helmet } from "react-helmet-async";
@@ -36,28 +36,6 @@ const Index: React.FC = () => {
   return (
     <>
       <Helmet>
-        {/* --- META PIXEL CODE --- */}
-        <script>
-          {`
-            !function(f,b,e,v,n,t,s)
-            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-            n.queue=[];t=b.createElement(e);t.async=!0;
-            t.src=v;s=b.getElementsByTagName(e)[0];
-            s.parentNode.insertBefore(t,s)}(window, document,'script',
-            'https://connect.facebook.net/en_US/fbevents.js');
-            fbq('init', '1134615768585363');
-            fbq('track', 'PageView');
-          `}
-        </script>
-        <noscript>
-          {`<img height="1" width="1" style="display:none"
-            src="https://www.facebook.com/tr?id=1134615768585363&ev=PageView&noscript=1"
-          />`}
-        </noscript>
-        {/* --- END META PIXEL CODE --- */}
-
         {/* Page metadata for SEO & social sharing */}
         <title>Inner Game Masterclass | Alluviance</title>
         <meta
