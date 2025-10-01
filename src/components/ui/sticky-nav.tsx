@@ -11,7 +11,7 @@ import { useLocation } from "react-router-dom";
 
 export const StickyNav: React.FC = () => {
   // Hide on these paths (exact matches)
-  const HIDDEN_PATHS = ["/vip-offer", "/vip-confirmed"];
+  const HIDDEN_PATHS = ["/vip-offer", "/vip-confirmed", "/vip-invite"];
 
   const { pathname } = useLocation();
   if (HIDDEN_PATHS.includes(pathname)) {

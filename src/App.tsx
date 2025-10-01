@@ -14,6 +14,7 @@ import NotFound from "./pages/NotFound";
 import RegisterPage from "./pages/Register";
 import VipOffer from "./pages/VipOffer";
 import VipConfirmed from "./pages/VipConfirmed";
+import VipInvite from "./pages/VipInvite";
 
 const queryClient = new QueryClient();
 
