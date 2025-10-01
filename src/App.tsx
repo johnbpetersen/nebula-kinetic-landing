@@ -33,6 +33,7 @@ const App = () => (
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/vip-offer" element={<VipOffer />} />
             <Route path="/vip-confirmed" element={<VipConfirmed />} />
+            <Route path="/vip-invite" element={<VipInvite />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
