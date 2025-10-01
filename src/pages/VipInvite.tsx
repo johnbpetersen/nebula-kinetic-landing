@@ -254,18 +254,6 @@ export default function VipInvite() {
                   </p>
                 </div>
               </details>
-
-              <details className="group glass-card rounded-2xl">
-                <summary className="flex items-start gap-4 p-6 md:p-7 cursor-pointer">
-                  <span className="flex-1 text-lg md:text-xl font-semibold leading-snug text-left">Can I purchase a ticket to the VIP experience later?</span>
-                  <ChevronDown className="w-5 h-5 md:w-6 md:h-6 shrink-0 text-white/70 transition-transform duration-300 group-open:rotate-180" aria-hidden="true" />
-                </summary>
-                <div className="px-6 md:px-7 pb-6 -mt-2">
-                  <p className="text-gray-300 leading-relaxed">
-                    We are intentionally keeping this setting small and intimate. There are no guarantees that you will be able to purchase a ticket later.
-                  </p>
-                </div>
-              </details>
             </div>
           </section>
 
