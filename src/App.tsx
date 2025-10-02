@@ -15,6 +15,7 @@ import RegisterPage from "./pages/Register";
 import VipOffer from "./pages/VipOffer";
 import VipConfirmed from "./pages/VipConfirmed";
 import VipInvite from "./pages/VipInvite";
+import Replay from "./pages/Replay";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,7 @@ const App = () => (
             <Route path="/vip-offer" element={<VipOffer />} />
             <Route path="/vip-confirmed" element={<VipConfirmed />} />
             <Route path="/vip-invite" element={<VipInvite />} />
+            <Route path="/replay" element={<Replay />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
