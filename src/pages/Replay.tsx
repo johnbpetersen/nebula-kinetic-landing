@@ -1,46 +1,68 @@
 // src/pages/Replay.tsx
-// Redesigned by Gemini to put the CTA first.
+// CTA-first Replay page: content sits higher; mobile shows CTA before video; CTA stays single-line.
 
 import * as React from "react";
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
-import { ArrowRight, CheckCircle } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 // --- CONFIG ---
-const REPLAY_MP4_URL = "https://alluviance.s3.us-east-2.amazonaws.com/videos/Beyond+Tactics+Masterclass+-+10.2.25.mp4";
-const POSTER_URL = "https://alluviance.s3.us-east-2.amazonaws.com/images/alluviance-masterclass-social-share.png";
-const HUBSPOT_BOOKING_LINK = "https://meetings.hubspot.com/alex3048/arise-immersion-introductory-call";
+const REPLAY_MP4_URL =
+  "https://alluviance.s3.us-east-2.amazonaws.com/videos/Beyond+Tactics+Masterclass+-+10.2.25.mp4";
+const POSTER_URL =
+  "https://alluviance.s3.us-east-2.amazonaws.com/images/alluviance-masterclass-social-share.png";
+const HUBSPOT_BOOKING_LINK =
+  "https://meetings.hubspot.com/alex3048/arise-immersion-introductory-call";
 
-/* ── Starfield canvas (from your hero) ───────────────────────── */
+/* ── Starfield (background flourish) ───────────────────────── */
 const Starfield: React.FC = () => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   React.useEffect(() => {
     const canvas = canvasRef.current; if (!canvas) return;
     const ctx = canvas.getContext("2d"); if (!ctx) return;
+
     let stars: { x: number; y: number; size: number; speed: number }[] = [];
     const createStars = () => {
-      canvas.width = window.innerWidth; canvas.height = window.innerHeight; stars = [];
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      stars = [];
       for (let i = 0; i < 200; i++) {
-        stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 1.5, speed: Math.random() * 0.2 + 0.1 });
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          size: Math.random() * 1.5,
+          speed: Math.random() * 0.2 + 0.1,
+        });
       }
     };
-    let animationFrameId: number;
+
+    let id = 0;
     const animate = () => {
       if (!ctx || !canvas) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = "rgba(228, 231, 255, 0.8)";
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "rgba(228, 231, 255, 0.8)";
       stars.forEach((star) => {
-        star.y -= star.speed; if (star.y < 0) star.y = canvas.height;
-        ctx.beginPath(); ctx.arc(star.x, star.y, star.size, 0, 2 * Math.PI); ctx.fill();
+        star.y -= star.speed;
+        if (star.y < 0) star.y = canvas.height;
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.fill();
       });
-      animationFrameId = requestAnimationFrame(animate);
+      id = requestAnimationFrame(animate);
     };
-    createStars(); animate(); window.addEventListener("resize", createStars);
-    return () => { cancelAnimationFrame(animationFrameId); window.removeEventListener("resize", createStars); };
+
+    createStars();
+    animate();
+    window.addEventListener("resize", createStars);
+    return () => {
+      cancelAnimationFrame(id);
+      window.removeEventListener("resize", createStars);
+    };
   }, []);
   return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full z-0 pointer-events-none" />;
 };
 
-/* ── Floating blob (from your hero) ──────────────────────────── */
+/* ── Floating blobs ────────────────────────────────────────── */
 const Blob: React.FC<{ className: string; delay?: number }> = ({ className, delay = 0 }) => (
   <motion.div
     className={`absolute rounded-full blur-3xl opacity-20 ${className}`}
@@ -61,27 +83,66 @@ export default function Replay() {
       <Blob className="w-[500px] h-[500px] bg-alluBlue-400 -top-20 -right-64" delay={2} />
       <Blob className="w-[600px] h-[600px] bg-alluBlue -top-64 left-40" delay={0} />
 
-      <main className="relative z-10 section-container flex flex-col justify-center min-h-screen py-20 md:py-28">
-        
-        {/* 1. The Headline - Higher on the page */}
-        <motion.header 
+      {/* Sit content higher: no vertical centering; lighter padding */}
+      <main className="relative z-10 section-container pt-10 md:pt-14 pb-10 md:pb-12">
+        {/* Headline sits higher */}
+        <motion.header
           className="text-center w-full max-w-4xl mx-auto"
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
         >
-          <h1 className="text-4xl md:text-5xl font-display text-gradient">Beyond Tactics — The Replay</h1>
-          <p className="mt-3 text-lg text-gray-300">Watch the masterclass that started it all.</p>
+          <h1 className="text-4xl md:text-5xl font-display text-gradient">
+            Beyond Tactics: Inner Game Masterclass
+          </h1>
+          <p className="mt-2 md:mt-3 text-base md:text-lg text-gray-300">
+            Watch the replay now! Only available through October 5.
+          </p>
         </motion.header>
 
-        <div className="mt-12 md:mt-16 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center w-full max-w-6xl mx-auto">
-          
-          {/* 2. The Video - Smaller, on the left */}
+        {/* Grid: CTA first on mobile, video second; normal order on desktop */}
+        <div className="mt-8 md:mt-10 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-start w-full max-w-6xl mx-auto">
+          {/* Pitch + CTA (mobile first) */}
           <motion.div
-            className="w-full"
-            initial={{ opacity: 0, scale: 0.95 }}
+            className="order-1 lg:order-2 text-center lg:text-left"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+          >
+            <h2 className="text-3xl md:text-4xl font-display font-bold text-white">Are you ready?</h2>
+
+            {/* Paragraph 1 */}
+            <p className="mt-3 text-lg text-white">
+              Your inner game journey starts now!
+            </p>
+
+            {/* Paragraph 2 — hidden on mobile for immediate CTA visibility */}
+            <p className="hidden sm:block mt-4 text-lg text-gray-300">
+              The masterclass was just the beginning. The concepts you’ve learned are most powerful
+              when applied directly to your unique challenges.
+            </p>
+
+            <div className="mt-6">
+              <a
+                href={HUBSPOT_BOOKING_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block bg-neon-yellow text-alluBlue-900 font-bold text-base sm:text-lg rounded-full px-6 py-3.5 sm:px-8 sm:py-4 shadow-lg hover:shadow-neon-yellow/40 transition-all duration-300 hover:scale-105 active:scale-95 group"
+              >
+                <span className="flex items-center gap-2 whitespace-nowrap">
+                  Book a Free 30 Min Coaching Call
+                  <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                </span>
+              </a>
+            </div>
+          </motion.div>
+
+          {/* Video (mobile second) */}
+          <motion.div
+            className="order-2 lg:order-1 w-full"
+            initial={{ opacity: 0, scale: 0.97 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
+            transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
           >
             <div className="edge-glow glass-card p-2">
               <div className="relative w-full aspect-video overflow-hidden rounded-xl">
@@ -96,50 +157,15 @@ export default function Replay() {
               </div>
             </div>
           </motion.div>
+        </div>
 
-          {/* 3. THE PITCH - Compelling, on the right, instantly visible */}
-          <motion.div
-            className="text-center lg:text-left"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.4, ease: "easeOut" }}
-          >
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-white">The Real Transformation Starts Now.</h2>
-            <p className="mt-4 text-lg text-gray-300">
-              This masterclass was just the beginning. The concepts you've learned are most powerful when applied directly to your unique challenges.
-            </p>
-            <ul className="mt-6 space-y-3 text-left">
-              <li className="flex items-start gap-3">
-                <CheckCircle className="w-6 h-6 text-neon-yellow flex-shrink-0 mt-1" />
-                <span>Map your next moves and build a personalized roadmap.</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <CheckCircle className="w-6 h-6 text-neon-yellow flex-shrink-0 mt-1" />
-                <span>Identify and remove the hidden blockers holding you back.</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <CheckCircle className="w-6 h-6 text-neon-yellow flex-shrink-0 mt-1" />
-                <span>Get clarity on how to apply the "Inner Game" to your world, fast.</span>
-              </li>
-            </ul>
-            <div className="mt-8">
-              <a
-                href={HUBSPOT_BOOKING_LINK}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block bg-neon-yellow text-alluBlue-900 font-bold text-lg rounded-full px-8 py-4 shadow-lg hover:shadow-neon-yellow/40 transition-all duration-300 hover:scale-105 active:scale-95 group"
-              >
-                <span className="flex items-center gap-2">
-                  Book a Complimentary 1:1 Call
-                  <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-                </span>
-              </a>
-              <p className="mt-3 text-sm text-gray-400">
-                100% Free • No Obligation
-              </p>
-            </div>
-          </motion.div>
-
+        {/* P.S. — also moved up a bit with modest margins */}
+        <div className="max-w-3xl mx-auto text-center mt-10 md:mt-14">
+          <p className="text-sm md:text-base text-white/80 italic">
+            <span className="not-italic font-semibold text-white">P.S.</span> If you are having any hesitation
+            booking that free call, I invite you to ask yourself what your Essence Led Leader would do in
+            this situation if you were coming from vision.
+          </p>
         </div>
       </main>
     </div>
