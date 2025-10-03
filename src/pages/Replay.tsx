@@ -1,5 +1,6 @@
 // src/pages/Replay.tsx
-// CTA-first Replay page: content sits higher; mobile shows CTA before video; CTA stays single-line.
+// CTA-first Replay page: sits higher; mobile shows CTA before video; CTA stays single-line.
+// Adds light no-download deterrents to the <video>.
 
 import * as React from "react";
 import { Helmet } from "react-helmet-async";
@@ -83,8 +84,8 @@ export default function Replay() {
       <Blob className="w-[500px] h-[500px] bg-alluBlue-400 -top-20 -right-64" delay={2} />
       <Blob className="w-[600px] h-[600px] bg-alluBlue -top-64 left-40" delay={0} />
 
-      {/* Sit content higher: no vertical centering; lighter padding */}
-      <main className="relative z-10 section-container pt-10 md:pt-14 pb-10 md:pb-12">
+      {/* Sit content higher: lighter top/bottom padding */}
+      <main className="relative z-10 section-container pt-6 md:pt-8 pb-8 md:pb-10">
         {/* Headline sits higher */}
         <motion.header
           className="text-center w-full max-w-4xl mx-auto"
@@ -109,15 +110,17 @@ export default function Replay() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
           >
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-white">Are you ready?</h2>
+            <h2 className="text-3xl md:text-4xl font-display font-bold text-white">
+              Are you ready?
+            </h2>
 
-            {/* Paragraph 1 */}
-            <p className="mt-3 text-lg text-white">
+            {/* Paragraph 1 with extra breathing room from header */}
+            <p className="mt-6 text-lg text-white">
               Your inner game journey starts now!
             </p>
 
             {/* Paragraph 2 — hidden on mobile for immediate CTA visibility */}
-            <p className="hidden sm:block mt-4 text-lg text-gray-300">
+            <p className="hidden sm:block mt-6 text-lg text-gray-300">
               The masterclass was just the beginning. The concepts you’ve learned are most powerful
               when applied directly to your unique challenges.
             </p>
@@ -127,7 +130,7 @@ export default function Replay() {
                 href={HUBSPOT_BOOKING_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block bg-neon-yellow text-alluBlue-900 font-bold text-base sm:text-lg rounded-full px-6 py-3.5 sm:px-8 sm:py-4 shadow-lg hover:shadow-neon-yellow/40 transition-all duration-300 hover:scale-105 active:scale-95 group"
+                className="inline-block bg-neon-yellow text-alluBlue-900 font-bold text-[15px] sm:text-lg rounded-full px-5 py-3 sm:px-8 sm:py-4 shadow-lg hover:shadow-neon-yellow/40 transition-all duration-300 hover:scale-105 active:scale-95 group"
               >
                 <span className="flex items-center gap-2 whitespace-nowrap">
                   Book a Free 30 Min Coaching Call
@@ -151,6 +154,10 @@ export default function Replay() {
                   src={REPLAY_MP4_URL}
                   poster={POSTER_URL}
                   controls
+                  controlsList="nodownload noplaybackrate"
+                  // These are deterrents only; determined users can still fetch the file.
+                  onContextMenu={(e) => e.preventDefault()}
+                  disablePictureInPicture
                   preload="metadata"
                   playsInline
                 />
@@ -159,8 +166,8 @@ export default function Replay() {
           </motion.div>
         </div>
 
-        {/* P.S. — also moved up a bit with modest margins */}
-        <div className="max-w-3xl mx-auto text-center mt-10 md:mt-14">
+        {/* P.S. — slightly higher with modest margins */}
+        <div className="max-w-3xl mx-auto text-center mt-10 md:mt-12">
           <p className="text-sm md:text-base text-white/80 italic">
             <span className="not-italic font-semibold text-white">P.S.</span> If you are having any hesitation
             booking that free call, I invite you to ask yourself what your Essence Led Leader would do in
