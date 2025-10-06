@@ -163,12 +163,12 @@ export const FinalCTA: React.FC = () => {
             <h3 className="text-xl font-bold tracking-wide uppercase">
               <span className="line-through text-gray-400/80">$297 Value</span> — Free Masterclass
             </h3>
-            <p className="text-lg text-neon-yellow">{eventMeta.displayDate} @ {eventMeta.displayTime}</p>
+            <p className="text-lg text-neon-yellow">{eventMeta.displayDate} {eventMeta.displayTime}</p>
           </motion.div>
 
           <div className="max-w-lg mx-auto">
             <HubSpotEmbed
-              formId={import.meta.env.VITE_HS_FORM_ID_STEP1 || "1750eaa7-b9fb-4852-a88e-5390ebb5eb6e"}
+              formId={"fa5f7734-7719-4478-b4ab-264b460804a4"}
               className="hs-form-inline"
               sectionId="final-cta"
             />
