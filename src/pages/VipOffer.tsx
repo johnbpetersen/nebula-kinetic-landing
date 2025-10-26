@@ -37,7 +37,7 @@ const PERKS = [
 
 // --- ACTION REQUIRED ---
 // Replace this placeholder with your actual $19 VIP Add-on payment link.
-const VIP_ADDON_PAYMENT_URL = "https://your-hubspot-payment-link-for-19-dollars";
+const VIP_ADDON_PAYMENT_URL = "https://payments-na1.hubspot.com/payments/cjbP4QpSgmj?referrer=PAYMENT_LINK";
 // -----------------------
 
 export default function VipOffer() {
