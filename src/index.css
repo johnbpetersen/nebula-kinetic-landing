@@ -71,92 +71,31 @@
 
 /* Global resets & typography */
 @layer base {
-  * {
-    @apply border-border;
-  }
-
-  body {
-    @apply bg-alluBlue-900 text-white font-sans;
-    overflow-x: hidden;
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-display font-bold;
-  }
+  * { @apply border-border; }
+  body { @apply bg-alluBlue-900 text-white font-sans; overflow-x: hidden; }
+  h1, h2, h3, h4, h5, h6 { @apply font-display font-bold; }
 }
 
 /* Components (Tailwind @apply) */
 @layer components {
-  .glass-card {
-    @apply backdrop-blur-md bg-white/5 border border-white/10 shadow-xl shadow-black/30 rounded-3xl;
-  }
-
+  .glass-card { @apply backdrop-blur-md bg-white/5 border border-white/10 shadow-xl shadow-black/30 rounded-3xl; }
   .section-container  { @apply max-w-[90rem] px-6 mx-auto; }
   .section-spacing    { @apply py-28 lg:py-36; }
-
-  .btn-primary {
-    @apply bg-alluBlue px-6 py-3 rounded-full text-white font-semibold
-           hover:scale-105 active:scale-95 transition-all shadow-lg
-           hover:shadow-neon-yellow/20 focus:ring-2 focus:ring-neon-yellow/50;
-  }
-
-  .btn-primary-sm {
-    @apply bg-neon-yellow text-alluBlue-900 font-semibold rounded-full
-           px-4 py-2 text-sm transition-all hover:bg-neon-yellow/80;
-  }
-
-  .btn-secondary {
-    @apply bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full text-white
-           font-semibold hover:scale-105 active:scale-95 transition-all
-           hover:bg-white/20 focus:ring-2 focus:ring-white/50;
-  }
+  .btn-primary { @apply bg-alluBlue px-6 py-3 rounded-full text-white font-semibold hover:scale-105 active:scale-95 transition-all shadow-lg hover:shadow-neon-yellow/20 focus:ring-2 focus:ring-neon-yellow/50; }
+  .btn-primary-sm { @apply bg-neon-yellow text-alluBlue-900 font-semibold rounded-full px-4 py-2 text-sm transition-all hover:bg-neon-yellow/80; }
+  .btn-secondary { @apply bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full text-white font-semibold hover:scale-105 active:scale-95 transition-all hover:bg-white/20 focus:ring-2 focus:ring-white/50; }
 }
 
 /* Utilities / animations */
 @layer utilities {
-  .text-gradient {
-    background: linear-gradient(to right, #6074FF, #FFE45E);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .text-gradient-subtle {
-    background: linear-gradient(to right, rgba(96, 116, 255, 0.4), rgba(255, 228, 94, 0.4));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .animate-pulse-slow {
-    animation: pulse-glow 6s ease-in-out infinite;
-  }
-
-  @keyframes pulse-glow {
-    0%, 100% { opacity: 0.10; }
-    50%      { opacity: 0.20; }
-  }
-
+  .text-gradient { background: linear-gradient(to right, #6074FF, #FFE45E); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .text-gradient-subtle { background: linear-gradient(to right, rgba(96, 116, 255, 0.4), rgba(255, 228, 94, 0.4)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .animate-pulse-slow { animation: pulse-glow 6s ease-in-out infinite; }
+  @keyframes pulse-glow { 0%, 100% { opacity: 0.10; } 50% { opacity: 0.20; } }
   .card-bg-transparent { background-color: rgba(23, 37, 84, 0.5); }
 }
 
-/* Hero background / edge-glow decorators */
-.hero-background    { position: relative; background-color: #0b0f2a; overflow: hidden; }
-.hero-background::before {
-  content: ""; position: absolute; inset: -50% -50%;
-  width: 200%; height: 200%;
-  background: linear-gradient(45deg, #8a2be2, #4b0082, #1e90ff, #00bfff);
-  background-size: 200% 200%;
-  animation: gradient-animation 20s ease infinite alternate;
-  opacity: 0.3; filter: blur(100px); z-index: 0;
-}
-@keyframes gradient-animation {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-.hero-background > * { position: relative; z-index: 1; }
-
+/* --- THE ORIGINAL YELLOW BORDER GLOW (RESTORED) --- */
 .edge-glow { position: relative; border-radius: 1.5rem; overflow: visible; }
 .edge-glow::before {
   content: ""; position: absolute; inset: -2px; border-radius: inherit;
@@ -170,90 +109,45 @@
   100% { background-position: 0% 50%; }
 }
 
-/* HubSpot form (scoped to popup) */
+/* --- THE NEW, SUBTLE BLUE GLOW FOR THE QUOTE BOX --- */
+.edge-glow-subtle { position: relative; border-radius: 1.5rem; overflow: visible; }
+.edge-glow-subtle::before {
+  content: ""; position: absolute; inset: -2px; border-radius: inherit;
+  background: linear-gradient(130deg, #6074ff, #303673, #6074ff, #1B1C3E);
+  background-size: 400% 400%; animation: edgeGlowSubtle 8s ease-in-out infinite;
+  z-index: -1;
+}
+@keyframes edgeGlowSubtle {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* HubSpot form styling, etc. */
+/* ... (rest of the file is unchanged) ... */
 @layer components {
   .hs-form-popup .hbspt-form,
   .hs-form-popup .hs-form {
     background-color: rgba(255, 255, 255, 0.05) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    backdrop-filter: blur(8px) !important;
-    -webkit-backdrop-filter: blur(8px) !important;
-    border-radius: 16px !important;
-    padding: 24px !important;
+    backdrop-filter: blur(8px) !important; -webkit-backdrop-filter: blur(8px) !important;
+    border-radius: 16px !important; padding: 24px !important;
   }
-
-  .hs-form-popup .hbspt-form *,
-  .hs-form-popup .hs-form * {
-    @apply font-sans !important;
-  }
-
-  .hs-form-popup .hs-form-field label {
-    @apply text-sm text-gray-200 mb-1 font-semibold !important;
-  }
-
-  .hs-form-popup .hs-input {
-    @apply w-full bg-alluBlue-800/50 text-white placeholder-gray-400
-           border border-white/20 rounded-lg px-4 py-2
-           focus:outline-none focus:ring-2 focus:ring-neon-yellow/50 !important;
-  }
-
-  .hs-form-popup .hs-error-msgs {
-    @apply text-red-400 text-xs mt-1 !important;
-  }
-
-  .hs-form-popup .hs-form-field {
-    @apply mb-4 !important;
-  }
-
-  .hs-form-popup .hs-button.primary {
-    @apply bg-neon-yellow text-alluBlue-900 font-semibold
-           px-6 py-3 rounded-full w-full
-           shadow-xl hover:shadow-neon-yellow/40
-           transition-all duration-300 cursor-pointer
-           animate-pulse-slow !important;
-  }
-
-  .hs-form-popup .hs-input.error {
-    @apply border-red-400 focus:ring-red-400/50 !important;
-  }
-
-  .hs-form-popup .hs-field-desc {
-    @apply text-gray-300 text-xs !important;
-  }
-
-  .hs-form-popup .hs-form-field legend {
-    @apply text-sm text-gray-200 font-semibold !important;
-  }
-
-  /* Hide HubSpot footer */
-  .hs-form-popup .legal-consent-container,
-  .hs-form-popup .hs-form-privacy {
-    display: none !important;
-  }
-
-  /* Responsive adjustments */
+  .hs-form-popup .hbspt-form *, .hs-form-popup .hs-form * { @apply font-sans !important; }
+  .hs-form-popup .hs-form-field label { @apply text-sm text-gray-200 mb-1 font-semibold !important; }
+  .hs-form-popup .hs-input { @apply w-full bg-alluBlue-800/50 text-white placeholder-gray-400 border border-white/20 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-neon-yellow/50 !important; }
+  .hs-form-popup .hs-error-msgs { @apply text-red-400 text-xs mt-1 !important; }
+  .hs-form-popup .hs-form-field { @apply mb-4 !important; }
+  .hs-form-popup .hs-button.primary { @apply bg-neon-yellow text-alluBlue-900 font-semibold px-6 py-3 rounded-full w-full shadow-xl hover:shadow-neon-yellow/40 transition-all duration-300 cursor-pointer animate-pulse-slow !important; }
+  .hs-form-popup .hs-input.error { @apply border-red-400 focus:ring-red-400/50 !important; }
+  .hs-form-popup .hs-field-desc { @apply text-gray-300 text-xs !important; }
+  .hs-form-popup .hs-form-field legend { @apply text-sm text-gray-200 font-semibold !important; }
+  .hs-form-popup .legal-consent-container, .hs-form-popup .hs-form-privacy { display: none !important; }
   @media (max-width: 640px) {
-    .hs-form-popup .hbspt-form,
-    .hs-form-popup .hs-form {
-      padding: 16px !important;
-    }
-    .hs-form-popup .hs-button.primary {
-      padding: 8px 16px !important;
-      font-size: 14px !important;
-    }
+    .hs-form-popup .hbspt-form, .hs-form-popup .hs-form { padding: 16px !important; }
+    .hs-form-popup .hs-button.primary { padding: 8px 16px !important; font-size: 14px !important; }
   }
 }
-
-  /* THE WIDTH FIX (Part 2): This rule targets the iframe inside the
-     container we just named, forcing it to be 100% wide. */
-     .hubspot-form-container iframe {
-      width: 100% !important;
-    }
-
-  /* Remove native summary marker so only our chevron shows */
-  details > summary {
-    list-style: none;
-  }
-  details > summary::-webkit-details-marker {
-    display: none;
-  }
+.hubspot-form-container iframe { width: 100% !important; }
+details > summary { list-style: none; }
+details > summary::-webkit-details-marker { display: none; }

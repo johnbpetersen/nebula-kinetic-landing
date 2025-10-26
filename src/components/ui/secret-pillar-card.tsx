@@ -76,7 +76,7 @@ export const SecretPillarCard = ({ secret, index }: SecretPillarCardProps) => {
   const buttonText = isRevealed
     ? hasMasterclassPassed()
       ? "Join The Waitlist"
-      : "Register For Free"
+      : "Register Now!"
     : isMobile
     ? "Tap to Reveal"
     : "Hover to Reveal";

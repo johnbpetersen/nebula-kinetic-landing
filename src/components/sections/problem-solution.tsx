@@ -74,7 +74,7 @@ export function ProblemSolution() {
   const isSolutionInView = useInView(solutionRef, { once: true, amount: 0.2 });
 
   // Dynamic button text based on event status
-  const buttonText = hasMasterclassPassed() ? "Join The Waitlist" : "Register For Free";
+  const buttonText = hasMasterclassPassed() ? "Join The Waitlist" : "Register Today";
 
   return (
     <div className="relative">

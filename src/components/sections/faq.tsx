@@ -21,29 +21,24 @@ interface FAQItem {
 
 const faqs: FAQItem[] = [
   {
-    question: "Is the masterclass really free?",
-    answer:
-      "100% free! Learn proven mindset hacks to double your sales and crush stress, no strings attached. Spots are limited—grab yours now!",
-  },
-  {
-    question: "Why do you need my info to sign up?",
-    answer:
-      "Your info unlocks exclusive prep materials and masterclass updates, plus personalized sales tips to skyrocket your game. Opt out anytime. Sign up now to get started!",
-  },
-  {
-    question: "I’m new to sales—will this help me?",
+    question: "I’m new to sales. Will this help me?",
     answer:
       "Absolutely! The masterclass teaches universal mindset shifts that boost confidence and close rates, whether you’re a rookie or a pro. Join free and start winning!",
   },
   {
+    question: "I’ve  been in sales for a long time. Will this help me too?",
+    answer:
+      "We got you. You will learn the strategies and tactics that the top 1% of sales professionals use to crush their quotas and crush stress! We've seen this work for even the most seasoned reps!",
+  },
+  {
     question: "How long is the masterclass?",
     answer:
-      "Just 90 minutes to transform your sales game with actionable strategies you’ll use immediately. Don’t miss out—secure your spot today!",
+      "Just 60 minutes to transform your sales game with actionable strategies you’ll use immediately. Don’t miss out—secure your spot today!",
   },
   {
     question: "What if I can’t make the live session?",
     answer:
-      `No worries! Register now to lock in your spot for the ${eventMeta.displayDate} at ${eventMeta.displayTime} masterclass in case your schedule changes, and we’ll keep you posted on future sessions. Sign up today!`,
+      `No worries! We'll send you a link to the replay after the masterclass session, and a member of our team will reach out to answer any questions you may have!.`,
   },
 ];
 

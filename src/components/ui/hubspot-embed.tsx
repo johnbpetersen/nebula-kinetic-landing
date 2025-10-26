@@ -1,17 +1,23 @@
 // src/components/ui/hubspot-embed.tsx
-// Purpose: Generic inline HubSpot form embed (used for hero, final CTA, etc.).
-// Injects mild CSS into the iframe so it looks on-brand.
-// Last Updated: August 28, 2025, 10:55 AM EDT
+// V2 - Upgraded to handle form submissions and pass data back to the parent component.
 
 "use client";
 
 import React, { useEffect, useRef } from "react";
 import type { WindowWithHbspt } from "../../types/hubspot";
 
+// This is the structure of the data HubSpot sends on submit
+type HubSpotSubmittedData = {
+  name: string;
+  value: string | boolean;
+}[];
+
 type Props = {
   formId: string;
   className?: string;
   sectionId: string; // Unique identifier for each section (e.g., "hero", "final-cta")
+  // New callback prop to handle the submission event
+  onFormSubmit?: (data: HubSpotSubmittedData) => void;
 };
 
 function buildIframeCss() {
@@ -37,7 +43,7 @@ function buildIframeCss() {
     }`;
 }
 
-export const HubSpotEmbed: React.FC<Props> = ({ formId, className, sectionId }) => {
+export const HubSpotEmbed: React.FC<Props> = ({ formId, className, sectionId, onFormSubmit }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -57,28 +63,32 @@ export const HubSpotEmbed: React.FC<Props> = ({ formId, className, sectionId }) 
 
     const mount = () => {
       const w = window as unknown as WindowWithHbspt;
-      if (!w.hbspt?.forms || !containerRef.current) {
-        console.error("[HubSpotEmbed] Forms API or container not available");
-        return;
-      }
-      console.log(`[HubSpotEmbed] Mounting form ${formId} in ${sectionId}`);
-      containerRef.current.innerHTML = ""; // Clear previous content
+      if (!w.hbspt?.forms || !containerRef.current) return;
+      
+      containerRef.current.innerHTML = "";
+      
       w.hbspt.forms.create({
         region: "na1",
         portalId: import.meta.env.VITE_HUBSPOT_PORTAL_ID || "46789902",
         formId,
-        target: `#hs-form-inline-${sectionId}-${formId}`, // Unique target per section
+        target: `#hs-form-inline-${sectionId}-${formId}`,
         onFormReady: () => {
           const iframe = containerRef.current!.querySelector("iframe") as HTMLIFrameElement | null;
           injectCssIntoIframe(iframe);
-          console.log(`[HubSpotEmbed] Form ${formId} ready in ${sectionId}`);
+        },
+        // --- THIS IS THE NEW LOGIC ---
+        onFormSubmit: (form: HTMLFormElement, data: { data: HubSpotSubmittedData }) => {
+          console.log(`[HubSpotEmbed] Form ${formId} submitted in ${sectionId}. Data:`, data);
+          // Pass the submitted data to the parent component's callback function
+          if (onFormSubmit && data?.data) {
+            onFormSubmit(data.data);
+          }
         },
       });
     };
 
     if (!cancelled) {
       if (!window.hbspt) {
-        console.log(`[HubSpotEmbed] Loading script for ${sectionId}`);
         const script = document.createElement("script");
         script.src = "https://js.hsforms.net/forms/embed/v2.js";
         script.async = true;
@@ -89,10 +99,8 @@ export const HubSpotEmbed: React.FC<Props> = ({ formId, className, sectionId }) 
       }
     }
 
-    return () => {
-      cancelled = true;
-    };
-  }, [formId, sectionId]);
+    return () => { cancelled = true; };
+  }, [formId, sectionId, onFormSubmit]);
 
   return (
     <div

@@ -1,7 +1,5 @@
 // src/components/ui/sticky-nav.tsx
-// Purpose: Renders a sticky navigation bar on marketing pages, hidden on VIP checkout/confirmation.
-// Hides itself on /vip-offer and /vip-confirmed so we don’t distract from the upsell or post-purchase state.
-// Last Updated: September 9, 2025
+// V2 - Updated to hide the nav on the new checkout and confirmation pages.
 
 import React, { useRef, useState } from "react";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
@@ -10,26 +8,30 @@ import { hasMasterclassPassed } from "../../config/eventMeta";
 import { useLocation } from "react-router-dom";
 
 export const StickyNav: React.FC = () => {
-  // Hide on these paths (exact matches)
-  const HIDDEN_PATHS = ["/vip-offer", "/vip-confirmed", "/vip-invite", "/replay"];
+  const HIDDEN_PATHS = [
+    "/vip-offer", 
+    "/vip-confirmed", 
+    "/vip-invite", 
+    "/replay",
+    "/checkout",
+    "/bundle-confirmed"
+  ];
 
   const { pathname } = useLocation();
   if (HIDDEN_PATHS.includes(pathname)) {
-    // Don’t render anything on VIP pages
     return null;
   }
 
-  const targetRef = useRef<HTMLDivElement>(null); // (Currently unused; kept for potential future anchor logic)
+  const targetRef = useRef<HTMLDivElement>(null);
   const { scrollY } = useScroll();
   const [isVisible, setIsVisible] = useState(false);
 
   // Dynamic button text based on event status
-  const buttonText = hasMasterclassPassed() ? "Join Wait List" : "Register For Free";
+  const buttonText = hasMasterclassPassed() ? "Join Wait List" : "Register Now";
 
-  // Show nav when scrolled beyond ~90% of viewport height (hero section)
   useMotionValueEvent(scrollY, "change", (latest) => {
     const vh = window.innerHeight;
-    const threshold = vh * 0.9; // 90vh
+    const threshold = vh * 0.9;
     setIsVisible(latest > threshold);
   });
 
@@ -42,7 +44,6 @@ export const StickyNav: React.FC = () => {
       aria-label="Main navigation"
     >
       <div className="section-container flex items-center justify-between py-4">
-        {/* Logo linking to main site */}
         <div className="flex items-center">
           <a
             href="https://alluviance.co"
@@ -66,8 +67,6 @@ export const StickyNav: React.FC = () => {
             </picture>
           </a>
         </div>
-
-        {/* CTA Button to scroll to registration form */}
         <div>
           <motion.button
             type="button"

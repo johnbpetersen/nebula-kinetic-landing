@@ -43,7 +43,7 @@ export const Countdown: React.FC = () => {
     }
   }, []);
 
-  const buttonText = hasMasterclassPassed() ? "Join The Waitlist" : "Register For Free";
+  const buttonText = hasMasterclassPassed() ? "Join The Waitlist" : "Grab My Seat";
 
   return (
     <MotionSection id="countdown-section" className="relative bg-gradient-to-b from-alluBlue-800 to-alluBlue-900 min-h-screen flex items-center">

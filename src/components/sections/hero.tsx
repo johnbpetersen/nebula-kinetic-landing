@@ -1,12 +1,15 @@
 // src/components/sections/hero.tsx
-// Final version with the date/time moved above the form.
+// Updated to handle form submission and redirect to the new /checkout page.
 
 import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom"; // 1. Import useNavigate
 import { motion } from "framer-motion";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import { VideoPlayer } from "../ui/video-player";
 import { HubSpotEmbed } from "../ui/hubspot-embed";
 import { eventMeta, hasMasterclassPassed } from "../../config/eventMeta";
+
+// ... (rest of the file is unchanged, like useReducedMotion, isMobile, Starfield, Blob, motionIfDesktop)
 
 /** Custom hook to detect reduced-motion preference. */
 const useReducedMotion = () => {
@@ -114,15 +117,38 @@ const Blob: React.FC<{ className: string; delay?: number }> = ({ className, dela
 /** Helper to only apply motion props on desktop */
 const motionIfDesktop = <T extends object>(props: T): T | {} => (isMobile() ? {} : props);
 
+
 /* ── Hero section ─────────────────────────────────── */
 export const Hero: React.FC = () => {
   const [slowStars, setSlowStars] = useState(false);
   const prefersReduced = useReducedMotion();
+  const navigate = useNavigate(); // 2. Initialize the navigate function
 
   useEffect(() => {
     const timer = setTimeout(() => setSlowStars(true), 5000);
     return () => clearTimeout(timer);
   }, []);
+
+  // 3. Create the handler function
+  const handleFormSubmit = (
+    submittedData: { name: string; value: string | boolean }[]
+  ) => {
+    // NOTE: The 'name' must match the "Internal name" of your HubSpot form field.
+    // Check the console log to verify this name if it doesn't work.
+    const vipField = submittedData.find(
+      (field) => field.name === "im_interested_in_vip"
+    );
+
+    // If the checkbox was checked, its value will be 'true'
+    const vipInterest = vipField?.value === "true";
+
+    if (vipInterest) {
+      navigate("/checkout?vip=true");
+    } else {
+      navigate("/checkout");
+    }
+  };
+
 
   return (
     <section
@@ -177,8 +203,6 @@ export const Hero: React.FC = () => {
             >
               How the Top&nbsp;1&nbsp;% Crush Quota&nbsp;Without&nbsp;Burning&nbsp;Out
             </motion.h2>
-
-            {/* --- THIS <p> BLOCK WAS REMOVED FROM HERE --- */}
           </div>
 
           {/* Video column */}
@@ -189,22 +213,23 @@ export const Hero: React.FC = () => {
 
         {/* Embedded Form Section */}
         <div className="mt-16 text-center">
-          {/* --- AND MOVED HERE, WITH NEW STYLING --- */}
           <motion.div
             className="mb-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <h3 className="text-xl font-bold tracking-wide uppercase">Free Masterclass</h3>
-            <p className="text-lg text-neon-yellow">{eventMeta.displayDate} {eventMeta.displayTime}</p>
+            <h3 className="text-xl font-bold tracking-wide uppercase">{eventMeta.displayDate}</h3>
+            <p className="text-lg text-neon-yellow">{eventMeta.displayTime}</p>
           </motion.div>
 
           <div className="max-w-lg mx-auto">
+            {/* 4. Pass the handler to the component */}
             <HubSpotEmbed
-              formId={"fa5f7734-7719-4478-b4ab-264b460804a4"}
+              formId={"96bdf935-8d89-49ff-a674-bed46698ffa4"}
               className="hs-form-inline"
               sectionId="hero"
+              onFormSubmit={handleFormSubmit}
             />
           </div>
         </div>

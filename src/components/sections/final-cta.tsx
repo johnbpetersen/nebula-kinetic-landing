@@ -1,7 +1,8 @@
 // src/components/sections/final-cta.tsx
-// Final version with the date/time moved to be a header for the form.
+// Updated to handle form submission and redirect to the new /checkout page.
 
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // 1. Import useNavigate
 import { motion } from "framer-motion";
 import { MotionSection } from "../ui/motion-section";
 import { HubSpotEmbed } from "../ui/hubspot-embed";
@@ -24,29 +25,30 @@ const FINAL_BENEFITS = [
 ];
 
 export const FinalCTA: React.FC = () => {
-  const [timeLeft, setTimeLeft] = useState<{ hours: number; minutes: number }>({
-    hours: 0,
-    minutes: 0,
-  });
+  const navigate = useNavigate(); // 2. Initialize the navigate function
 
-  useEffect(() => {
-    const deadline = new Date(eventMeta.rawDate);
-    const tick = () => {
-      const diff = deadline.getTime() - Date.now();
-      if (diff <= 0) {
-        setTimeLeft({ hours: 0, minutes: 0 });
-        return;
-      }
-      setTimeLeft({
-        hours: Math.floor(diff / (1000 * 60 * 60)),
-        minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
-      });
-    };
-    tick();
-    const id = setInterval(tick, 60_000);
-    return () => clearInterval(id);
-  }, []);
+  // 3. Create the handler function
+  const handleFormSubmit = (
+    submittedData: { name: string; value: string | boolean }[]
+  ) => {
+    // NOTE: The 'name' must match the "Internal name" of your HubSpot form field.
+    // Check the console log to verify this name if it doesn't work.
+    const vipField = submittedData.find(
+      (field) => field.name === "im_interested_in_vip"
+    );
 
+    // If the checkbox was checked, its value will be 'true'
+    const vipInterest = vipField?.value === "true";
+
+    if (vipInterest) {
+      navigate("/checkout?vip=true");
+    } else {
+      navigate("/checkout");
+    }
+  };
+  
+  // ... (rest of the file is unchanged, like the stats and useEffects)
+  
   const stats = [
     { number: "300+", label: "Sellers Transformed", icon: Users },
     { number: "9.1", label: "Alluviance NPS Score", icon: TrendingUp },
@@ -150,9 +152,7 @@ export const FinalCTA: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* --- Embedded Form Section --- */}
         <div id="final-cta-form" className="mt-12 text-center">
-          {/* --- NEW Form Header --- */}
           <motion.div
             className="mb-6"
             initial={{ opacity: 0, y: 20 }}
@@ -161,20 +161,22 @@ export const FinalCTA: React.FC = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <h3 className="text-xl font-bold tracking-wide uppercase">
-              <span className="line-through text-gray-400/80">$297 Value</span> — Free Masterclass
+              Secure Your Spot Now
             </h3>
             <p className="text-lg text-neon-yellow">{eventMeta.displayDate} {eventMeta.displayTime}</p>
           </motion.div>
 
           <div className="max-w-lg mx-auto">
+            {/* 4. Pass the handler to the component */}
             <HubSpotEmbed
-              formId={"fa5f7734-7719-4478-b4ab-264b460804a4"}
+              formId={"96bdf935-8d89-49ff-a674-bed46698ffa4"}
               className="hs-form-inline"
               sectionId="final-cta"
+              onFormSubmit={handleFormSubmit}
             />
           </div>
            <p className="text-xs text-gray-500 mt-3">
-            No credit card required • 100% free training
+            Your journey to the top 1% starts here.
           </p>
         </div>
       </div>
