@@ -1,10 +1,11 @@
 // src/components/ui/sticky-nav.tsx
 // V2 - Updated to hide the nav on the new checkout and confirmation pages.
 
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { hasMasterclassPassed } from "../../config/eventMeta";
+import { openWaitlistPopup } from "../../lib/waitlist-popup";
 import { useLocation } from "react-router-dom";
 
 export const StickyNav: React.FC = () => {
@@ -22,12 +23,12 @@ export const StickyNav: React.FC = () => {
     return null;
   }
 
-  const targetRef = useRef<HTMLDivElement>(null);
   const { scrollY } = useScroll();
   const [isVisible, setIsVisible] = useState(false);
+  const isEventPast = hasMasterclassPassed();
 
   // Dynamic button text based on event status
-  const buttonText = hasMasterclassPassed() ? "Join Wait List" : "Register Now";
+  const buttonText = isEventPast ? "Join Wait List" : "Register Now";
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const vh = window.innerHeight;
@@ -73,13 +74,17 @@ export const StickyNav: React.FC = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="group relative overflow-hidden px-6 py-2 rounded-full bg-neon-yellow text-alluBlue-900 font-bold text-base shadow-xl hover:shadow-neon-yellow/40 transition-all duration-300 focus:ring-2 focus:ring-neon-yellow/50 focus:outline-none"
-            onClick={() =>
+            onClick={() => {
+              if (isEventPast) {
+                openWaitlistPopup();
+                return;
+              }
               document.getElementById("final-cta-form")?.scrollIntoView({
                 behavior: "smooth",
                 block: "center",
-              })
-            }
-            aria-label="Scroll to registration form"
+              });
+            }}
+            aria-label={isEventPast ? "Open waitlist form" : "Scroll to registration form"}
           >
             <span className="relative flex items-center gap-2">
               {buttonText}

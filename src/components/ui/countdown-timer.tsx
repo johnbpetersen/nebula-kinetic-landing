@@ -17,7 +17,7 @@ export const CountdownTimer: React.FC<Props> = ({ targetDate }) => {
   if (hasMasterclassPassed()) {
     return (
       <p className="text-neon-yellow text-xl font-semibold">
-        The webinar is live—jump in!
+        The masterclass has wrapped—join the waitlist below.
       </p>
     );
   }

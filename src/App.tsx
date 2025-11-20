@@ -10,6 +10,7 @@ import { HelmetProvider } from "react-helmet-async";
 
 import { Tracking } from "./components/Tracking";
 import { StickyNav } from "./components/ui/sticky-nav";
+import { WaitlistPopupManager } from "./components/WaitlistPopupManager";
 
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
@@ -33,6 +34,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <StickyNav />
+          <WaitlistPopupManager />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/register" element={<RegisterPage />} />

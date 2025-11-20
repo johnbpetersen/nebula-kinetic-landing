@@ -1,21 +1,17 @@
 // src/components/sections/countdown.tsx
 // Purpose: Renders the countdown section with a timer, event details, and a button to scroll to the final CTA form.
-// Dependencies: React, framer-motion (motion), MotionSection, CountdownTimer, HubSpotEmbed
+// Dependencies: React, framer-motion (motion), MotionSection, CountdownTimer
 // Last Updated: August 28, 2025, 11:35 AM EDT
 
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { MotionSection } from "../ui/motion-section";
 import { CountdownTimer } from "../ui/countdown-timer";
-import { HubSpotEmbed } from "../ui/hubspot-embed";
 import { eventMeta, hasMasterclassPassed } from "../../config/eventMeta";
 import { ArrowRight } from "lucide-react";
-
-const FORM1_INLINE_ID = import.meta.env.VITE_HS_FORM_ID_STEP1 || "1750eaa7-b9fb-4852-a88e-5390ebb5eb6e";
-const FORM2_INLINE_ID = import.meta.env.VITE_HS_FORM_ID_STEP2 || "88193456-5081-4c04-ab4e-9ea776e83c1c";
-const WAITLIST_FORM_ID = import.meta.env.VITE_HS_FORM_ID_WAITLIST || "4694cabd-1060-9f6b-e8a80efb3668";
+import { openWaitlistPopup } from "../../lib/waitlist-popup";
 
 // Helper functions (unchanged)
 function getTzAbbrev(dateISO: string, tz: string): string { try { const parts = new Intl.DateTimeFormat("en-US", { timeZone: tz, timeZoneName: "short", }).formatToParts(new Date(dateISO)); return parts.find((p) => p.type === "timeZoneName")?.value ?? "CT"; } catch { return "CT"; } }
@@ -43,17 +39,21 @@ export const Countdown: React.FC = () => {
     }
   }, []);
 
-  const buttonText = hasMasterclassPassed() ? "Join The Waitlist" : "Grab My Seat";
+  const heading = isEventPast ? "The Last Session Just Wrapped" : "Secure Your Spot";
+  const subheading = isEventPast
+    ? "Join the waitlist now and you'll be first to know when the next masterclass opens."
+    : `Join us on ${displayDate} at ${displayTime} for this transformative masterclass.`;
+  const buttonText = isEventPast ? "Join The Waitlist" : "Grab My Seat";
 
   return (
     <MotionSection id="countdown-section" className="relative bg-gradient-to-b from-alluBlue-800 to-alluBlue-900 min-h-screen flex items-center">
       <GradientGlow />
       <div className="section-container text-center relative z-10">
         <motion.h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-6" initial={{ opacity: 0, y: -30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}>
-          Secure Your Spot
+          {heading}
         </motion.h2>
         <motion.p className="text-base sm:text-lg md:text-xl opacity-80 max-w-2xl mx-auto mb-10" initial={{ opacity: 0, y: -20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.2 }}>
-          Join us on {displayDate} at {displayTime} for this transformative masterclass.
+          {subheading}
         </motion.p>
         {!isEventPast && (
           <motion.div className="mb-10 relative" animate={{ scale: [1, 1.02, 1] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}>
@@ -64,8 +64,17 @@ export const Countdown: React.FC = () => {
         <div className="mt-10 w-full max-w-lg mx-auto">
           <motion.button
             className="btn-primary relative overflow-hidden group"
-            onClick={() => document.getElementById("final-cta-form")?.scrollIntoView({ behavior: "smooth", block: "center" })}
-            aria-label="Scroll to registration form"
+            onClick={() => {
+              if (isEventPast) {
+                openWaitlistPopup();
+                return;
+              }
+              document.getElementById("final-cta-form")?.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+              });
+            }}
+            aria-label={isEventPast ? "Open waitlist form" : "Scroll to registration form"}
           >
             <span className="relative z-10 flex items-center gap-2">
               {buttonText}

@@ -14,6 +14,7 @@ import {
   Zap,
 } from "lucide-react";
 import { eventMeta, hasMasterclassPassed } from "../../config/eventMeta";
+import { openWaitlistPopup } from "../../lib/waitlist-popup";
 
 const FINAL_BENEFITS = [
   "Turn rejection into rocket fuel for your confidence",
@@ -26,6 +27,9 @@ const FINAL_BENEFITS = [
 
 export const FinalCTA: React.FC = () => {
   const navigate = useNavigate(); // 2. Initialize the navigate function
+  const isEventPast = hasMasterclassPassed();
+  const badgeText = isEventPast ? "Waitlist Now Open" : "Limited Seats Available";
+  const BadgeIcon = isEventPast ? ArrowRight : Zap;
 
   // 3. Create the handler function
   const handleFormSubmit = (
@@ -96,32 +100,53 @@ export const FinalCTA: React.FC = () => {
           <div
             className="inline-flex items-center gap-2 bg-gradient-to-r from-alluBlue-500/20 to-neon-yellow/20 backdrop-blur-sm border border-neon-yellow/30 rounded-full px-4 py-2 mb-7"
           >
-            <Zap
+            <BadgeIcon
               className="w-4 h-4 text-neon-yellow animate-pulse"
               aria-hidden="true"
             />
             <span className="text-gray-200 font-semibold text-sm uppercase tracking-wider">
-              Limited Seats Available
+              {badgeText}
             </span>
           </div>
 
           <h2 className="text-4xl md:text-6xl font-bold leading-snug mb-10">
-            <span className="block text-white">Don’t Let Another Deal</span>
-            <span className="block text-gradient pb-[10px]">
-              Slip Through Your Fingers
-            </span>
+            {isEventPast ? (
+              <>
+                <span className="block text-white">The Room Is Full—</span>
+                <span className="block text-gradient pb-[10px]">
+                  Reserve Your Spot For The Next One
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="block text-white">Don’t Let Another Deal</span>
+                <span className="block text-gradient pb-[10px]">
+                  Slip Through Your Fingers
+                </span>
+              </>
+            )}
           </h2>
 
           <p className="text-xl md:text-2xl text-gray-200 leading-relaxed max-w-3xl mx-auto">
-            You’ve seen what’s possible. You’ve heard from sellers who went from{" "}
-            <span className="text-alluBlue-400 font-semibold">
-              struggling at 1% of quota{" "}
-            </span>
-            to{" "}
-            <span className="text-neon-yellow font-semibold">
-              crushing 267% performance
-            </span>
-            . Are you ready to be next?
+            {isEventPast ? (
+              <>
+                The most recent masterclass is in the books, but{" "}
+                <span className="text-neon-yellow font-semibold">the waitlist is open.</span>{" "}
+                Add your name now and you’ll be first to hear when the next date drops.
+              </>
+            ) : (
+              <>
+                You’ve seen what’s possible. You’ve heard from sellers who went from{" "}
+                <span className="text-alluBlue-400 font-semibold">
+                  struggling at 1% of quota{" "}
+                </span>
+                to{" "}
+                <span className="text-neon-yellow font-semibold">
+                  crushing 267% performance
+                </span>
+                . Are you ready to be next?
+              </>
+            )}
           </p>
         </motion.div>
 
@@ -161,22 +186,45 @@ export const FinalCTA: React.FC = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <h3 className="text-xl font-bold tracking-wide uppercase">
-              Secure Your Spot Now
+              {isEventPast ? "Join The Waitlist" : "Secure Your Spot Now"}
             </h3>
-            <p className="text-lg text-neon-yellow">{eventMeta.displayDate} {eventMeta.displayTime}</p>
+            {isEventPast ? (
+              <p className="text-lg text-neon-yellow">
+                We’ll email you as soon as new seats open up.
+              </p>
+            ) : (
+              <p className="text-lg text-neon-yellow">
+                {eventMeta.displayDate} {eventMeta.displayTime}
+              </p>
+            )}
           </motion.div>
 
           <div className="max-w-lg mx-auto">
-            {/* 4. Pass the handler to the component */}
-            <HubSpotEmbed
-              formId={"96bdf935-8d89-49ff-a674-bed46698ffa4"}
-              className="hs-form-inline"
-              sectionId="final-cta"
-              onFormSubmit={handleFormSubmit}
-            />
+            {isEventPast ? (
+              <motion.button
+                type="button"
+                className="btn-primary inline-flex items-center justify-center gap-2 w-full"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                onClick={() => openWaitlistPopup()}
+                aria-label="Join the waitlist"
+              >
+                Join The Waitlist
+                <ArrowRight size={18} aria-hidden="true" />
+              </motion.button>
+            ) : (
+              <HubSpotEmbed
+                formId={"96bdf935-8d89-49ff-a674-bed46698ffa4"}
+                className="hs-form-inline"
+                sectionId="final-cta"
+                onFormSubmit={handleFormSubmit}
+              />
+            )}
           </div>
-           <p className="text-xs text-gray-500 mt-3">
-            Your journey to the top 1% starts here.
+          <p className="text-xs text-gray-500 mt-3">
+            {isEventPast
+              ? "Add yourself to the VIP list and get the next invite first."
+              : "Your journey to the top 1% starts here."}
           </p>
         </div>
       </div>

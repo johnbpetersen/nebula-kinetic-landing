@@ -7,6 +7,7 @@ import React, { useRef } from "react";
 import { motion, useInView, Variants } from "framer-motion";
 import { AlertTriangle, Zap, Shield, Target, Crown, CheckCircle, ArrowRight } from "lucide-react";
 import { hasMasterclassPassed } from "../../config/eventMeta";
+import { openWaitlistPopup } from "../../lib/waitlist-popup";
 
 // SUGGESTION: Consider externalizing these arrays to a config or CMS (e.g., src/config/problemSolution.ts)
 const painPoints = [
@@ -74,7 +75,8 @@ export function ProblemSolution() {
   const isSolutionInView = useInView(solutionRef, { once: true, amount: 0.2 });
 
   // Dynamic button text based on event status
-  const buttonText = hasMasterclassPassed() ? "Join The Waitlist" : "Register Today";
+  const isEventPast = hasMasterclassPassed();
+  const buttonText = isEventPast ? "Join The Waitlist" : "Register Today";
 
   return (
     <div className="relative">
@@ -213,7 +215,16 @@ export function ProblemSolution() {
           >
             <motion.button
               className="btn-primary bg-neon-yellow text-alluBlue-900 px-12 py-4 text-lg font-bold hover:scale-105 hover:shadow-2xl hover:shadow-neon-yellow/50 transition-all"
-              onClick={() => document.getElementById("final-cta-form")?.scrollIntoView({ behavior: "smooth", block: "center" })}
+              onClick={() => {
+                if (isEventPast) {
+                  openWaitlistPopup();
+                  return;
+                }
+                document.getElementById("final-cta-form")?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "center",
+                });
+              }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               aria-label="Scroll to registration form"

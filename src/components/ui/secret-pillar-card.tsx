@@ -6,6 +6,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { hasMasterclassPassed } from "../../config/eventMeta";
+import { openWaitlistPopup } from "../../lib/waitlist-popup";
 
 interface SecretData {
   number: string;
@@ -55,6 +56,7 @@ const cardVariants = {
 export const SecretPillarCard = ({ secret, index }: SecretPillarCardProps) => {
   const [isRevealed, setIsRevealed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const isEventPast = hasMasterclassPassed();
 
   // Detect mobile screen size
   useEffect(() => {
@@ -74,7 +76,7 @@ export const SecretPillarCard = ({ secret, index }: SecretPillarCardProps) => {
 
   // Dynamic button text based on event status
   const buttonText = isRevealed
-    ? hasMasterclassPassed()
+    ? isEventPast
       ? "Join The Waitlist"
       : "Register Now!"
     : isMobile
@@ -168,7 +170,14 @@ export const SecretPillarCard = ({ secret, index }: SecretPillarCardProps) => {
               } rounded-full text-white font-semibold text-center cursor-pointer hover:shadow-lg hover:shadow-${secret.glowColor}-500/25 transition-all duration-300`}
               onClick={(e) => {
                 e.stopPropagation();
-                document.getElementById("final-cta-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
+                if (isEventPast) {
+                  openWaitlistPopup();
+                  return;
+                }
+                document.getElementById("final-cta-form")?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "center",
+                });
               }}
               aria-label="Scroll to registration form"
             >

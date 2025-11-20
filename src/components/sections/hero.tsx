@@ -8,6 +8,7 @@ import { ArrowRight, ChevronDown } from "lucide-react";
 import { VideoPlayer } from "../ui/video-player";
 import { HubSpotEmbed } from "../ui/hubspot-embed";
 import { eventMeta, hasMasterclassPassed } from "../../config/eventMeta";
+import { openWaitlistPopup } from "../../lib/waitlist-popup";
 
 // ... (rest of the file is unchanged, like useReducedMotion, isMobile, Starfield, Blob, motionIfDesktop)
 
@@ -123,6 +124,7 @@ export const Hero: React.FC = () => {
   const [slowStars, setSlowStars] = useState(false);
   const prefersReduced = useReducedMotion();
   const navigate = useNavigate(); // 2. Initialize the navigate function
+  const isEventPast = hasMasterclassPassed();
 
   useEffect(() => {
     const timer = setTimeout(() => setSlowStars(true), 5000);
@@ -219,18 +221,46 @@ export const Hero: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <h3 className="text-xl font-bold tracking-wide uppercase">{eventMeta.displayDate}</h3>
-            <p className="text-lg text-neon-yellow">{eventMeta.displayTime}</p>
+            {isEventPast ? (
+              <>
+                <h3 className="text-xl font-bold tracking-wide uppercase">
+                  Next Masterclass Coming Soon
+                </h3>
+                <p className="text-lg text-neon-yellow">
+                  Join the waitlist to be first in line.
+                </p>
+              </>
+            ) : (
+              <>
+                <h3 className="text-xl font-bold tracking-wide uppercase">
+                  {eventMeta.displayDate}
+                </h3>
+                <p className="text-lg text-neon-yellow">{eventMeta.displayTime}</p>
+              </>
+            )}
           </motion.div>
 
           <div className="max-w-lg mx-auto">
-            {/* 4. Pass the handler to the component */}
-            <HubSpotEmbed
-              formId={"96bdf935-8d89-49ff-a674-bed46698ffa4"}
-              className="hs-form-inline"
-              sectionId="hero"
-              onFormSubmit={handleFormSubmit}
-            />
+            {isEventPast ? (
+              <motion.button
+                type="button"
+                className="btn-primary inline-flex items-center justify-center gap-2"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                onClick={() => openWaitlistPopup()}
+                aria-label="Join the waitlist"
+              >
+                Join The Waitlist
+                <ArrowRight size={18} aria-hidden="true" />
+              </motion.button>
+            ) : (
+              <HubSpotEmbed
+                formId={"96bdf935-8d89-49ff-a674-bed46698ffa4"}
+                className="hs-form-inline"
+                sectionId="hero"
+                onFormSubmit={handleFormSubmit}
+              />
+            )}
           </div>
         </div>
       </div>
